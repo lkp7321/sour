@@ -1,0 +1,17 @@
+h1{
+	color: blue;
+    font-size: 20pt;
+}
+h2{
+	color: red;
+    font-size: 16pt;
+}
+a{
+	text-decoration: none;
+}
+#xas{
+	color: green;
+}
+.mycss li{
+	display: inline;
+}

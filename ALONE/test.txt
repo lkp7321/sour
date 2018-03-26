@@ -1,0 +1,171 @@
+【一】.JAVA的反射：
+1.反射基本知识：com.lkp.an.Reflect
+2.反射的动态代理：com.lkp.en.MyInvoke
+3.反射的经典面试demno：com.lkp.an.ArrayDemo
+【二】.JAVA的IO流：
+1.常见字节流：com.lkp.io.ByteInput
+    InputStream is = new FileInputStream(path);
+    InputStreamReader = new InputStreamReader(new FileInputStream(path)));
+    BufferedInputStream = new BufferedInputStream(new FileInputStream(path));
+2.常见字符流：com.lkp.io.CharInput
+    FileReader fr = new FileReader(path);
+    BufferedReader br = new BufferedReader(new FileReader(path));
+3.File文件操作
+【三】.JAVA的几个常见设计模式：
+1.简单工厂模式和工厂方法模式（接口）
+2.模板设计模式（抽象类）：
+    CODE：com.lkp.jn.GetSome
+    KEY：定义一个算法的骨架，将具体的算法延迟到字类中来实现
+    VALUE：定义好骨架后，可以灵活实现具体算法，满足用户灵活多变的需求）
+    BUT：算法骨架有修改时，则需修改基类
+    QUESTION：计算for循环时间，然后在计算读写文件时间，然后在计算其操作的时间？
+    RESULT1：每个方法都要编写一次计算时间的代码，（N）
+    RESULT2：将每一次的具体操作封装成一个抽象方法，使用它的子类来完成具体的操作（Y）
+3.装饰设计模式（常用io流）
+    CODE：com.lkp.kn.MusicDecorPhone
+    KEY：使用需要的被装饰类的一个字类的实例，在客户端将这个字类的实例交给装饰类。是继承的替代方案
+    VALUE：可以提供比继承更加灵活的扩展对象的功能，可以动态的添加对象的功能，并且可以随意的组合这些功能。
+    BUT：太随意了，可能出现不太合理的逻辑
+    QUESTION：做手机需要手机规则&&具体做手机【接口&&实现类】，要给手机添加一些功能&&装饰【装饰&&装饰的基类】
+    RESULT：使用接口来做主体的功能接口&&实现，定义一个抽象类来提供新的功能。
+    EXAMPLE1：
+        字符缓冲（字节转字符（字节流））
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    EXAMPLE2：
+        Scanner scanner = new Scanner(System.in);
+4.单例设计模式（多线程）
+5.适配器模式（GUI）
+【四】.JDK几个版本的新特性
+1.jdk5的新特性：
+（1）.自动装箱，拆箱day13.28
+    CODE：
+    com.lkp.mn.IntegerDemo
+    com.lkp.mn.IntegetInt
+    KEY：为了对基本数据类型进行更多的操作，更方便的操作，java提供bao装类型
+    PRINCIPLE：
+        Integer ii = 100;
+        ii += 200;
+        System.out.println("正常情况下："+ii);
+        ----------------------------------
+        Integer ii = Integer.valueOf(100);
+        ii = Integer.valueOf(ii.intValue()+200);
+        System.out.println("实现原理："+ii);
+（2）.泛型（集合）
+    KEY：把类型明确的工作推迟到创建对象，或调用用方法时才去明确的特殊类型。参数化类型，把类型当作参数一样传递
+    VALUE：把运行时期的问题提前到了编译期间，避免了强制类型转换，优化了程序设计没有了黄色警告线。
+    WHERE：
+    Collections，泛型类，范型方法，范型接口
+    范型类：public class Demo<T>{}
+    范型方法：public <T> void show(T t){}
+    范型接口：public interface Demo<T>{},public class demoImpl<T> implements Demo<T>{}
+    范型通配：
+    ？：表是任意的类型都是可以的
+    CODE：com.lkp.fn.GenericDemo
+（3）.增强for循环（foreach）day16
+    foreach(Object obj : Object[] objects){
+        System.out.println(obj);
+    }
+（4）.静态导入（意义不大，能看懂即可）
+    CODE：com.lkp.fn.StaticImport
+（5）.可变参数
+    *：这里的a其实就是一个数组；
+    public static int(int ... a){}
+    public static int(int b, int ... a){}
+（6）.枚举
+    CODE1：com.lkp.ln.EmExample  // 枚举的源代码
+    CODE2：com.lkp.ln.Example    // 枚举类
+    KEY：有限值的集合/类
+    FOCUS：class变为enum，第一行必须是枚举项，私有构造，可以有抽象方法（必须重写），switch中可以使用enum
+    METHOD：compareTo():枚举项的编号相差，name():枚举项的名称，ordinal():枚举的顺序编号，toString():枚举项的名称，valueOf()，values():枚举项集合
+2.jdk7的新特性
+（1）.二进制字面量
+    KEY：int x = 0x10001;//可以用来表是数字
+（2）.数字字面可以出现下划线
+    KEY：int x = 100_1000;//
+（3）.switch可以用字符串
+    KEY：字符串只是给编译器看的，经过编译后其实不是这样,case 后面接的还是数值类型，只不过又加了一层equals()的判断
+（4）.泛型简化
+    KEY：ArrayList<String> list = new ArrayList<>();
+（5）.异常的多个catch合并
+    *java的异常处理机制：
+    异常如果不处理，则jvm自行处理。
+    A:异常体系：
+        |--Throwable
+            |--Error	                严重问题，我们不处理。（内存溢出等）
+            |--Exception
+                |--RuntimeException	    运行期异常，我们需要修正代码（如果程序足够严谨就不存在此异常）
+                |--非RuntimeException   编译期异常，java程序提示必须处理的，否则程序编译不通过（ide工具中提示报红的（非导包））
+    B:方式
+    1.捕获异常
+        try{
+            可能出现异常的代码
+        }catch(异常名 变量){
+            对异常的说明或处理
+        }finally{
+            最终执行的代码，不论return在哪，都会执行此代码的（return之前）
+        }
+        说明：
+        当有多个异常时，就多写几个catch(异常名1 变量1){}语句（异常名尽量写的具体一点）
+        当多个catch存在时，如果同级则不用考虑catch的顺序，如果不同级则要把级别高的放在后面的代码中（父类异常尽量在后）
+        jdk1.7新特性：
+        try{
+            可能出现异常的代码
+        }catch(异常名1 | 异常名2 | 异常名3 变量){
+            对异常的说明或处理
+        }
+        说明：
+        这个方式虽然简洁但是不够好，直接Exception 会更好
+        多个异常间必须时同级的关系
+    2.抛出异常
+        A:throws：
+        用在方法后，抛出这个异常让调用者进行处理
+        编译期异常调用者必须处理，运行期异常可以不处理
+        尽量不要在main方法上抛出异常。
+        B:throw
+        在功能方法内部出现某种情况，程序不能继续运行，需要进行跳转时，使用此关键字对异常进行抛出。
+        抛出异常对象
+    二者区别：
+    throws：用在方法的声名后，跟的是异常的类名
+            可以跟多个异常类名，用逗号隔开
+            表是抛出异常，由方法的调用者来处理
+            可能出现的异常，并不一定会发生这种异常
+    throw： 用在方法体内，跟的是异常对象名
+            只能抛出一个异常对象
+            表是抛出异常，由方法体内的语句处理
+            执行throw，一定是抛出了一种异常
+    finally：
+            无论何时都会执行的代码块，但是他是在其块的return之前（return中间）执行的。
+    自定义异常：
+    ①：继承自Exception
+    ②：继承自RuntimeException
+    CODE：
+        com.lkp.TryCatch.Test
+        com.lkp.TryCatch.Test1
+    3.Throwable的几个常见方法：
+        e.getMessage()：异常的消息串
+        e.toString()：
+            此对象的name（全路径名）
+            “: ”（冒号和空格）
+            e.getMessage()
+        e.printStackTrace()：获取异常类名和异常信息，以及异常在程序中的位置，返回值void
+    *多个catch合并：
+（6）.try-with-resources语句
+    KEY：try-with-resources语句保证了每个声明了的资源在语句结束的时候都会被关闭。
+    任何实现了java.lang.AutoCloseable接口的对象，和实现了java.io.Closeable接口的对象，都可以当做资源使用。
+    EXAMPLE：
+    try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            return br.readLine();
+    }catch(Exception e){
+        System.out.println(e.getMessage());
+    }
+【5】Java的垃圾回收机制
+【6】SOCKET
+1.udp
+2.tcp
+3.http
+4.WebSocket
+【7】多线程
+【8】集合，基础
+
+

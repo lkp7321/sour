@@ -1,0 +1,14 @@
+java配置and注解实现Spring个部分功能
+com.iso：注解实现（面向切面）AOP
+com.oso：注解管理Bean
+com.rso：Spring的EL表达式
+com.kso：Spring Bean的生命周期
+com.gso：Profile的使用
+com.wso：Application Event(事件)
+com.aso：Spring Aware的使用
+com.tso：Spring使用多线程
+com.mso：计划任务，（定时器）
+com.dso：条件注解Conditional
+com.zso：组合元注解
+com.jso：单元测试
+com.xso：@Enable*注解

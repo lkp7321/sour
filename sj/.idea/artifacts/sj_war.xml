@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="sj:war">
+    <output-path>$PROJECT_DIR$/../sj/target</output-path>
+    <root id="archive" name="sj-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="sj:war exploded" />
+    </root>
+  </artifact>
+</component>

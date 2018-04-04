@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.dao.UserMapper">
+    <resultMap type="User" id="UserResult">
+        <result column="USER_CODE" property="userCode" />
+        <result column="USER_NAME" property="userName" />
+        <result column="USER_PWD" property="userPwd" />
+    </resultMap>
+
+    <select id="findById" parameterType="String" resultMap="UserResult">
+        SELECT USER_CODE,USER_NAME,USER_PWD,MAIL FROM BLOG_USER WHERE USER_CODE=#{userCode} AND USER_PWD=#{userPwd} AND USER_TYPE='2'
+    </select>
+
+    <update id="updateUser" parameterType="String">
+        UPDATE BLOG_USER SET USER_NAME=#{userName} WHERE USER_CODE=#{userCode}
+    </update>
+
+</mapper>

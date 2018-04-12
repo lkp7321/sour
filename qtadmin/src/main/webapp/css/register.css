@@ -1,0 +1,234 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+.logo{
+		
+		width:120px;
+		height:36px
+		padding-left:50px;
+		margin-left:80px;
+		
+}
+
+.header{
+	height:79px;
+	background:url(../img/register/headbg.jpg) repeat-x left bottom
+}
+
+.header .logo{
+	background:url(../img/register/logo.png) no-repeat left bottom;
+	width:120px;
+	height:36px;
+	float:left;
+	margin-top:17px;
+	background-size: 100% 100%;
+}
+
+.header .logo-title{
+	float:left;
+	height:34px;
+	line-height:28px;
+	font-size:18px;
+	color: #323232;
+	padding-left:20px;
+	margin-top:20px;
+}
+
+.header .have-account{
+	font-size:15px;
+	float:right;
+	padding-right:90px;
+	margin-top:30px;
+	color:#B6B6B6;
+}
+
+.header .have-account a{
+		color:#141414;
+}
+
+/*鼠标经过热点文字被加下划线*/
+.header .have-account a:hover{
+	text-decoration:underline;
+}
+
+a{
+	text-decoration: none;
+}
+
+input{
+	border: none;
+	outline: none;
+}
+
+.container{
+	width:1202px;
+	margin: 0 auto;
+}
+
+.register{
+	width: 470px;
+	margin: 0 auto;
+	padding-top: 15px;
+}
+
+.register-box{
+	width:100%;
+	height: 68px;
+	position: relative;
+}
+
+.box{
+	width: 100%;
+	height: 45px;
+	line-height: 45px;
+	border: 2px solid #EBEBEB;
+}
+
+.verify.error,.box.error{
+	border: 2px #f00 solid;
+}
+
+.box label{
+	display: block;
+	float: left;
+	width: 128px;
+	height: 20px;
+	padding-left: 20px;
+	font-family: "PingFangSC-Regular";
+	font-size: 16px;
+	color: #717171;
+}
+
+.box input{
+	font-family: "PingFangSC-Regular";
+	font-size: 14px;
+	color: #909090;
+	width: 300px;
+	line-height: 45px;
+}
+/*验证通过*/
+.box.right i{
+	width: 20px;
+	height: 20px;
+	background: url(../img/register/right.png) no-repeat center center;
+	position: absolute;
+	right: 10px;
+	top: 18px;
+}
+
+.remind{
+	width: 100%;
+	height: 19px;
+	font-size: 12px;
+	line-height: 20px;
+}
+
+.remind i{
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.remind span{
+	color: #ccc;
+}
+
+/*提示信息隐藏*/
+.remind.hide{
+	display: none;
+}
+
+/*提示信息默认样式*/
+.remind.default i{
+	background: url(../img/register/default.png) no-repeat center center;
+	background-size: 100% 100%;
+}
+
+/*提示信息错误样式*/
+.remind.error i{
+	background: url(../img/register/error.png) no-repeat center center;
+	background-size: 100% 100%;
+}
+
+.remind.error span{
+	color: #f00;
+}
+
+/*提示系信息密码弱*/
+.remind.ruo i{
+	background: url(../img/register/ruo.png) no-repeat center center;
+	background-size: 100% 100%;
+}
+
+/*提示信息密码中*/
+.remind.zhong i{
+	background: url(../img/register/zhong.png) no-repeat center center;
+	background-size: 100% 100%;
+}
+
+/*提示信息密码强*/
+.remind.qiang i{
+	background: url(../img/register/qiang.png) no-repeat center center;
+	background-size: 100% 100%;
+}
+
+.verify input{
+	width: 120px;
+}
+
+/*验证码*/
+.verifyCode{
+	width: 110px;
+	height: 42px;
+	float: right;
+	background: #D8D8D8;
+	color: #fff;
+	font: 18px/48px "微软雅黑";
+	text-align: center;
+	cursor: pointer;
+	margin-top: 2px;
+	margin-right: 2px;
+	line-height: 68px;
+}
+
+/*获取手机验证码*/
+.box.verify .phoneCode{
+	width:150px;
+}
+
+/*获取手机验证码按钮*/
+.box .btn-phoneCode{
+	position:absolute;
+	right:1px;
+	top:3px;
+	width:100px;
+	height:43px;
+	border:none
+	font: 14px/48px "PingFangSC-Regular";
+	 
+	text-align: center;
+	cursor: pointer;
+	background-color: #FFFFFF;
+}
+.box #phoneCode{
+	width:210px;
+}
+
+button{
+	width: 477px;
+	height: 48px;
+	background-color: #498EFC;
+	font:18px "PingFangSC-Regular";
+	line-height: 30px;
+	color: #FFFFFF;
+	border:none;
+	cursor: pointer;
+	margin-top:2px;
+}
+
+button:hover{
+	background-color: #497EFA;
+}

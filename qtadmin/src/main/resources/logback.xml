@@ -1,0 +1,26 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread %logger{0}.%M:%L] %msg%n</pattern>
+      <outputPatternAsHeader>true</outputPatternAsHeader>
+      <immediateFlush>true</immediateFlush>
+    </encoder>
+  </appender>
+  
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>D:/Weblogs/qt.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>logs/qt.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <MaxHistory>31</MaxHistory>
+    </rollingPolicy>
+      <layout class="ch.qos.logback.classic.PatternLayout">
+          <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+          </pattern>
+      </layout>
+  </appender>
+   <root level="INFO">          
+	 <appender-ref ref="STDOUT" />
+	 <appender-ref ref="FILE" />
+  </root>
+</configuration>

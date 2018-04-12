@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.qt.core.mapper.CommonMapper">
+
+	<!-- 合约代码、产品名称视图表实体类和数据库字段的映射 -->
+	<resultMap id="insp" type="com.ylxx.qt.service.po.InstruProductBean">
+		<result property="instrumentid" column="instrumentid" javaType="java.lang.String"></result>
+		<result property="productname" column="productname" javaType="java.lang.String"></result>
+	</resultMap>
+
+	<!-- 超买/卖监控表实体类和数据库字段的映射 -->
+	<resultMap id="paramdetails" type="com.ylxx.qt.service.po.ParameterdetailsBean">
+		<id column="Identifier" property="parametid" />
+		<result column="userid" property="userid" />
+		<result column="productid" property="productid" />
+		<result column="productname" property="productname" />
+		<result column="bullandbearratio" property="bullandbearratio" />
+		<result column="segmenttype" property="segmenttype" />
+		<result column="longsegment" property="longsegment" />
+		<result column="shortsegment" property="shortsegment" />
+		<result column="weightset" property="weightset" />
+		<result column="segmentprice" property="segmentprice" />
+		<result column="contractset" property="contractset" />
+	</resultMap>
+
+	<!--全局搜索： 根据合约代码模糊查询合约代码、品种名称的视图表 -->
+	<select id="findInsProdList" resultMap="insp" parameterType="String">
+		select * from v_instruProduct where CONCAT(instrumentid,productname)
+		like '%${_parameter}%'
+	</select>
+
+	<!--全局搜索： 根据用户id、品种代码、合约名称，模糊查询出信息 -->
+	<select id="findParamByUseid" resultMap="paramdetails"	parameterType="String">
+		select * from t_parameterdetails where 1=1 
+		<if test="userid != null">
+			and userid = #{userid} 
+		</if>
+		and CONCAT(contractset,productname) like '%${result}%'
+	</select>
+
+</mapper>

@@ -1,0 +1,100 @@
+html,body{
+	font-family: "microsoft yahei";
+	width: 100%;
+	height: 100%;
+	background:#ecf0fa;
+	font-size: 14px;
+	overflow: hidden;
+}
+.top{
+	width: 100%;
+	height: 80px;
+	background: #fff;
+	line-height: 80px;
+	position: fixed;
+	top: 0;
+}
+.head,.cen{
+	float: left;
+}
+.head{
+	font-size: 1rem;
+}
+.cen{
+	margin-left: 100px;
+}
+.cen li{
+  float: left;
+  margin-right: 15px;
+}
+.cen li img{
+	width: 18px;
+	height: 18px;
+	margin-right: 8px;
+	position: relative;
+}
+.set{
+	float: right;
+	font-size: 1.2rem;
+	margin:0px 10px 0 0;
+	background:none;
+	border:none;
+}
+.bot{
+	padding:30px 15px;
+	margin-top: 90px;
+}
+.box{
+	background:#fff;
+}
+.livbox{
+	margin-top: -20px;
+}
+tbody tr{
+	height: 60px;
+}
+th,td{
+	text-align:center;	
+}
+.bot .box .table tr th,.bot .box .table tr td{
+	vertical-align:middle;
+}
+tbody tr:hover{
+	box-shadow:0 1px 19px 0 #CAD1E2;
+}
+tbody tr{
+	transition:all .4s ease-in-out;
+}
+
+@media screen and (max-width:750px){
+	html,body{
+	 font-size: 12px;
+	}
+	.top{
+		line-height: 40px;
+	}
+	.head{
+		width: 100%;
+	}
+	.cen{
+		margin-left: 10px;
+	}
+	.cen li span{
+		display:none;
+	}
+}
+/*ipad上的时候，与pc端一致*/
+@media screen and (device-width:768px){
+	.top{
+		line-height: 70px;
+	}
+	.head{
+		width: auto;
+	}
+	.fa-bars{
+		display:none;
+	}	
+	.cen li span{
+		display:inline-block;
+	}
+}

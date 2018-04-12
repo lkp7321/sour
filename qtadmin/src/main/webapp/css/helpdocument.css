@@ -1,0 +1,147 @@
+ 
+.navcontent{
+	height: 79px;
+	width: 100%;
+	position: fixed;
+    z-index: 5;
+	background: url(../../css/img/nav_bg.png);
+}
+.navcontent .navHeader{
+	width:1202px;
+	heght:100%;
+	margin:auto;
+}
+.helpdocument{
+	width: 1202px;
+	height: 100%;
+	margin: auto;
+	color: #909090;
+}
+.helpdocument .header{
+	position: fixed;
+	top:79px;
+	width: 100%;
+	height: 79px;
+	line-height: 79px;
+	border-bottom: 2px solid #EBEBEB;
+	padding-left: 10px;
+    background-color: #fff;
+    z-index: 4;
+}
+.helpdocument .help_box{
+	width: 1202px;
+	height: 100%;
+	margin: auto;
+}
+.helpdocument .help_nav{
+	position: fixed;
+    top: 157px;
+    left: 74px;
+   
+}  
+.helpdocument .help_main{
+    margin-left:220px;
+	height: 500px;
+	width: 950px;
+	 
+}
+.helpdocument .help_main a{
+	display: block;
+	padding-top: 170px;
+ }
+.helpdocument .help_main #h_1{
+	 
+}
+.helpdocument .help_main p{
+ text-indent:2em;
+}
+.helpdocument .help_main .extra{
+    margin-bottom:1000px;
+ }
+/* .helpdocument .help_main a{
+	position: relative;
+    display: block;
+    margin:-170px 0 0;
+    border-top:170px solid #fff;
+    z-index:1;
+     
+}
+.helpdocument .help_main #h_1{
+	margin:0;
+ }
+ .helpdocument .help_main p{
+   position: relative;
+   z-index:2; 
+   background:#fff;
+ }
+ .helpdocument .help_main .extra{
+    margin-top:1000px;
+ } */
+ 
+ 
+ 
+ 
+.helpdocument .help_list{
+   width: 200px;
+   height:480px;
+   background-color: #F4F5F7;
+   overflow: hidden; 
+ }
+.helpdocument .help_list li{
+	list-style: none;
+	line-height: 40px;
+	font-size: 13px;
+	position: relative !important;
+	 font-weight: 700;
+}
+.helpdocument .help_list a:hover{
+	color: #498EFC;
+	backgroud-color:#498EFC;
+}
+.licolor{
+	color: #498EFC;
+}
+.helpdocument .help_list li a{
+	color: inherit;
+	 
+}
+
+.helpdocument .help_list_group{
+	display: none;
+	margin-left: 20px;
+}
+.help_list_group li a{
+	
+}
+.helpdocument .icon{
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+    margin: 0px 0px -2px 5px;
+}
+.helpdocument .icon_down{
+     background: url(../img/lower.png) no-repeat; 
+}
+.helpdocument .icon_up{
+     background: url(../img/up.png) no-repeat; 
+}
+.helpdocument .help_list_group2{
+	display: none;
+	margin-left: 30px;
+}
+/*滚动条样式  */
+.zUIpanelScrollBox,.zUIpanelScrollBar{
+	width:10px;
+	top:4px;
+	right:2px;
+	border-radius:5px;
+	
+}
+.zUIpanelScrollBox{
+	background:#fff;opacity:0.8;
+	filter:alpha(opacity=80);
+}
+.zUIpanelScrollBar{
+	background:black;opacity:0.1;
+	filter:alpha(opacity=10);
+}

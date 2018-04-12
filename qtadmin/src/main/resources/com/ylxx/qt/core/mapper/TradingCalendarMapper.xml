@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.qt.core.mapper.TradingCalendarMapper">
+	<resultMap id="tradCalendarMap" type="com.ylxx.qt.service.po.TradingCalendarBean">
+		<result column="Year" property="year"/>
+		<result column="Month" property="month"/>
+		<result column="Mark" property="mark"/>
+	</resultMap>
+
+	<insert id="insertTradCalendar" parameterType="java.util.List">
+		insert into t_tradingcalendar(Year,Month,Mark)
+    	 	values
+	    	<foreach collection="list" item="item" index="index" separator=",">
+	    	 	(#{item.year},#{item.month},#{item.mark})
+	    	</foreach>
+	</insert>
+	
+	<delete id="deleteTradCalendar" parameterType="String">
+		DELETE FROM t_tradingcalendar WHERE Year = #{year}
+	</delete>
+	
+	<select id="selectTradCalendar" resultMap="tradCalendarMap">
+		select * from t_tradingcalendar WHERE Year = #{year}
+	</select>
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.qt.core.mapper.OverMonitorMapper">
+	<resultMap id="ParameterdetailMap" type="com.ylxx.qt.service.po.ParameterdetailsBean">
+		<id column="Identifier" property="parametid"/>
+		<result column="UserId" property="userid"/>
+		<result column="ProductId" property="productid"/>
+		<result column="ProductName" property="productname"/>
+		<result column="BullAndBearRatio" property="bullandbearratio"/>
+		<result column="SegmentType" property="segmenttype"/>
+		<result column="LongSegment" property="longsegment"/>
+		<result column="ShortSegment" property="shortsegment"/>
+		<result column="WeightSet" property="weightset"/>
+		<result column="SegmentPrice" property="segmentprice"/>
+		<result column="ContractSet" property="contractset"/>
+	</resultMap>
+	<resultMap id="instrumentfieldMap" type="com.ylxx.qt.service.po.InstrumentFieldBean">
+		<id column="InstrumentID" property="instrument_id"/>
+		<result column="ExchangeID" property="exchange_id"/>
+		<result column="InstrumentName" property="Instrumentname"/>
+		<association property="productbean" column="productID" javaType="com.ylxx.qt.service.po.ProductBean">
+            <id property="productId" column="ProductID" />
+            <result property="productName" column="ProductName" />
+        </association>
+	</resultMap>
+	<resultMap type="com.ylxx.qt.service.po.InstrumentPtrice" id="instrumentptriceMap">
+		<id column="InstrumentId" property="instrumentId"/>
+		<result column="ExchangeID" property="exchangeId"/>
+		<result column="NowPrice" property="nowprice"/>
+	</resultMap> 
+	<insert id="insertinstrumentprice" parameterType="com.ylxx.qt.service.po.InstrumentPtrice">
+		insert into t_instrumentprice(InstrumentId,NowPrice)
+    	 	values (#{instrumentId},#{nowprice})
+	</insert>
+	<select id="selectinstrumentprice" resultMap="instrumentptriceMap">
+		select * from t_instrumentprice where InstrumentId = #{instrumentId}
+	</select>
+	<update id="updateinstrumentprice" parameterType="com.ylxx.qt.service.po.InstrumentPtrice">
+		update t_instrumentprice set NowPrice = #{nowprice} where InstrumentId = #{instrumentId}
+	</update>
+	
+	<select id="queryAllInstrument" resultMap="instrumentfieldMap">
+		select * from t_instrumentfield where InstrumentName != ""
+	</select>
+	<select id="queryInstrument" resultMap="instrumentfieldMap">
+		select ins.*,pro.* from t_instrumentfield ins,t_product pro where ins.ProductID=pro.ProductID and ins.ProductID = #{proId} and InstrumentName != ""
+	</select>
+	
+	<select id="queryParamet" resultMap="ParameterdetailMap">
+		SELECT * FROM t_parameterdetails where UserId = #{userId}
+			<if test="proId != null">
+				and ProductId = #{proId}
+			</if> limit #{index},#{pagecounts}
+	</select>
+	<select id="queryParamet1" resultMap="ParameterdetailMap">
+		SELECT * FROM t_parameterdetails where UserId = #{userId}
+	</select>
+	<insert id="insertParamet" parameterType="java.util.List">
+    	insert into t_parameterdetails(UserId,ProductId,ProductName,BullAndBearRatio,SegmentType,LongSegment,ShortSegment,WeightSet,SegmentPrice,ContractSet)
+    	 	values
+	    	<foreach collection="list" item="item" index="index" separator=",">
+	    	 	(#{item.userid},#{item.productid},#{item.productname},#{item.bullandbearratio},#{item.segmenttype},#{item.longsegment},#{item.shortsegment},#{item.weightset},#{item.segmentprice},#{item.contractset})
+	    	</foreach>
+    </insert>
+    <delete id="deleteParamet" parameterType="String">
+    	DELETE FROM t_parameterdetails WHERE UserId = #{userId}
+    </delete>
+</mapper>

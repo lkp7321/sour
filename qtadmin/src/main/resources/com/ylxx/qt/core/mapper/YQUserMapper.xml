@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.qt.core.mapper.YQUserMapper">
+
+	<!-- 用户表实体类和数据库字段的映射 -->
+	<resultMap id="user" type="com.ylxx.qt.service.po.UserInfoBean">
+		<result property="userid" column="userid" javaType="java.lang.String"></result>
+		<result property="username" column="username" javaType="java.lang.String"></result>
+		<result property="investor" column="investor" javaType="java.lang.String"></result>
+		<result property="password" column="password" javaType="java.lang.String"></result>
+		<result property="phonenumber" column="phonenumber" javaType="java.lang.String"></result>
+		<result property="email" column="email" javaType="java.lang.String"></result>
+		<result property="roleid" column="roleid" javaType="java.lang.String"></result>
+		<result property="truename" column="truename" javaType="java.lang.String"></result>
+		<result property="sex" column="sex" javaType="java.lang.String"></result>
+		<result property="residence" column="residence" javaType="java.lang.String"></result>
+		<result property="qq" column="qq" javaType="java.lang.String"></result>
+		<result property="education" column="education" javaType="java.lang.String"></result>
+		<result property="position" column="position" javaType="java.lang.String"></result>
+		<result property="profession" column="profession" javaType="java.lang.String"></result>
+		<result property="certificatetype" column="certificatetype"
+			javaType="java.lang.String"></result>
+		<result property="certificateno" column="certificateno"
+			javaType="java.lang.String"></result>
+		<result property="signature" column="signature" javaType="java.lang.String"></result>
+		<result property="timezone" column="timezone" javaType="java.lang.String"></result>
+		<result property="issecret" column="issecret" javaType="java.lang.String"></result>
+		<result property="weixinID" column="weixinID" javaType="java.lang.String"></result>
+	</resultMap>
+
+	<!-- 角色表实体类和数据库字段的映射 -->
+	<resultMap id="roleMap" type="com.ylxx.qt.service.po.RoleBean">
+		<result property="roleid" column="roleid" javaType="java.lang.String"></result>
+		<result property="rolename" column="rolename" javaType="java.lang.String"></result>
+		<result property="username" column="username" javaType="java.lang.String"></result>
+		<result property="userid" column="userid" javaType="java.lang.String"></result>
+		<result property="isnull" column="isnull" javaType="java.lang.String"></result>
+	</resultMap>
+
+	<!-- 菜单表实体类和数据库字段的映射 -->
+	<resultMap id="menuMap" type="com.ylxx.qt.service.po.MenuBean">
+		<result property="menuid" column="MenuID" javaType="java.lang.String"></result>
+		<result property="menuname" column="MenuName" javaType="java.lang.String"></result>
+		<result property="menuurl" column="MenuURL" javaType="java.lang.String"></result>
+		<result property="roleid" column="roleid" javaType="java.lang.String"></result>
+		<result property="isshow" column="isshow" javaType="java.lang.String"></result>
+		<result property="parentMenu" column="parentMenu" javaType="java.lang.String"></result>
+	</resultMap>
+
+	<!-- 获取用户账号 -->
+	<select id="getUserAccount" resultMap="user" parameterType="String">
+		select * from t_useraccount
+		<!-- <if test="_parameter != null"> -->
+			where userid = #{UserID}
+		<!-- </if> -->
+	</select>
+
+	<!-- 获取用户名 -->
+	<select id="findUserByName" resultType="com.ylxx.qt.service.po.UserInfoBean" parameterType="String">
+		select * from t_user 	where username = #{username}
+		
+
+	</select>
+
+	<!-- 获取邮箱 -->
+	<select id="findUserByEmail" resultMap="user" parameterType="String">
+		select * from t_user
+		<if test="_parameter != null">
+			where email = #{email}
+		</if>
+	</select>
+
+	<!-- 获取手机 -->
+	<select id="findUserByPhone" resultMap="user" parameterType="String">
+		select * from t_user
+		<if test="_parameter != null">
+			where phonenumber = #{phonenumber}
+		</if>
+	</select>
+
+	<!-- 添加用户 -->
+	<insert id="insertUser" parameterType="String">
+		insert into t_user
+		(userid,username,password,phonenumber,email,weixinID)
+		values(#{userid},#{username},#{password},#{phonenumber},#{email},#{weixinID})
+	</insert>
+
+	<!-- 更新用户 -->
+	<update id="updateUser" parameterType="com.ylxx.qt.service.po.UserInfoBean">
+		update t_user set
+		<if test="password != null">
+			password=#{password},
+		</if>
+		<if test="phonenumber != null">
+			phonenumber=#{phonenumber},
+		</if>
+		<if test="email != null">
+			email=#{email},
+		</if>
+		<if test="truename != null">
+			truename=#{truename},
+		</if>
+		<if test="sex != null">
+			sex=#{sex},
+		</if>
+		<if test="residence != null">
+			residence=#{residence},
+		</if>
+		<if test="qq != null">
+			qq=#{qq},
+		</if>
+		<if test="education != null">
+			education=#{education},
+		</if>
+		<if test="position != null">
+			position=#{position},
+		</if>
+		<if test="profession != null">
+			profession=#{profession},
+		</if>
+		<if test="certificatetype != null">
+			certificatetype=#{certificatetype},
+		</if>
+		<if test="certificateno != null">
+			certificateno=#{certificateno},
+		</if>
+		<if test="signature != null">
+			signature=#{signature},
+		</if>
+		<if test="timezone != null">
+			timezone=#{timezone},
+		</if>
+		<if test="issecret != null">
+			issecret=#{issecret},
+		</if>
+		username=#{username}
+		where username=#{username}
+	</update>
+
+	<!-- 用户注册成功后添加默认角色 -->
+	<insert id="addDefaultRoles" parameterType="String">
+		insert into
+		t_userrole (userid,username,roleid) values
+		(#{userid},#{username},#{roleid})
+	</insert>
+
+	<!-- 添加角色 -->
+	<insert id="addRoles" parameterType="java.util.List">
+		insert into t_userrole
+		<foreach collection="list" item="item" separator="UNION ALL">
+			select
+			#{item.userid},#{item.username},#{item.roleid}
+			from dual
+		</foreach>
+	</insert>
+
+	<!-- 删除角色 -->
+	<delete id="deleteRoles" parameterType="java.lang.String">
+		delete from t_userrole
+		where userid=#{userid}
+	</delete>
+
+	<!-- 用户登录 -->
+	<select id="login" resultMap="user">
+		SELECT * FROM t_user
+	</select>
+
+
+	<!-- 根据用户id 查找用户权限 -->
+	<select id="findRoleIDByUserId" parameterType="String"
+		resultMap="roleMap">
+		SELECT roleid,userid,username FROM t_userrole
+		<if test="_parameter != null">
+			where userid = #{UserID}
+		</if>
+	</select>
+
+	<!-- 获取菜单 -->
+	<select id="findMenu" resultMap="menuMap" parameterType="String">
+		SELECT t_menu.MenuID
+		,t_userpower.roleid,t_menu.MenuName,t_menu.MenuUrl,t_parentmenu.parentName,t_userpower.isshow
+		FROM t_userpower ,t_menu ,
+		t_parentmenu WHERE
+		t_userpower.menuid=t_menu.MenuID AND ISshow='1' AND
+		t_parentmenu.parentId=t_menu.ParentMenu
+		<if test="_parameter != null">
+			AND roleid=#{0}
+		</if>
+		<if test="_parameter != null">
+			AND t_menu.ParentMenu LIKE #{1}
+		</if>
+	</select>
+
+	<!-- 查询所有的目录 -->
+	<select id="showAllMenu" resultMap="menuMap">
+		select * from
+		t_menu
+	</select>
+	<!-- 查询所有的用户 -->
+	<select id="findAllUser" resultMap="user">
+		SELECT
+		t_user.userid,t_user.username,t_user.truename,t_user.sex,t_user.phonenumber,t_userrole.roleid
+		FROM t_user ,t_userrole WHERE t_user.userid=t_userrole.userid
+	</select>
+
+
+	<!-- 查询所有的权限 -->
+	<select id="getAllRoles" resultMap="roleMap">
+		select * from t_role
+	</select>
+
+	<!-- 通过角色获取菜单 -->
+	<select id="showMenuByRole" resultMap="menuMap" parameterType="String">
+		SELECT
+		t_menu.MenuID,t_userpower.roleid,t_menu.MenuName,t_menu.MenuUrl,t_parentmenu.parentName
+		as parentMenu ,t_userpower.isshow
+		FROM t_userpower ,t_menu ,
+		t_parentmenu WHERE
+		t_userpower.menuid=t_menu.MenuID AND
+		t_parentmenu.parentId=t_menu.ParentMenu
+		<if test="_parameter != null">
+			AND roleid=#{roleid}
+		</if>
+	</select>
+	<!-- 根据目录id，和权限值更新是否显示目录 -->
+	<update id="updateMenu" parameterType="java.lang.String">
+		UPDATE t_userpower
+		SET
+		isshow = #{isShow} WHERE menuid = #{menuId} AND roleid=#{roleId}
+	</update>
+	<!-- 根据用户id，和用户名修改用户权限 -->
+	<update id="updateUserRole">
+		update t_userrole set roleid=#{roleID} where
+		userid=#{userId} and username=#{username}
+	</update>
+
+	<select id="selectAllUser" resultMap="user">
+		SELECT
+		t_user.userid,t_user.username,t_user.truename,t_user.sex,t_user.phonenumber,t_role.rolename
+		AS roleid
+		FROM t_user ,t_userrole,t_role WHERE
+		t_user.userid=t_userrole.userid AND
+		t_userrole.roleid=t_role.RoleID
+		limit #{index},#{limit}
+	</select>
+
+
+	<select id="findUserByAccount" resultMap="user" parameterType="String">
+
+		SELECT t_useraccount.userid,t_userrole.username,t_userrole.roleid FROM
+		t_useraccount ,t_userrole WHERE t_useraccount.userid=t_userrole.userid
+		 <if test="_parameter != null">
+			AND investor =#{account}
+		</if>
+
+	</select>
+	
+	<!-- 根据微信号查找用户 -->
+	<select id="findUserByWeiXinID" resultMap="user" parameterType="String">
+		SELECT t_user.userid,t_user.weixinID,t_userrole.roleid,t_user.username
+		FROM t_user , t_userrole
+		WHERE 1=1
+		<if test="_parameter != null">
+			AND t_user.weixinID =#{WeiXinID}
+		</if>
+		AND t_user.userid=t_userrole.userid
+
+	</select>
+
+</mapper>

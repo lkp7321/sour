@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.qt.core.mapper.AccountManagementMapper">
+	<!-- 账户表实体类和数据库字段的映射 -->
+	<resultMap type="com.ylxx.qt.service.po.AccountBean" id="accountMap">
+		<id column="UserID" property="userid" />
+		<result column="UserPassword" property="userpassword" />
+		<result column="CTPBrokerid" property="ctpbrokerid" />
+		<result column="InOrOut" property="inorout" />
+		<result column="MarginNumber" property="marginnumber" />
+		<result column="MarginPassword" property="marginpassword" />
+		<result column="IsRank" property="isrank" />
+	</resultMap>
+	
+	
+	
+	<!-- 用户账户关系表和数据库字段的映射 -->
+	<resultMap type="com.ylxx.qt.service.po.UserAccountBean" id="useraccountMap">
+		<result property="userid" column="userid" javaType="java.lang.String"></result>
+		<result property="investor" column="investor" javaType="java.lang.String"></result>
+		<result property="username" column="username" javaType="java.lang.String"></result>
+	</resultMap>
+
+	
+	<!-- 增加用户 -->
+	<insert id="addAccount" parameterType="com.ylxx.qt.service.po.AccountBean">
+		insert into t_apiinfo
+		(UserID,UserPassword,CTPBrokerid,InOrOut,MarginNumber,MarginPassword,IsRank)
+		values(#{account.userid},#{account.userpassword},#{account.ctpbrokerid},#{account.inorout},#{account.marginnumber},#{account.marginpassword},#{account.isrank})
+	</insert>
+	
+	
+	
+
+	<!-- 根据账户ID删除账户表中某条记录 -->
+	<delete id="deleteAccount" parameterType="String">
+		DELETE FROM t_apiinfo
+		WHERE UserID=#{userid}
+	</delete>
+
+	<!-- 根据用户id,查找对应的账户信息 -->
+	<select id="queryAccountByUserID" parameterType="String" resultMap="accountMap">
+		SELECT * FROM t_apiinfo,t_useraccount WHERE
+		t_apiinfo.userid=t_useraccount.investor
+		<if test="_parameter != null">
+			AND t_useraccount.userid = #{userid}
+		</if>
+	</select>
+	
+	<!-- 根据账户ID查询单条账户信息记录 -->
+	<select id="queryOneAccountByAccountID" parameterType="String" resultMap="accountMap">
+		SELECT * FROM t_apiinfo WHERE UserID=#{userid}
+		
+	</select>
+	
+	
+	
+	<!-- 更新用户 -->
+	<update id="updateAccount"  parameterType="com.ylxx.qt.service.po.AccountBean">
+	update t_apiinfo 
+	<set>
+	<if test="userpassword != null">
+	  UserPassword=#{userpassword},
+	</if>
+	<if test="ctpbrokerid != null">
+	  CTPBrokerid=#{ctpbrokerid},
+	</if>
+	<if test="marginnumber != null">
+	  MarginNumber=#{marginnumber},
+	</if>
+	<if test="marginpassword != null">
+	  MarginPassword=#{marginpassword},
+	</if>
+	<if test="isrank != null">
+	  IsRank=#{isrank},
+	</if>
+	</set>
+		WHERE UserID=#{userid}
+	</update>
+
+
+	<!-- 账户和用户关系新增，当用户新增时进行新增操作 -->
+	<insert id="addUserAccount" parameterType="com.ylxx.qt.service.po.UserAccountBean">
+		insert into t_useraccount 
+		(userid,investor,username) 
+		values (#{userid},#{investor},#{username})
+	</insert>
+	
+	<!-- 账户和用户关系更新 -->
+	<update id="updateUserAccount" parameterType="com.ylxx.qt.service.po.UserAccountBean">
+		update t_useraccount set
+	<if test="userid != null">
+	  UserPassword=#{userid},
+	</if>
+	<if test="investor != null">
+	  UserPassword=#{investor},
+	</if>
+	<if test="username != null">
+	  UserPassword=#{username}
+	</if>	
+	 </update>
+	 
+	 <!-- 根据账户ID删除账户和用户关系表中的记录 -->
+	 <delete id="deleteUserAccount" parameterType="String">
+	 DELETE  FROM t_useraccount
+		WHERE investor=#{investor}
+	 </delete>
+	 
+	 <!-- 根据用户名查询账户和用户关系表中的所有记录 -->
+	 <select id="queryUserAccountByUserName" parameterType="String" resultMap="useraccountMap"> 
+	 	SELECT * FROM t_useraccount
+	 	WHERE  username=#{username}
+	 </select>
+	 
+	 <!-- 根据投资者账号查询账户和用户关系表中的所有记录 -->
+	 <select id="queryUserAccountByInvestor" parameterType="String" resultMap="useraccountMap"> 
+	 	SELECT * FROM t_useraccount
+	 	WHERE  investor=#{investor}
+	 </select>
+	 
+</mapper>

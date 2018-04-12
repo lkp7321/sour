@@ -1,0 +1,188 @@
+$blue:#5B8CFF;
+$sidebarblue:#4876E7;
+$maincolor:#ecf0fa;
+$nameblue:#6e96e5;
+$size:14px;
+$rel:relative;
+
+body,html{
+	width: 100%;
+	height:100%;
+	overflow: hidden;
+	font-family:"microsoft sans serif";
+	font-size: $size;
+	-webkit-font-smoothing:antialiased ;
+}
+
+.topleft{
+	width: 20%;
+	height:100%;
+	float: left;
+}
+.topleft img{
+	width: 100%;
+	height: 100%;
+	display:inline-block;
+}
+
+.topright .lockbtn{
+	position: absolute;
+	right: 5px;
+	top: 0;
+	font-size: .8rem;
+}
+.topright h6{
+	margin-left: 25px;
+	font-weight: 600;
+}
+.topright{
+	width: 80%;
+	float: left;
+	height: 100%;
+	font-size: 1.1rem;
+	position: relative;
+	background:$blue;
+}
+
+.username{
+	color:$nameblue;
+}
+.list-group-ul li:hover{
+	background:$sidebarblue;
+	border-radius:50px;
+	color:#fff;
+}
+tbody tr.bg{
+	background:$maincolor;
+}
+.ico {
+  width: 16px;
+  height: 19px;
+  display: inline-block;
+  margin-right: 16px;
+  position: relative;
+  top: 4px; }
+.icol {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-left: 16px;
+  position: relative;
+  top: 4px; }
+
+
+.ico-carset {
+  background: url(../img/lower.png) no-repeat; }
+
+.ico-carsetup {
+  background: url(../img/up.png) no-repeat; }
+
+.ico-users {
+  background: url(../img/usermanagement.png) no-repeat; }
+.ico1,.ico0,.ico2,.ico3{
+  background: url(../img/usermanagement.png) no-repeat; }
+  
+.ico-msg {
+  background: url(../img/Userinformation.png) no-repeat left top; 
+ }
+ .icon01{
+ 	 background: url(../img/Userreview.png) no-repeat; 
+ }
+.icon00{
+	background: url(../img/Userinformation.png) no-repeat left top;
+	background-color:#ccc;
+}
+.ico-review {
+  background: url(../img/Userreview.png) no-repeat; }
+
+.ico-lock {
+  background: url(../img/Passwordsettings.png) no-repeat; }
+.userm {
+  background: url(../img/Userinformation.png) no-repeat; }
+  
+.loginwrap{
+	width:300px;
+	height: 300px;
+	position:absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -150px;
+	margin-top: -150px;
+}
+.botright{
+	background:$maincolor;
+	width:80%;
+	float: left;
+	height: 100%;
+}
+.showbtn{
+	width: 16px;
+	height: 16px;
+	display:inline-block;
+	margin:12px;
+	position: absolute;
+	right: 5px;
+	color: #666;
+	top: 69px;
+}
+
+@media screen and (min-width:768px){
+   .showbtn{
+   	 display:none;
+   }
+   .head{
+    	display:inlilne-block;
+   }
+   .cen{
+		margin-left: 100px;
+	}
+}
+
+.botleft{
+  width: 20%;
+  float:left;
+  height: 100%;
+}
+@media screen and (max-width:750px){
+	.showbtn{
+   		display:inline-block;
+    }	
+	.topleft{
+		width: 40%;
+		float: left;
+	}
+	.topright{
+		width: 60%;
+		float: left;
+		
+	}
+	.topright .lockbtn{
+		right: -20px;
+	}
+	.topright h6{
+		margin-left: 10px;
+	}
+	.botleft{
+	  display: none;
+	  width: 50%;
+	  position: absolute;
+	  background:#efefef;
+	  z-index: 999;;
+	  height: 100%;
+	  top: 139px;
+	  left: 0;
+	}
+	.botright{
+		width: 100%;
+	}
+	.head{
+		display:none;
+	}
+	.cen{
+		margin-left: 10px;
+	}
+}
+
+
+
+

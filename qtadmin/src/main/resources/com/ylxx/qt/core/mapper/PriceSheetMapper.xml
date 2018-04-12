@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.qt.core.mapper.PriceSheetMapper">
+	<!-- 价格表 -->
+	<resultMap id="PriceSheetMap" type="com.ylxx.qt.service.po.PriceSheet">
+		<id column="Identifier" property="priceid"/>
+		<result column="ProductId" property="productid"/>
+		<result column="ProductName" property="productname"/>
+		<result column="Year" property="year"/>
+		<result column="PriceType" property="pricetype"/>
+		<result column="HistortyPrice" property="histortyprice"/>
+		<result column="HighestPrice" property="highestprice"/>
+		<result column="LowestPrice" property="lowestprice"/>
+		<result column="PriceTick" property="pricetick"/>
+	</resultMap>
+	<resultMap id="ProductsMap" type="com.ylxx.qt.service.po.ProductBean">
+		<result column="ProductID" property="productId"/>
+		<result column="ProductName" property="productName"/>
+		<result column="ExchangeNo" property="exchangeNo"/>
+	</resultMap>
+	
+	
+	<select id="productBypricesheet" resultMap="ProductsMap">
+		select pd.ProductID as ProductID,pd.ProductName as ProductName,pd.ExchangeNo as ExchangeNo from t_product pd,t_pricesheet ps where pd.ProductID = ps.ProductId and Year = year(now())
+			<if test="proId != null">
+				AND pd.ProductID like CONCAT('%',#{proId},'%')
+			</if>
+			<if test="proName != null">
+				AND pd.ProductName like CONCAT('%',#{proName},'%')
+			</if>
+			
+	</select>
+	
+	
+	<!-- 查询所有品种价格 -->
+	<select id="getAll" resultMap="PriceSheetMap" >
+        SELECT * FROM t_pricesheet where Year = year(now())
+        	<if test="proId != null">
+				AND ProductId like CONCAT('%',#{proId},'%')
+			</if>
+			<if test="proName != null">
+				AND ProductName like CONCAT('%',#{proName},'%')
+			</if>
+			<if test="priceType !=-1">
+				AND PriceType = #{priceType}
+			</if>
+	    ORDER BY ProductId ASC limit #{index},#{pagecounts}
+    </select>
+    <!-- 批量新增 -->
+    <insert id="insertPro" parameterType="java.util.List">
+    	insert into t_pricesheet(ProductId,ProductName,Year,PriceType,HistortyPrice,HighestPrice,LowestPrice,PriceTick)
+    	 	values
+	    	<foreach collection="list" item="item" index="index" separator=",">
+	    	 	(#{item.productid},#{item.productname},#{item.year},#{item.pricetype},#{item.histortyprice},#{item.highestprice},#{item.lowestprice},#{item.pricetick})
+	    	</foreach>
+    </insert>
+    
+    
+    
+    <!-- 根据id查询品种 -->
+    <select id="getByid"  resultMap="PriceSheetMap">
+    	SELECT * FROM t_pricesheet WHERE ProductId = #{proId} order by Year DESC limit #{index},#{pagecounts}
+    </select>
+    <select id="getByid1" parameterType="String" resultMap="PriceSheetMap">
+    	SELECT * FROM t_pricesheet WHERE ProductId = #{proId} order by Year DESC
+    </select>
+    <!-- 根据id删除品种 -->
+    <delete id="deleteByid" parameterType="String">
+    	DELETE FROM t_pricesheet WHERE ProductId = #{proId}
+    </delete>
+    <delete id="deleteByYear">
+    	Delete from t_pricesheet where ProductId = #{proId} and Year = #{year}
+    </delete>
+    
+    <!-- 根据id更新品种 -->
+    <update id="updateByid" parameterType="java.util.List">
+         <!--  <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+                update t_pricesheet   
+                <set>  
+                  HistortyPrice = #{item.histortyprice},HighestPrice = #{item.highestprice},LowestPrice = #{item.lowestprice}
+                </set>  
+                where ProductId = ${item.productid} AND Year = #{item.year}
+         </foreach>      -->
+    </update> 
+    <select id="selectCounts" resultType="java.lang.Integer">
+    	SELECT COUNT(*) FROM t_pricesheet WHERE Year = year(now())
+			<if test="proId != null">
+				AND ProductId like CONCAT('%',#{proId},'%')
+			</if>
+			<if test="proName != null">
+				AND ProductName like CONCAT('%',#{proName},'%')
+			</if>
+			<if test="priceType !=-1">
+				AND PriceType = #{priceType}
+			</if>
+    </select>
+    <select id="selectCountsAll" parameterType="String" resultType="java.lang.Integer">
+    	SELECT COUNT(*) FROM t_pricesheet where ProductId = #{proId}
+    </select>
+     <select id="selectProducts" resultMap="ProductsMap">
+    	SELECT * FROM t_product where 1=1
+    	<if test="proId != null">
+				AND ProductId like CONCAT('%',#{proId},'%')
+			</if>
+			<if test="proName != null">
+				AND ProductName like CONCAT('%',#{proName},'%')
+			</if>
+    </select>
+</mapper>

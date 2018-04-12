@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.qt.core.mapper.TradingAccountFieldMapper">
+<resultMap type="com.ylxx.qt.service.po.TradingAccountFiledBean" id="RtnlistMap">
+	<result property="account_id" column="accountid" javaType="java.lang.String"></result>		
+	<result property="close_profit" column="closeprofit" javaType="java.lang.Double"></result>
+	<result property="trading_day" column="tradingday" javaType="java.lang.String"></result>
+	<result property="commission" column="commission" javaType="java.lang.Double"></result>
+	<result property="curr_margin" column="currmargin" javaType="java.lang.Double"></result>
+	<result property="available" column="available" javaType="java.lang.Double"></result>
+	<result property="deposit" column="Deposit" javaType="java.lang.Double"></result>
+	<result property="withdraw" column="Withdraw" javaType="java.lang.Double"></result>
+	<result property="capital" column="Capital" javaType="java.lang.Double"></result>
+</resultMap>
+	<!-- 累积盈亏、累计手续费 -->
+	<select id="listSum" parameterType="java.lang.String" resultMap="RtnlistMap">	
+		<!-- select t.tradeday as tradingday , SUM(t.COMMISSION) AS COMMISSION,t.prebalance as cprofit,c.totalamount as capital from T_TRADINGACCOUNT t,t_funds c -->
+		<!-- SELECT t.tradeday AS tradingday , SUM(t.COMMISSION) AS COMMISSION,SUM(t.prebalance) AS cprofit,SUM(c.totalamount) AS capital FROM T_TRADINGACCOUNT t,t_funds c -->
+		SELECT t.tradeday AS tradingday , SUM(t.COMMISSION) AS COMMISSION,SUM(t.Prebalance) AS Cprofit,if(isnull(t.Deposit),0,sum(t.Deposit))AS Deposit,if(isnull(t.Withdraw),0,sum(t.Withdraw))AS Withdraw,SUM(c.Totalamount) AS Capital FROM T_TRADINGACCOUNT t,t_funds c
+		where t.ctpid=c.ctpid
+				 <!-- <if test="_parameter">
+					and t.ctpid=#{ACCOUNTID}
+				</if> -->
+		<if test="_parameter != null">
+			and t.ctpid in 
+			<foreach item="AList" index="index" collection="list"
+                open="(" separator="," close=")"> #{AList} 
+            </foreach> 
+		</if>
+		GROUP BY TRADINGDAY
+		ORDER BY TRADINGDAY
+	</select>
+
+	<!-- 每天仓位 -->
+	<!-- 新代码 -->
+	<select id="listSpace" parameterType="java.lang.String" resultMap="RtnlistMap">
+		select tradeday as tradingday,(SUM(currmargin)/SUM(fund))*100 space from T_TRADINGACCOUNT
+		where 1 = 1
+		<if test="_parameter != null">
+			and ctpid in 
+			<foreach item="AList" index="index" collection="list"
+                open="(" separator="," close=")"> #{AList} 
+            </foreach> 
+		</if>
+		GROUP BY tradingday
+		ORDER BY tradingday
+	</select>	
+</mapper>

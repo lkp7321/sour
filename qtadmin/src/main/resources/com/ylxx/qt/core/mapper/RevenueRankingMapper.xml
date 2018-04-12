@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.qt.core.mapper.RevenueRankingMapper">
+	<resultMap type="com.ylxx.qt.service.po.TradingAccountFiledBean"
+		id="CumulativeField">
+		<id property="ctp_id" column="ctpid" javaType="java.lang.String"></id>
+		<result property="pre_Balance" column="PreBalance" javaType="java.lang.Double"></result>
+		<result property="position_profit" column="PositionProfit" javaType="java.lang.Double"></result>
+		<result property="commission" column="Commission" javaType="java.lang.Double"></result>
+		<result property="withdraw" column="Withdraw" javaType="java.lang.Double"></result>
+		<result property="deposit" column="Deposit" javaType="java.lang.Double"></result>
+		<result property="trading_day" column="TradeDay" javaType="java.lang.String"></result>
+		<result property="close_profit" column="CloseProfit" javaType="java.lang.Double"></result>
+		<result property="fund" column="fund" javaType="java.lang.Double"></result>
+	</resultMap>
+
+	<!-- 获取收益排名信息 -->
+	<select id="getAllRevenue" parameterType="java.lang.String"	resultMap="CumulativeField">
+		SELECT u.username username,group_concat(k.CTPID) ctp_id,
+				SUM(k.PreBalance) pre_Balance,
+				SUM(k.PositionProfit) position_profit,
+				SUM(k.Withdraw) withdraw,
+				SUM(k.Deposit) deposit,
+				SUM(k.commission) commission,
+				SUM(k.fund) fund,
+				SUM(f.TotalAmount) totalamount
+		FROM (
+			SELECT CTPID,SUM(tmp.PreBalance) PreBalance,
+				SUM(tmp.PositionProfit) PositionProfit,
+				SUM(tmp.Withdraw) Withdraw,
+				SUM(tmp.Deposit) Deposit,
+				SUM(tmp.commission) commission,
+			    SUM(tmp.fund) fund
+			FROM (
+					SELECT tt.CTPID,tt.PreBalance,tt.PositionProfit,tt.Withdraw,
+								 tt.Deposit,tt.TradeDay,0 as commission,tt.fund,"1" as sqltype
+					FROM t_tradingaccount tt 
+					WHERE tt.TradeDay=(SELECT ta.TradeDay FROM t_tradingaccount ta ORDER BY ta.TradeDay DESC LIMIT 1)
+						and tt.CTPID IN (SELECT UserID from t_apiinfo where IsRank ="1")
+				union all 
+					SELECT t.CTPID,0 as PreBalance,0 as PositionProfit,0 as Withdraw,0 as Deposit,
+								 0 as TradeDay,SUM(t.Commission) commission,0 as fund,"2" as sqltype
+					FROM t_tradingaccount t 
+					WHERE t.CTPID IN (SELECT UserID from t_apiinfo where IsRank ="1")		
+					GROUP BY t.CTPID
+			) tmp 
+			GROUP BY tmp.CTPID
+		) k
+		LEFT JOIN t_useraccount u ON u.investor = k.CTPID
+		LEFT JOIN t_funds f ON f.CTPID= k.CTPID
+		WHERE !ISNULL(u.username)
+		GROUP BY u.username
+	</select>
+</mapper>

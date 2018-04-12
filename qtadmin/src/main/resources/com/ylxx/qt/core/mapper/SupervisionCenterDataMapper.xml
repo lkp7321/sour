@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.qt.core.mapper.SupervisionCenterDataMapper">
+	<!-- 交易表菜单表实体类和数据库字段的映射 -->
+	<resultMap id="tradeMap" type="com.ylxx.qt.service.po.TradeBean">
+		<result property="tradeID" column="TradeID" javaType="java.lang.String"></result>
+		<result property="cTPID" column="CTPID" javaType="java.lang.String"></result>
+		<result property="instrumentID" column="InstrumentID" javaType="java.lang.String"></result>
+		<result property="exchangeID" column="ExchangeID" javaType="java.lang.String"></result>
+		<result property="direction" column="Direction" javaType="java.lang.String"></result>
+		<result property="price" column="Price" javaType="java.lang.Double"></result>
+		<result property="offset" column="Offset" javaType="java.lang.String"></result>
+		<result property="hedge" column="Hedge" javaType="java.lang.String"></result>
+		<result property="tradeTime" column="TradeTime" javaType="java.lang.String"></result>
+		<result property="tradingDay" column="TradingDay" javaType="java.lang.String"></result>
+		<result property="orderID" column="OrderID" javaType="java.lang.String"></result>
+		<result property="sysID" column="SysID" javaType="java.lang.String"></result>
+		<result property="volume" column="Volume" javaType="java.lang.Integer"></result>
+		<result property="openTradeID" column="OpenTradeID" javaType="java.lang.String"></result>
+		<result property="closeProfit" column="CloseProfit" javaType="java.lang.Double"></result>
+		<result property="closeProfitByDate" column="CloseProfitByDate" javaType="java.lang.Double"></result>
+	</resultMap>
+	<!-- 持仓表菜单表实体类和数据库字段的映射 -->
+	<resultMap id="positionMap" type="com.ylxx.qt.service.po.PositionBean">
+		<result property="instrumentID" column="InstrumentID" javaType="java.lang.String"></result>
+		<result property="direction" column="Direction" javaType="java.lang.String"></result>
+		<result property="price" column="Price" javaType="java.lang.Double"></result>
+		<result property="position" column="Position" javaType="java.lang.Integer"></result>
+		<result property="ydPosition" column="YdPosition" javaType="java.lang.Integer"></result>
+		<result property="tdPosition" column="TdPosition" javaType="java.lang.Integer"></result>
+		<result property="noFrozen" column="NoFrozen" javaType="java.lang.Integer"></result>
+		<result property="positionCost" column="PositionCost" javaType="java.lang.Double"></result>
+		<result property="openCost" column="OpenCost" javaType="java.lang.Double"></result>
+		<result property="avgCost" column="AvgCost" javaType="java.lang.Double"></result>
+		<result property="volumeMultiple" column="VolumeMultiple" javaType="java.lang.Integer"></result>
+		<result property="hedge" column="Hedge" javaType="java.lang.String"></result>
+		<result property="closeVolumn" column="CloseVolumn" javaType="java.lang.Integer"></result>
+		<result property="closeProfit" column="CloseProfit" javaType="java.lang.Double"></result>
+		<result property="openProfit" column="OpenProfit" javaType="java.lang.Double"></result>
+		<result property="positionProfitByTrade" column="PositionProfitByTrade" javaType="java.lang.Double"></result>
+		<result property="positionProfit" column="PositionProfit" javaType="java.lang.Double"></result>
+		<result property="commission" column="Commission" javaType="java.lang.Double"></result>
+		<result property="margin" column="Margin" javaType="java.lang.Double"></result>
+		<result property="cTPID" column="CTPID" javaType="java.lang.String"></result>
+		<result property="tradeDay" column="TradeDay" javaType="java.lang.String"></result>
+		<result property="closeProfitByTrade" column="CloseProfitByTrade" javaType="java.lang.Double"></result>
+		<result property="lastSettlementPrice" column="LastSettlementPrice" javaType="java.lang.Double"></result>
+		<result property="closeProfitByDate" column="CloseProfitByDate" javaType="java.lang.Double"></result>
+		<result property="settlementPrice" column="SettlementPrice" javaType="java.lang.Double"></result>		
+	</resultMap>
+	<!-- 资金账户表菜单表实体类和数据库字段的映射 -->
+	<resultMap id="tradingAccountMap" type="com.ylxx.qt.service.po.TradingaccountBean">
+		<result property="preBalanceByTrade" column="PreBalanceByTrade" javaType="java.lang.Double"></result>
+		<result property="preBalance" column="PreBalance" javaType="java.lang.Double"></result>
+		<result property="positionProfitByTrade" column="PositionProfitByTrade" javaType="java.lang.Double"></result>
+		<result property="positionProfit" column="PositionProfit" javaType="java.lang.Double"></result>
+		<result property="closeProfitByTrade" column="CloseProfitByTrade" javaType="java.lang.Double"></result>
+		<result property="closeProfit" column="CloseProfit" javaType="java.lang.Double"></result>
+		<result property="commission" column="Commission" javaType="java.lang.Double"></result>
+		<result property="currMargin" column="CurrMargin" javaType="java.lang.Double"></result>
+		<result property="frozenCash" column="FrozenCash" javaType="java.lang.Double"></result>
+		<result property="available" column="Available" javaType="java.lang.Double"></result>
+		<result property="withdrawQuota" column="WithdrawQuota" javaType="java.lang.Double"></result>
+		<result property="fund" column="Fund" javaType="java.lang.Double"></result>
+		<result property="risk" column="Risk" javaType="java.lang.Double"></result>
+		<result property="tradeDay" column="TradeDay" javaType="java.lang.String"></result>
+		<result property="cTPID" column="CTPID" javaType="java.lang.String"></result>
+		<result property="deposit" column="Deposit" javaType="java.lang.Double"></result>
+		<result property="withdraw" column="Withdraw" javaType="java.lang.Double"></result>
+	</resultMap>
+	
+	<select id="selectTradeFild" resultType="java.lang.Integer">
+		select count(*) from t_tradefield where TradeID like CONCAT('%',#{tb.tradeID},'%') and CTPID = #{tb.cTPID} and TradingDay = #{tb.tradingDay}
+	</select>
+	<select id="selectPositionFild" resultType="java.lang.Integer">
+		select count(*) from t_positionfield where InstrumentID=#{pb.instrumentID} and Direction=#{pb.direction} and TradeDay=#{pb.tradeDay} and CTPID=#{pb.cTPID}
+	</select>
+	<select id="selectTradAccount" resultType="java.lang.Integer">
+		select count(*) from t_tradingaccount where CTPID=#{tab.cTPID} and TradeDay=#{tab.tradeDay}
+	</select>
+	
+	<update id="updateTradeFild" parameterType="com.ylxx.qt.service.po.TradeBean">
+		update t_tradefield set TradeTime=#{tb.tradeTime},Price=#{tb.price},Direction=#{tb.direction},Hedge=#{tb.hedge},Volume=#{tb.volume},Offset=#{tb.offset},CloseProfit=#{tb.closeProfit},CloseProfitByDate=#{tb.closeProfitByDate} where TradeID like CONCAT('%',#{tb.tradeID},'%') and CTPID = #{tb.cTPID} and TradingDay = #{tb.tradingDay}
+	</update>
+	<update id="updatePositionFild" parameterType="com.ylxx.qt.service.po.PositionBean">
+		update t_positionfield set OpenCost=#{pb.openCost},Position=#{pb.position},LastSettlementPrice=#{pb.lastSettlementPrice},SettlementPrice=#{pb.settlementPrice},Margin=#{pb.margin},Hedge=#{pb.hedge},PositionProfit=#{pb.positionProfit},PositionProfitByTrade=#{pb.positionProfitByTrade} where InstrumentID=#{pb.instrumentID} and Direction=#{pb.direction} and TradeDay=#{pb.tradeDay} and CTPID=#{pb.cTPID}
+	</update>
+	<update id="updateTradAccount" parameterType="com.ylxx.qt.service.po.TradingaccountBean">
+		update t_tradingaccount set PreBalanceByTrade=#{tab.preBalanceByTrade},PreBalance=#{tab.preBalance},PositionProfitByTrade=#{tab.positionProfitByTrade},PositionProfit=#{tab.positionProfit},CloseProfitByTrade=#{tab.closeProfitByTrade},CloseProfit=#{tab.closeProfit},Commission=#{tab.commission},CurrMargin=#{tab.currMargin},FrozenCash=#{tab.frozenCash},Available=#{tab.available},Fund=#{tab.fund},Risk=#{tab.risk},Deposit=#{tab.deposit},Withdraw=#{tab.withdraw} where CTPID=#{tab.cTPID} and TradeDay=#{tab.tradeDay}
+	</update>
+	
+	<insert id="insertTradeFild" parameterType="com.ylxx.qt.service.po.TradeBean">
+		insert into t_tradefield (TradeTime,Price,Direction,Hedge,Volume,Offset,CloseProfit,CloseProfitByDate,TradeID,CTPID,TradingDay,InstrumentID) 
+		values (#{tb.tradeTime},#{tb.price},#{tb.direction},#{tb.hedge},#{tb.volume},#{tb.offset},#{tb.closeProfit},#{tb.closeProfitByDate},#{tb.tradeID},#{tb.cTPID},#{tb.tradingDay},#{tb.instrumentID})
+	</insert>
+	<insert id="insertPositionFild" parameterType="com.ylxx.qt.service.po.PositionBean">
+		insert into t_positionfield (OpenCost,Position,LastSettlementPrice,SettlementPrice,Margin,Hedge,PositionProfit,PositionProfitByTrade,InstrumentID,Direction,TradeDay,CTPID) 
+		values (#{pb.openCost},#{pb.position},#{pb.lastSettlementPrice},#{pb.settlementPrice},#{pb.margin},#{pb.hedge},#{pb.positionProfit},#{pb.positionProfitByTrade},#{pb.instrumentID},#{pb.direction},#{pb.tradeDay},#{pb.cTPID})
+	</insert>
+	<insert id="insertTradAccount" parameterType="com.ylxx.qt.service.po.TradingaccountBean">
+		insert into t_tradingaccount (PreBalanceByTrade,PreBalance,PositionProfitByTrade,PositionProfit,CloseProfitByTrade,CloseProfit,Commission,CurrMargin,FrozenCash,Available,Fund,Risk,Deposit,Withdraw,CTPID,TradeDay) 
+		values (#{tab.preBalanceByTrade},#{tab.preBalance},#{tab.positionProfitByTrade},#{tab.positionProfit},#{tab.closeProfitByTrade},#{tab.closeProfit},#{tab.commission},#{tab.currMargin},#{tab.frozenCash},#{tab.available},#{tab.fund},#{tab.risk},#{tab.deposit},#{tab.withdraw},#{tab.cTPID},#{tab.tradeDay})
+	</insert>
+	
+	
+</mapper>

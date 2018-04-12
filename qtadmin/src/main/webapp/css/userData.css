@@ -1,0 +1,160 @@
+.remindBox{
+	width: 300px;
+	height: 200px;
+	border:2px solid #ccc;
+	position: absolute;
+    top: -28px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    box-shadow: 0 0 2px 2px #ccc;
+    display:none;
+    z-index: 100;
+}
+.remindBox .rehead{
+	width:100%;
+	height: 36px;
+	background: #498EFC;
+	line-height: 36px;
+    font-size: 14px;
+    padding-left: 5px;
+    color:#fff;
+}
+.remindBox .rebody{
+	background:#F4F5F7;
+	height: 160px;
+}
+.remindBox .rebody span{
+    display: block;
+	height: 115px;
+    line-height: 124px;
+    font-weight: 700;
+    text-align: center;
+}
+.rebody .remindsure{
+	margin-left: 69px;
+    border: none;
+    width: 160px;
+    height: 32px;
+    background: #498EFC;
+    color: #fff;
+}
+.information{
+	width: 902px;
+	height: 500px;
+	color: #909090;
+}
+.information ul{
+	height: 60px;
+	line-height: 60px;
+	font-size: 14px;
+}
+.information ul li{
+	float: left;
+	padding: 0 10px;
+	text-align: center;
+	color: #909090;
+	font-family: PingFangSC-Regular;
+	cursor: pointer; 
+}
+.information ul .licolor{
+	color:#498EFC;
+}
+.informain{
+	width: 100%;
+	height: 436px;
+	overflow: hidden;
+}
+.informain div{
+	width: 100%;
+	height: 100%;
+}
+.informain div p{
+	height: 69px;
+	line-height: 69px;
+    position: relative; 
+}
+.informain div p .remind{
+   text-align: left;
+   font-size: 14px;
+   color: red;
+}
+.informain div .bot_line{
+	 border-bottom: 2px solid #EBEBEB;
+}
+.informain p span{
+	width: 146px;
+	text-align: center;
+	display: inline-block; 
+}
+.informain p input{
+	 height: 25px;
+	 padding-left: 5px;
+}
+.informain p select{
+	width: 176px;
+	 height: 25px;
+	  
+}
+.informain p a{
+	float: right;
+	margin-right: 50px; 
+	color: #498EFC;
+	font-size: 14px;
+}
+.informain p button{
+	 background: #498EFC;
+	 text-align: center;
+	 width: 480px;
+	 height: 40px;
+	 border: none;
+	 color: #FFFFFF;
+	 margin-left: 114px;
+	 cursor: pointer;
+}
+.informain .basic  input[type=radio]{
+	vertical-align: middle;
+    margin-right: 5px;
+}
+.informain .perchoose {
+	margin-left: 450px;
+	width: 100px;
+	  
+}
+.informain .timeZone{
+    position: relative;
+}
+.informain .person i{
+	    height: 0px;
+	font-style: normal;
+	display: block;
+	font-size: 12px;
+	position: absolute;
+	top:24px;
+	left: 150px;
+}
+.informain .timeZone .timeTip{
+	top: 41px;
+	color: red;
+}
+.informain .timeZone span{
+	display: inline-block;
+	height: 1px;
+}
+.personality{
+	position: relative;
+} 
+.informain .personality textarea{
+	position: absolute;
+	top: 10px;
+	left: 146px;
+	padding-left: 5px;
+    padding-top: 5px;
+	 
+}  
+.informain p .timezone{
+  width: 580px;
+} 
+
+

@@ -1,0 +1,64 @@
+.top{
+	height:79px;
+	line-height: 79px;
+	background:#fff;
+	position: relative;
+}
+.mmGrid{
+	margin:30px 0 0 30px;
+}
+/*设置列表*/
+.setlist{
+	width: 100px;
+	position: absolute;
+	right: 13px;
+	top: 58px;
+	z-index:999;
+	background:#fff;
+	border: 1px solid #BBBBBB;
+	box-shadow:0 1px 4px 1px #ccc;
+	display:none;
+}
+.setlist li{
+	line-height: 24px;
+	padding-left: 10px;
+	width: 100%;
+}
+.setlist li:hover{
+	background:#ccc;
+}
+@media screen and (max-width:750px){
+	.mmGrid{
+		margin:15px 8px;
+	}
+}
+.head,.cen{
+	float: left;
+}
+.head{
+	font-size: 1rem;
+}
+i.sett{
+	font-style:normal;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+.cen li{
+  float: left;
+  margin-right: 15px;
+}
+.cen li img{
+	width: 18px;
+	height: 18px;
+	margin-right: 8px;
+	position: relative;
+	top: 2px;
+}
+.set{
+	float: right;
+	font-size: 1.2rem;
+	margin:0px 10px 0 0;
+	background:none;
+	border:none;
+}

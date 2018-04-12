@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.qt.core.mapper.TradePreferMapper">
+
+	<!-- 累计净值 -->
+	<resultMap type="com.ylxx.qt.service.po.TradingAccountFiledBean" id="CumulativeField">
+		<id property="account_id" column="accountid" javaType="java.lang.String"></id>
+		<result property="pre_Balance" column="PreBalance" javaType="java.lang.Double"></result>
+		<result property="trading_day" column="TradingDay" javaType="java.lang.String"></result>
+		<result property="close_profit" column="closeProfit" javaType="java.lang.Double"></result>
+		<result property="position_profit" column="positionProfit" javaType="java.lang.Double"></result>
+		<result property="deposit" column="Deposit" javaType="java.lang.Double"></result>
+		<result property="capital" column="capital" javaType="java.lang.Double"></result>
+		<result property="available" column="Available" javaType="java.lang.Double"></result>
+		<result property="curr_margin" column="CurrMargin" javaType="java.lang.Double"></result>
+		<result property="cumulative" column="CUMULATIVE" javaType="java.lang.Double"></result>
+		<result property="totalamount" column="totalamount" javaType="java.lang.Double"></result>
+		<result property="withdraw" column="Withdraw" javaType="java.lang.Double"></result>
+	</resultMap>
+	<!-- <select id="selectCumulativeField" parameterType="java.lang.String" resultMap="CumulativeField">
+		select t.tradeday as tradingday,(t.PreBalance / c.totalamount)CUMULATIVE from t_tradingaccount t,t_funds c where t.ctpid=c.ctpid
+			<if test="_parameter != null">
+				and t.ctpid=#{account_id}
+			</if>
+		order by tradingday -->
+	<select id="selectCumulativeField" parameterType="java.lang.String" resultMap="CumulativeField">
+		<!-- select t.tradeday as tradingday,t.PreBalance,c.totalamount from t_tradingaccount t,t_funds c where t.ctpid=c.ctpid -->
+		<!-- SELECT t.tradeday AS tradingday,SUM(t.PreBalance)PreBalance,SUM(c.totalamount)totalamount FROM t_tradingaccount t,t_funds c WHERE t.ctpid=c.ctpid -->
+		SELECT t.tradeday AS tradingday,SUM(t.PreBalance)PreBalance,IF(ISNULL(t.Withdraw),0,SUM(t.Withdraw))Withdraw,IF(ISNULL(t.Deposit),0,SUM(t.Deposit))Deposit,SUM(c.totalamount)totalamount FROM t_tradingaccount t,t_funds c WHERE t.ctpid=c.ctpid
+				<!-- <if test="_parameter != null">
+					and t.ctpid=#{account_id}
+				</if> -->
+		<if test="_parameter != null">
+			and t.ctpid in 
+			<foreach item="AList" index="index" collection="list"
+                open="(" separator="," close=")"> #{AList} 
+            </foreach> 
+		</if>
+		group by tradingday
+		order by tradingday
+	</select>
+	<!-- 成交偏好 -->
+		<!-- 某品种成交额 -->
+	<resultMap type="com.ylxx.qt.service.po.InstrumentFieldBean" id="InstrumentFieldMap">
+		<result property="productID" column="ProductID" javaType="java.lang.String"></result>
+		<result property="instrument_id" column="instrumentId" javaType="java.lang.String"></result>
+		<result property="p" column="P" javaType="java.lang.Double"></result>
+		<result property="tradeSum" column="tradeSum" javaType="java.lang.Double"></result>
+		<collection property="tfb" ofType="com.ylxx.qt.service.po.TradeFieldBean">
+			<result property="investor_id" column="InvestorID" javaType="java.lang.String"></result>
+			<result property="price" column="Price" javaType="java.lang.Double"></result>
+			<result property="volumn" column="Volume" javaType="java.lang.Integer"></result>
+			<result property="instrument_id" column="instrumentId" javaType="java.lang.String"></result>
+			<result property="volumemultiple" column="volumemultiple" javaType="java.lang.Double"></result>
+		</collection>
+	</resultMap>
+	
+	<!-- 以下为成交偏好的 -->
+  <!--   <select id="selectVarTradeField" parameterType="java.lang.String" resultMap="InstrumentFieldMap">
+	 	select sum(p) tradeSum, productID from(select price * volume*b.volumemultiple as p, a.InstrumentID,a.ctpid,b.productid from T_TRADEFIELD a join
+	 	T_INSTRUMENTFIELD b on a.InstrumentID=b.InstrumentID   
+		<if test="_parameter != null">
+			where offset='0' and a.ctpid = #{investor_id})d
+		</if>
+		group by productid	
+	</select> -->
+	<!-- 以下为新代码 -->
+	 <select id="selectVarTradeField" parameterType="java.lang.String" resultMap="InstrumentFieldMap">
+	 	select sum(p) tradeSum, productID from(select price * volume*b.volumemultiple as p, a.InstrumentID,a.ctpid,b.productid from T_TRADEFIELD a join
+	 	T_INSTRUMENTFIELD b on a.InstrumentID=b.InstrumentID   
+		<if test="_parameter != null">
+			where offset='0' and a.ctpid  in
+			<foreach item="AList" index="index" collection="list"
+                open="(" separator="," close=")"> #{AList}
+            </foreach> 
+			)d
+		</if>
+		group by productid	
+	</select>
+	
+	<!-- 持仓偏好 -->
+	<resultMap type="com.ylxx.qt.service.po.PositionDetailBean" id="PositiondetailMap">
+		<result property="instrument_id" column="instrumentId" javaType="java.lang.String"></result>
+		<result property="volumn" column="Volume" javaType="java.lang.Integer"></result>
+		<result property="last_settlementprice" column="LastSettlementPrice" javaType="java.lang.Double"></result>
+		<result property="close_volume" column="closevolume" javaType="java.lang.Integer"></result>
+		<result property="investor_id" column="InvestorID" javaType="java.lang.String"></result>
+		<result property="productID" column="ProductID" javaType="java.lang.String"></result>
+		<result property="volumemultiple" column="volumemultiple" javaType="java.lang.Double"></result>
+	</resultMap>
+    <select id="selectPositionPrefer" parameterType="java.lang.String" resultMap="PositiondetailMap">
+		select sum(tSum) tradeSum,productid from(select sum(p) tSum, productID from(select price * volume*b.volumemultiple as p,b.productid from T_TRADEFIELD a join
+	 	T_INSTRUMENTFIELD b on a.InstrumentID=b.InstrumentID where offset!='0'
+		<if test="_parameter != null">
+			and ctpid = #{0})d
+		</if>
+		group by productid union
+		select sum(sump) tSum,productid from (select(a.position * a.lastsettlementprice * a.volumemultiple) sump,b.productid from t_positionfield a,
+		t_instrumentfield b where a.InstrumentID=b.InstrumentID and a.tradeday in(select MAX(tradeday) from t_positionfield)
+		<if test="_parameter != null">
+			and ctpid = #{1})f
+		</if>
+		group by productid)f group by productid
+		
+	</select>	
+	
+	<!-- 每周盈亏 -->
+	<resultMap type="com.ylxx.qt.service.po.TradeFieldBean" id="WeekProfitField">
+		<result property="investor_id" column="InvestorID" javaType="java.lang.String"></result>
+		<result property="trade_date" column="TradeDate" javaType="java.lang.String"></result>
+		<result property="offSet_flag" column="OffSetFlag" javaType="java.lang.String"></result>
+		<result property="profit" column="profit" javaType="java.lang.Double"></result>
+		<result property="week" column="WEEK" javaType="java.lang.String"></result>
+		<result property="week_account" column="WEEKACCOUNT" javaType="java.lang.Double"></result>		
+	</resultMap>
+	<select id="selectWeekProfitField" parameterType="java.lang.String" resultMap="WeekProfitField">
+		select WEEK,if(isnull(sum(closeprofit)),0,sum(closeprofit))WEEKACCOUNT from(select yearweek(tradingday) WEEK,closeprofit from t_tradefield where offset!='0'
+   		<if test="_parameter != null">
+			and ctpid=#{investor_id})t
+		</if>
+		group by WEEK order by WEEK
+	</select>
+	
+	<!-- 原始数据 -->
+	<resultMap type="com.ylxx.qt.service.po.TradingAccountFiledBean" id="RowDataField">
+		<id property="account_id" column="accountid" javaType="java.lang.String"></id>
+		<result property="trading_day" column="TradingDay" javaType="java.lang.String"></result>
+		<result property="close_profit" column="closeProfit" javaType="java.lang.Double"></result>
+		<result property="position_profit" column="positionProfit" javaType="java.lang.Double"></result>
+		<result property="available" column="Available" javaType="java.lang.Double"></result>
+ 		<result property="pre_Balance" column="PreBalance" javaType="java.lang.Double"></result> 
+		<result property="deposit" column="Deposit" javaType="java.lang.Double"></result>
+		<result property="withdraw" column="Withdraw" javaType="java.lang.Double"></result>
+		<result property="mortgate" column="Mortgage" javaType="java.lang.Double"></result>
+		<result property="curr_margin" column="CurrMargin" javaType="java.lang.Double"></result>
+		<result property="commission" column="Commission" javaType="java.lang.Double"></result>
+		<result property="capital" column="capital" javaType="java.lang.Double"></result>
+		<result property="fund" column="fund" javaType="java.lang.Double"></result>
+	</resultMap>
+	<!-- 原始数据查询 -->
+	<select id="selectRowDataField"  resultMap="RowDataField">
+		SELECT t.tradeday AS tradingday,SUM(t.closeProfit)AS closeProfit ,SUM(t.positionProfit)AS positionProfit,SUM(t.Available)AS Available,
+			SUM(t.PreBalance)AS PreBalance,IF(ISNULL(t.deposit),0,SUM(t.deposit)) deposit,IF(ISNULL(t.withdraw),0,SUM(t.withdraw)) withdraw,IF(ISNULL(t.Mortgage),0,SUM(t.Mortgage))Mortgage,
+			SUM(t.CurrMargin)AS CurrMargin,SUM(t.Commission)AS Commission,SUM(t.fund)AS fund,SUM(c.totalamount)AS capital FROM t_tradingaccount t,t_funds c where t.ctpid=c.ctpid
+		<if test="month != null">
+			and tradeday BETWEEN DATE_SUB(NOW(),INTERVAL #{month} MONTH) AND NOW()
+		</if>
+					<!-- <if test="_parameter != null">
+						and t.ctpid=#{account_id}
+					</if> -->
+		<if test="_parameter != null">
+			and t.ctpid in
+			<foreach item="AList" index="index" collection="AList"
+                open="(" separator="," close=")"> #{AList}
+            </foreach> 
+		</if>
+		<if test="_parameter != null">
+			and tradeday &gt;= #{beginTime} 
+		</if> 
+		<if test="_parameter != null">
+			and tradeday &lt;= #{endTime} 
+		</if> 
+		group by tradingday
+		order by tradingday desc limit #{indexpp},#{pagecounts}
+	</select>
+	
+	<select id="selectRowDataFieldCounts"  resultType="java.lang.Integer">
+		select count(*) from (SELECT t.tradeday AS tradingday,SUM(t.closeProfit)AS closeProfit ,SUM(t.positionProfit)AS positionProfit,SUM(t.Available)AS Available,
+			SUM(t.PreBalance)AS PreBalance,IF(ISNULL(t.deposit),0,SUM(t.deposit)) deposit,IF(ISNULL(t.withdraw),0,SUM(t.withdraw)) withdraw,IF(ISNULL(t.Mortgage),0,SUM(t.Mortgage))Mortgage,
+			SUM(t.CurrMargin)AS CurrMargin,SUM(t.Commission)AS Commission,SUM(t.fund)AS fund,SUM(c.totalamount)AS capital FROM t_tradingaccount t,t_funds c where t.ctpid=c.ctpid
+		<if test="month != null">
+			and tradeday BETWEEN DATE_SUB(NOW(),INTERVAL #{month} MONTH) AND NOW()
+		</if>
+					<!-- <if test="_parameter != null">
+						and t.ctpid=#{account_id}
+					</if> -->
+		<if test="_parameter != null">
+			and t.ctpid in
+			<foreach item="AList" index="index" collection="AList"
+                open="(" separator="," close=")"> #{AList}
+            </foreach> 
+		</if>
+		<if test="_parameter != null">
+			and tradeday &gt;=#{beginTime} 
+		</if> 
+		<if test="_parameter != null">
+			and tradeday &lt;=#{endTime} 
+		</if> 
+		group by tradingday
+		order by tradingday desc) b
+	</select>
+
+	<!-- 原始数据数量查询 -->
+	<!-- <select id="selectRowDataFieldCounts" resultType="java.lang.Integer">
+		select count(*) from t_tradingaccount t,t_funds c where t.ctpid=c.ctpid
+		<if test="month != null">
+			and tradeday BETWEEN DATE_SUB(NOW(),INTERVAL #{month} MONTH) AND NOW()
+		</if>
+				<if test="_parameter != null">
+					and t.ctpid=#{account_id}
+				</if>
+		<if test="_parameter != null">
+			and t.ctpid in
+			<foreach item="AList" index="index" collection="AList"
+                open="(" separator="," close=")"> #{AList}
+            </foreach> 
+		</if>
+		<if test="_parameter != null">
+			and tradeday &gt;=#{beginTime} 
+		</if> 
+		<if test="_parameter != null">
+			and tradeday &lt;=#{endTime} 
+		</if> 
+	</select> -->
+	<!-- 成交详细信息 -->
+	<resultMap type="com.ylxx.qt.service.po.TradeFieldBean" id="TradeFieldMsg">	
+		<id property="trade_id" column="TradeID" javaType="java.lang.String"></id>
+		<result property="ctp_id" column="CTPID" javaType="java.lang.String"></result>
+		<result property="instrument_id" column="InstrumentID" javaType="java.lang.String"></result>
+		<result property="exchange_id" column="ExchangeID" javaType="java.lang.String"></result>
+		<result property="direction" column="Direction" javaType="java.lang.String"></result>
+ 		<result property="price" column="Price" javaType="java.lang.Double"></result> 
+		<result property="offSet_flag" column="Offset" javaType="java.lang.String"></result>
+		<result property="hedge" column="Hedge" javaType="java.lang.String"></result>
+		<result property="tradeTime" column="TradeTime" javaType="java.lang.String"></result>
+		<result property="tradingDay" column="TradingDay" javaType="java.lang.String"></result>
+		<result property="order_id" column="OrderID" javaType="java.lang.String"></result>
+		<result property="sys_id" column="SysID" javaType="java.lang.String"></result>
+		<result property="tradeDateTime" column="TradeDateTime" javaType="java.lang.String"></result>	
+		<result property="updateTime" column="UpdateTime" javaType="java.lang.String"></result>
+		<result property="volumn" column="Volume" javaType="java.lang.Integer"></result>
+		<result property="openTride_id" column="OpenTradeID" javaType="java.lang.String"></result>
+		<result property="closeProfit" column="CloseProfit" javaType="java.lang.Double"></result>
+	</resultMap>
+	<!--新代码 -->
+	<!-- 查询成交信息 -->
+	<select id="selectTradefield" resultMap="TradeFieldMsg">
+	SELECT TradeID,CTPID,InstrumentID,ExchangeID,Direction,Price,OFFSET,Hedge,TradeTime,TradingDay,OrderID,SysID,TradeDateTime,UpdateTime,Volume,IF(ISNULL(OpenTradeID)||LENGTH(TRIM(OpenTradeID))&lt;1,0,OpenTradeID)OpenTradeID,IF(ISNULL(CloseProfit)||LENGTH(TRIM(CloseProfit))&lt;1,0,CloseProfit)CloseProfit
+		FROM t_tradefield where 1=1
+		<if test="month != null">
+			and TradingDay BETWEEN DATE_SUB(NOW(),INTERVAL #{month} MONTH) AND NOW()
+		</if>
+		
+		<if test="_parameter != null">
+			and CTPID in
+			<foreach item="AList" index="index" collection="AList"
+                open="(" separator="," close=")"> #{AList}
+            </foreach> 
+		</if>
+		
+		<if test="_parameter != null">
+			and TradingDay &gt;= #{beginTime} 
+		</if> 
+		
+		<if test="_parameter != null">
+			and TradingDay &lt;= #{endTime} 
+		</if> 
+		
+		order by TradingDay desc limit #{indexpp},#{pagecounts}
+	</select>
+	<!-- 查询成交数量 -->
+	<select id="selectTradefieldCounts" resultType="java.lang.Integer">
+	SELECT count(*) FROM t_tradefield where 1=1 
+	<if test="month != null">
+			and TradingDay BETWEEN DATE_SUB(NOW(),INTERVAL #{month} MONTH) AND NOW()
+		</if>
+				
+		<if test="_parameter != null">
+			and CTPID in 
+			<foreach item="AList" index="index" collection="AList"
+                open="(" separator="," close=")"> #{AList}
+            </foreach> 
+		</if>
+		
+		<if test="_parameter != null">
+			and TradingDay &gt;=#{beginTime} 
+		</if> 
+		<if test="_parameter != null">
+			and TradingDay &lt;=#{endTime} 
+		</if> 
+		
+	</select>
+</mapper>
+	

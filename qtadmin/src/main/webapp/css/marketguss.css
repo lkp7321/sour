@@ -1,0 +1,75 @@
+@charst 'utf-8';
+body{
+	text-align: center;
+	background:#fff;
+	font-family:PingFangSC-Regular,SimHei,Arial;
+	font-size: 13px;
+}
+#div{
+	margin:0 auto;
+	/* border:0px solid; */
+	width:90%;
+	
+}
+table{
+	/* border:1px solid #F0F9FE; */
+	border-collapse: collapse;
+	width: 100%;
+}
+/* th{
+	background-color:#F0F9FE;
+} */
+td{
+	text-align:center;
+    font-size: 13px;
+}
+button{
+	border:none;
+	background:none;
+}
+input,select{
+	width:84px;
+	height:26px;
+	border: 1px solid #EBEBEB;
+}
+.layui-layer input{
+	width:120px;
+	display:inline-block;
+}
+input{
+	padding-left:3px;
+}
+.demoTable{
+	margin-top:10px;
+}
+.searchbtn{
+    width: 84px;
+    height: 26px;
+    text-align: right;
+    padding-right: 12px;
+    line-height: 26px;
+    border-radius: 2px;
+    color: #fff;
+	background:#498EFC url(../img/search.png) no-repeat 15px 5px;
+}
+.addbprobtn{
+    height: 26px;
+     line-height: 26px;
+    border-radius: 2px;
+    text-align:center;
+}
+/*ÐÂÔöµ¯³ö¿ò*/
+.addifr{
+	font-size:13px;
+}
+.addifr div{
+	margin-bottom:5px;
+}
+.addifr span{
+	width:96px;
+	display:inline-block;
+	text-align:right;
+}
+.addifr input{
+	font-size:11px;
+}

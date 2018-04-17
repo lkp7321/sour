@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.kondor.kondorspot.KonSpotExceptionMapper">
+	<!-- 查询  -->
+	<select id="selExceptionList" resultType="com.ylxx.fx.service.po.Kon_SpotExceptionBean">
+		select FRONTSERIALDATA,PRODUCTCODE,ERRORCODE,ERRORMESSAGE,
+		EXCEPTIONDATE,EXCEPTIONTIME,STATE FROM KON_SPOTEXCEPTION
+		<if test="startDate!=null and startDate!='' and endDate!=null and endDate!=''">
+			WHERE EXCEPTIONDATE>=#{startDate}  AND #{endDate}>=EXCEPTIONDATE
+		</if>
+		ORDER BY EXCEPTIONDATE DESC,EXCEPTIONTIME DESC
+	</select>
+</mapper>

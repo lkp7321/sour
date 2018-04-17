@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.ppmagager.CkPPExprtanMapper">
+	<!-- 获得全部数据   -->
+	<select id="selectExprtan" resultType="com.ylxx.fx.service.po.CkPPExprtan">
+		select ppno,ckno,exnm,trdt,trtm,decode(bsfx,'0','卖出','1','买入') bsfx,slam,byam,cbhl,
+		decode(stmp,'SS000000000','发送','S0000000000','获取') stmp from ck_pprequestdetail
+		WHERE PPNO in (SElECT ppno FROM CK_PPRESULTDETAIL
+		where lkno is null and stat not in('N','D')) and stmp!='00000000000'
+		<if test="trac!=null and trac!=''">
+			and ppno like '%${trac}%'
+		</if>
+	</select>
+	<!-- 处理 -->
+	<update id="updateExp">
+		update ck_pprequestdetail set stmp='00000000000' where ppno=#{ppno}
+	</update>
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.jsh.DT_TranRemsgMapper">
+	<!-- 查询签约信息 -->
+	<select id="selDT_TranRemsgListQ" resultType="java.util.HashMap">
+		select
+		*
+		from TRD_REGMSGLIST_P004 where 1=1
+		<if test='cuac!=null and !cuac.equals("")'>
+			and cuac like concat(concat('%',#{cuac}),'%')
+		</if>
+		<if test='exnm!=null and !exnm.equals("")'>
+			and exnm=#{exnm}
+		</if>
+		<if test='(rgdt!=null and !rgdt.equals("")) and (crdt!=null and !crdt.equals(""))'>
+			and rgdt>=#{rgdt} and #{crdt}>=rgdt
+		</if>
+		<if test='(rgdt!=null and !rgdt.equals("")) and (crdt==null or crdt.equals(""))'>
+			and rgdt=#{rgdt}
+		</if>
+		<if test='(rgdt==null or rgdt.equals("")) and (crdt!=null and !crdt.equals(""))'>
+			and rgdt=#{crdt}
+		</if>
+		order by rgdt,rgtm desc
+	</select>
+	<!-- 查询解约信息 -->
+	<select id="selDT_TranRemsgListJ" resultType="java.util.HashMap">
+		select 
+		*
+		from TRD_REGMSGLIST_HIS_P004 where 1=1
+		<if test='cuac!=null and !cuac.equals("")'>
+			and cuac like concat(concat('%',#{cuac}),'%')
+		</if>
+		<if test='exnm!=null and !cuac.equals("")'>
+			and exnm=#{exnm}
+		</if>
+		<if test='(rgdt!=null and !rgdt.equals("")) and (crdt!=null and !crdt.equals(""))'>
+			and crdt>=#{rgdt} and #{crdt}>=crdt
+		</if>
+		<if test='(rgdt!=null and !rgdt.equals("")) and (crdt==null or crdt.equals(""))'>
+			and crdt=#{rgdt}
+		</if>
+		<if test='(rgdt==null or rgdt.equals("")) and (crdt!=null and !crdt.equals(""))'>
+			and crdt=#{crdt}
+		</if>
+		order by crdt,crtm desc
+	</select>
+	<!-- 查询流水信息 -->
+	<select id="selDT_TranList" resultType="java.util.HashMap">
+		select
+		* 
+		from TRD_REGSUBTRANLIST_P004 where 1=1
+		<if test='cuac!=null and !cuac.equals("")'>
+			and cuac like concat(concat('%',#{cuac}),'%')
+		</if>
+		<if test='fonm!=null and !fonm.equals("")'>
+			and fonm=#{fonm}
+		</if>
+		<if test='(trdt!=null and !trdt.equals("")) and (trtm!=null and !trtm.equals(""))'>
+			and trdt>=#{trdt} and #{trtm}>=trdt
+		</if>
+		<if test='(trdt!=null and !trdt.equals("")) and (trtm==null or trtm.equals(""))'>
+			and trdt=#{trdt}
+		</if>
+		<if test='(trdt==null or trdt.equals("")) and (trtm!=null and !trtm.equals(""))'>
+			and trdt=#{trtm}
+		</if>
+		order by trdt desc,trtm desc
+	</select>
+	<!-- 查询定投价格 -->
+	<select id="selDT_Price" resultType="java.util.HashMap"> 
+		select 
+		* 
+		from TRD_PRICE_P004 where 1=1
+		<if test='exnm!=null and !exnm.equals("")'>
+			and exnm = #{exnm}
+		</if>
+		<if test='(trdt!=null and !trdt.equals("")) and (trtm!=null and !trtm.equals(""))'>
+			and trdt>=#{trdt} and #{trtm}>=trdt
+		</if>
+		<if test='(trdt!=null and !trdt.equals("")) and (trtm==null or trtm.equals(""))'>
+			and trdt=#{trdt}
+		</if>
+		<if test='(trdt==null or trdt.equals("")) and (trtm!=null and !trtm.equals(""))'>
+			and trdt=#{trtm}
+		</if>
+		order by trdt,trtm desc
+	</select>
+</mapper>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>实盘流水查询</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top firmflow">
+		<div class='head'>
+			<span>当前位置:</span><span>RV前置交易>实盘流水查询</span>
+		</div>
+		<div class="bort">
+		   <p><span>开始日期:</span><input type="text" id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd'})"></i></p>
+		   <p><span>结束日期:</span><input type="text" id='d2'/><i class='calander'  onclick="WdatePicker({el:'d2',dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d1\')}',maxDate:'%y-%M-%d'})"></i></p>
+		   <p><span>产品类型:</span> 
+		       <select class="productType">
+		        <option value="All">所有</option> 
+		        <option value="SPOTP001">个人实盘</option> 
+		        <option value="SPOTP004">结售汇</option> 
+		        <option value="SPOTP006">外币兑换</option> 
+		        <option value="SPOTP071">账户结售汇</option> 
+		        <option value="SPOTP072">账户外汇</option> 
+		        <option value="SPOTP073">账户贵金属</option> 
+		      </select>
+		   </p>
+		   <p class="cardNu">交易请求流水号&nbsp;<input type="text" /><button class="sear">查询</button></p>
+		</div>
+	</div>
+	<div class="boxtop">
+		<div class='box'></div>
+	</div>
+	<div id="page"></div>
+	<script src="/fx/layui/layui.js"></script>
+	<script src="/fx/js/js_files/require.js" data-main="/fx/js/rv/custor"></script>
+</body>
+</html>

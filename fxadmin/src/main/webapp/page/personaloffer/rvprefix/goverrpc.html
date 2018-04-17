@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>国债RPC查询</title>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top goverrpc">
+		<div class='head'>
+			<p><span>当前位置:</span><span>RV前置交易>RPC请求流水查询</span></p>
+			<p class="dat dat1"><span>产品类型&nbsp;</span>
+				<select>
+					<option value="BOND001">国债</option>
+				</select>
+			</p>
+			<p class="dat dat2"><span>处理状态&nbsp;</span>
+				<select>
+					<option value="all">所有</option>
+					<option value="0">未处理</option>
+					<option value="1">处理中</option>
+					<option value="2">异常</option>
+					<option value="8">处理成功</option>
+				</select>
+			</p>
+			<p class="cardNu">交易请求流水号&nbsp;<input type="text" /><button class="sear">查询</button><button class="change">修改</button></p>
+		</div>
+	</div>
+	<div class="boxtop">
+		<div class='box'></div>
+	</div>
+	<div id="page"></div>
+	<script src="/fx/layui/layui.js"></script>
+	<script src="/fx/js/js_files/require.js" data-main="/fx/js/rv/goverrpc"></script>
+</body>
+</html>

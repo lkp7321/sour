@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.LoginMapper">
+	
+	<!-- 查询用户产品 ,判断是不是管理员需不需要复核-->
+	<select id="findProList" resultType="com.ylxx.fx.core.domain.ProductDoms">
+		select A.prod , B.ptnm ptnm
+		from mng_user A,QUT_CMMPDTINFO B 
+		where A.prod = B.ptid and trim(A.usnm)=#{usnm}
+		order by A.prod
+	</select>
+	<select id="findProList1" resultType="com.ylxx.fx.core.domain.ProductDoms">
+		select A.prod , B.ptnm ptnm
+		from mng_user A,QUT_CMMPDTINFO B 
+		where A.prod = B.ptid and trim(A.usnm)=#{usnm} 
+		and A.usfg='1'
+		order by A.prod
+	</select>
+	
+	<!-- 查询用户信息 -->
+	<select id="findUser"  resultType="com.ylxx.fx.service.po.User">
+		select * 
+		from MNG_USER 
+		where trim(usnm)=#{user.usnm} and trim(prod)=#{user.prod}
+	</select>
+	
+	<!-- 查询角色信息 -->
+	<select id="findUserRole" resultType="int" >
+		select count(*)
+		from mng_user A, MNG_ROLE B 
+		where 
+		trim(A.usnm)=#{user.usnm} 
+		and trim(A.prod)=#{user.prod} 
+		and A.uspt=B.ptid and B.usfg='0'
+	</select>
+	
+	<!-- 登陆验证 -->
+	<select id="onLogin" resultType="com.ylxx.fx.service.po.User" >
+		select * 
+		from mng_user
+		where trim(usnm)=#{user.usnm} 
+		and trim(pswd)=#{user.pswd} 
+		and trim(prod)=#{user.prod}
+	</select>
+	
+	<!-- 更新错误次数 -->
+	<update id="upErrCount" >
+		update mng_user 
+		set ecount=(ecount+1) 
+		where usnm=#{user.usnm} and prod=#{user.prod}
+	</update>
+	
+	<!-- 更新登陆时间 -->
+	<update id="upLoginTime" >
+		update MNG_USER 
+		set 
+		ltime=#{nowtime},
+		ecount=0 
+		where trim(usnm)=#{user.usnm} and prod=#{user.prod}
+	</update>
+	
+	<!-- 登陆完成后更新时间 -->
+	<update id="upOverTime">
+		update MNG_USER set utime=#{nowtime} 
+		where trim(usnm)=#{user.usnm} and prod=#{user.prod}
+	</update>
+	<select id="selectPassword" resultType="int">
+		select count(*) from MNG_USER where USNM=#{usnm} and PSWD=#{pass} and PROD=#{prod}  
+	</select>
+	<update id="updatePasswordBegin">
+		update MNG_USER set PSWD=#{pass} where USNM=#{usnm} and PROD=#{prod}
+	</update>
+</mapper>

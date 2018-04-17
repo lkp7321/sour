@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.pere.presysmanager.CustFavMapper">
+<select id="selectCustFavList" resultType="HashMap">
+	SELECT a.cuno,a.fvjh,a.fvgh,b.ognm,a.ogcd,decode(a.STAT,'0','启用','1','停用')STAT
+				FROM TRD_CUSTFAVRULE_P004 a,TRD_OGCD b WHERE a.ogcd=b.ogcd
+		<if test="!cunotext.equals('')">
+		and a.cuno like CONCAT(CONCAT('%', #{cunotext}), '%') 
+		</if>
+		<if test="!ogcdtext.equals('')">
+		and a.ogcd like CONCAT(CONCAT('%', #{ogcdtext}), '%') 
+		</if>
+		<if test="!stat.equals('')">
+		and a.stat like CONCAT(CONCAT('%', #{stat}), '%') 
+		</if>
+		 order by a.cuno desc
+</select>
+<delete id="delCustFav" parameterType="String">
+	delete TRD_CUSTFAVRULE_P004 where trim(cuno)=#{cuno}
+</delete>
+<select id="selectETBhid" resultType="HashMap"> 
+	select OGNM,OGCD from trd_ogcd where 1=1
+		<if test="!ogcd.equals('')">
+		and ogcd like CONCAT(CONCAT('%', #{ogcd}), '%')
+		</if>
+		<if test="ognm.equals('')">
+		and ognm like CONCAT(CONCAT('%', #{ognm}), '%')
+		</if>
+	order by ogcd desc
+</select>
+<update id="updCustFav">
+	update TRD_CUSTFAVRULE_P004 set  FVJH=#{fvjh,jdbcType=VARCHAR}, FVGH=#{fvgh,jdbcType=VARCHAR}, STAT=#{stat,jdbcType=VARCHAR} ,OGCD=#{ogcd,jdbcType=VARCHAR} where cuno=#{cuno,jdbcType=VARCHAR}
+</update>
+<select id="selCunoExist" resultType="int">
+	select count(*) from TRD_CUSTFAVRULE_P004 where cuno =#{cuno}
+</select>
+<insert id="insCustFav">
+		insert into TRD_CUSTFAVRULE_P004 (CUNO, FVJH, FVGH, OGCD, STAT)
+		values(#{custFav.cuno,jdbcType=VARCHAR},#{custFav.fvjh,jdbcType=VARCHAR},#{custFav.fvgh,jdbcType=VARCHAR},#{custFav.ogcd,jdbcType=VARCHAR},#{custFav.stat,jdbcType=VARCHAR})
+</insert>
+</mapper>

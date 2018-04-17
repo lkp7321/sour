@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.AccumuTransMapper">
+	<!-- 查询买币种 -->
+	<select id="querybuyexnm" resultType="String">
+		select cyen from cmm_cymsg_p003
+	</select>
+	
+	<!-- 查询交易码 -->
+	<select id="querytrancode" resultType="java.util.HashMap">
+		select trcd,trds from trd_trancode_p003 where trcd in('A2103','A2104','A2105') order by trcd
+	</select>
+	
+	
+	<!--  为第一个机构下拉框赋值 -->
+	<select id="queryOneOrgan" resultType="java.util.HashMap">
+			select ornm ognm,ogcd,'0001' as ogup,leve from Trd_Organ
+	</select>
+	
+		<!--  为第二个机构下拉框赋值 -->
+	<select id="queryTwoOrgan" resultType="java.util.HashMap">
+			 select ogcd,ognm,usfg,leve,ogup,orgn from trd_ogcd where usfg='0' and ogup='${comaogcd}' and ogcd!='${comaogcd}' order by ogcd 
+			<!-- select ogcd,ognm,usfg,leve,ogup,orgn from trd_ogcd -->
+	</select>
+	
+		<!--  条件获得对应的数据 -->
+ 	<select id="selectAccumuTranlist" resultType="java.util.HashMap">
+ 	<!-- select ognm ,blv from view_querytranlist_p003 -->
+ 	select c.ognm,d.cblv,a.trsn lcno,a.trdt,a.trtm,b.trds,a.cuno,a.cuac,a.trac,a.cyen,a.caty,a.cxfg,
+						decode(a.trty,'0','(询价)交易','1','STRMING 交易','2','挂单','未知') trty,a.bycy,
+						nvl(a.bynm,' ')bynm,a.slcy,nvl(a.slnm,' ')slnm,a.uspc,
+						decode(a.trtp,'1','转入','2','转出','3','外汇买卖','4','签约','5','解约','6','查询','7','其他','未知') trtp,
+						a.rrdt,nvl(a.byam,'0')byam,
+						nvl(a.expc,'0')expc,nvl(a.slam,'0')slam, nvl(a.pram,'0')pram,nvl(a.amut,'0')amut,nvl(a.fvda,'0')fvda,
+						nvl(a.brsy,'0')brsy,nvl(a.usam,'0')usam,
+						decode(a.trfg,'1','即时交易成交','2','指定汇率交易成交','3','委托交易成交','其他')trfg,
+						decode(a.stcd,'S','成功','F','失败','失败')stcd,a.ercd 
+						from view_querytranlist_p003 a,trd_trancode_P003 b,trd_ogcd c,trd_accinfolist_p003 d 
+						where a.trcd=b.odcd and a.ogcd=c.ogcd and a.lcno=d.lcno(+) and Stcd is not null 
+						and a.TRCD in('A2103','A2104','A2105','A2116','A2106')  
+	 <if test="!trdtbegin.equals('') and !trdtend.equals('')">
+	 	<![CDATA[and a.trdt>=#{trdtbegin} and a.trdt<=#{trdtend}]]>
+	</if>  
+	 <if test="!strcuac.equals('')">
+		and a.cuac like CONCAT(CONCAT('%',#{strcuac}),'%')
+	</if> 
+ 	<if test="!byexnm.equals('all')">
+		and a.bynm=#{byexnm}
+	</if>
+	<if test="!comaogcd.equals('') and !combogcd.equals('')">
+		<if test="comaogcd.equals('0001') and combogcd.equals('all')">
+		</if>
+		<if test="comaogcd.equals('0001') and !combogcd.equals('all')">
+			and c.ogup =#{combogcd}
+		</if>
+		<if test="!comaogcd.equals('0001') and  combogcd.equals('all')">
+			and (c.ogup = #{comaogcd} or c.ogcd = #{comaogcd})
+		</if>
+		<if test="!comaogcd.equals('0001') and !combogcd.equals('all')">
+			and c.ogcd = #{combogcd}
+		</if>
+	</if>
+	<if test="comdata1=2">
+		<if test="!comdata3.equals('all')">
+			and a.trcd =#{comdata3}
+		</if>
+	</if> 
+	</select> 
+</mapper>

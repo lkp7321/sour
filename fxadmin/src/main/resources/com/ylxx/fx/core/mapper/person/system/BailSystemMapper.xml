@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 保证金前置 -->
+<mapper namespace="com.ylxx.fx.core.mapper.person.system.BailSystemMapper">
+	<!-- 系统参数-->
+	<select id="selAllBailSysPrice" resultType="com.ylxx.fx.service.po.Cmmptparac">
+		select pmno as paid,pmnm as remk,valu as valu,decode(usfg,'0','启用','1','停用') stat  
+		from PM_PRAMT_P009 order by paid
+	</select>
+	<!-- 修改 -->
+	<update id="update">
+		update PM_PRAMT_P009 set 
+		pmnm=#{bean.remk},VALU=#{bean.valu},usfg=#{bean.stat} 
+		where pmno=#{bean.paid}
+	</update>
+	<!-- 交易流水查询 -->
+	<select id="querytrancode" resultType="java.util.HashMap">
+		select trcd,trds from trd_trancode_p009 
+		where trcd in ('M5704','M5703','M5705','M5711','M5713','M5714') order by trcd
+	</select>
+	<!-- 查询数据 -->
+	<select id="selectFxipTranlist" resultType="com.ylxx.fx.service.po.BailTranlist">
+		select * from (
+		select a.lcno,a.trcd,a.trdt,a.trtm,b.trds,a.cuno,a.cuac,a.acco,a.cxfg,
+		nvl(a.usam,'0')usam,a.trsn, 
+		decode(a.stcd,'0','初始值','1','MT4交易成功','2','已核对','3','已复核','S','交易成功','F','MT4交易失败','R','异常','未知') stcd,a.ercd,c.note 
+		from (select lcno,TRCD,MT4C,trdt,trtm,cuno,cuac,acco,cxfg,usam,trsn,stcd,ercd from PM_TRCRT_P009 union all select lcno,TRCD,
+		MT4C,trdt,trtm,cuno,cuac,acco,cxfg,usam,trsn,stcd,ercd from pm_trcrt_his_p009) a,trd_trancode_P009 b,PM_GRPTY_P009 c 
+		where a.trcd=b.odcd and a.MT4C=c.GPTY(+) and Stcd is not null 
+		and a.TRCD in('M5704','M5703','M5710') 
+		union all
+		select a.lcno,a.trcd,a.trdt,a.trtm,b.trds,a.cuno,a.cuac,a.acco,a.cxfg,
+		nvl(a.usam,'0')usam,a.trsn,
+		decode(a.stcd,'0','并账录入','1','处理中','2','复核','3','过期无效','S','交易成功','F','交易失败','R','异常','未知') stcd,a.ercd,c.note 
+		from (select lcno,TRCD,MT4C,trdt,trtm,cuno,cuac,acco,cxfg,usam,trsn,stcd,ercd from PM_TRCRT_P009 union all select lcno,
+		TRCD,MT4C,trdt,trtm,cuno,cuac,acco,cxfg,usam,trsn,stcd,ercd from pm_trcrt_his_p009) a,trd_trancode_P009 b,PM_GRPTY_P009 c 
+		where a.trcd=b.odcd and a.MT4C=c.GPTY(+) and Stcd is not null 
+		and a.TRCD in('M5705','M5711','M5713','M5714')
+		) a where 1=1
+		<if test='trdtbegin!="" and trdtend!=""'>
+			and a.trdt>=#{trdtbegin} and #{trdtend}>= a.trdt
+		</if>
+		<if test='strcuac!=""'>
+			and a.cuac like concat(concat('%',#{strcuac}),'%')
+		</if>
+		<if test='trcd!="all"'>
+			and a.trcd = #{trcd}
+		</if>
+		<if test='acno!=null and acno!=""'>
+			and a.acco=#{acno}
+		</if>
+		order by a.lcno desc 
+	</select>	
+	<!-- 异常交易监控 -->
+	<select id="selectExceptionList" resultType="com.ylxx.fx.service.po.BailExceBean">
+		select * from (select a.lcno,a.trdt,a.trtm,a.trcd,
+		c.TRDS,a.cuno,a.cuac,a.cxfg,a.acco,a.usam,a.stcd,a.ercd　
+		from PM_TRCRT_P009 a  ,TRD_TRANCODE_P009 c
+		where  a.trcd=c.TRCD and a.TRDT>=#{curDate} and #{toDate}>=a.TRDT and a.stcd ='R' 
+		order by a.trdt desc,a.trtm desc) d where  50>=rownum
+	</select>
+	
+	<!-- mt4 -->
+	<select id="selectMt4User" resultType="com.ylxx.fx.service.po.BailMt4Bean">
+		select gpty,name,note,decode(usfg,'0','启用','1','停用') usfg
+		from PM_GRPTY_P009 order by GPTY
+	</select>
+	
+	<insert id="add" >
+		insert into PM_GRPTY_P009 values(
+		#{cmmbean.gpty},#{cmmbean.name},
+		#{cmmbean.note},#{cmmbean.usfg}
+		)
+	</insert>
+	<update id="updateMt4">
+		update PM_GRPTY_P009 set 
+		NAME=#{cmmbean.name},NOTE=#{cmmbean.note},usfg=#{cmmbean.usfg} where GPTY=#{cmmbean.gpty}
+	</update>
+	<select id="querytrancodeExcep" resultType="java.util.HashMap">
+		select trcd,trds from trd_trancode_p009 
+		where trcd in ('M5704','M5711','M5714') order by trcd
+	</select>
+	<select id="setExceptionList" resultType="com.ylxx.fx.service.po.BailExceBean">
+		select a.lcno,a.trdt,a.trtm,a.trcd,c.TRDS,a.cuno,
+		a.cuac,a.cxfg,a.acco,a.usam,a.stcd,a.ercd　from PM_TRCRT_P009 a  ,
+		TRD_TRANCODE_P009 c 
+		where  a.trcd=c.TRCD and a.TRDT>=#{curDate} and #{toDate}>=a.TRDT 
+		and a.stcd ='R' and a.trcd in('M5704','M5711','M5714') 
+		<if test='tranCode!="all"'>
+			and a.trcd = #{tranCode}
+		</if>
+		order by a.trdt desc,a.trtm desc
+	</select>
+	
+	<update id="updateInitialize1" parameterType="java.util.List">
+		update pm_trcrt_p009 set stcd='1' where 
+		<foreach collection="list" item="item" index="index" separator="or">
+		(
+			lcno=#{item.lcno} and trdt=#{item.trdt} and trcd =#{item.trcd}
+		)
+		</foreach>
+		
+	</update>
+	<update id="updateInitialize2" parameterType="java.util.List">
+		update pm_trcrt_p009 set stcd='F' where 
+		<foreach collection="list" item="item" index="index" separator="or">
+		(
+			lcno=#{item.lcno} and trdt=#{item.trdt} and trcd =#{item.trcd}
+		)
+		</foreach>
+	</update>
+	<update id="updateInitialize3" parameterType="java.util.List">
+		update pm_bzamt_p009 set stcd='0' where 
+		lcno=#{lcno} and bzdt=#{trdt} and trid =#{trcd}
+	</update>
+	
+	<!-- 成功处理 -->
+	<update id="updateSuccess" parameterType="java.util.List">
+		update pm_trcrt_p009 set stcd='S' where
+		<foreach collection="list" item="item" index="index" separator="or">
+		( 
+			lcno=#{item.lcno} and trdt=#{item.trdt} and trcd =#{item.trcd}
+		)
+		</foreach>
+	</update>
+</mapper>

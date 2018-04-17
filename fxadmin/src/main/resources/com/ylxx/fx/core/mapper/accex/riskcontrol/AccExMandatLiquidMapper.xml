@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accex.riskcontrol.AccExMandatLiquidMapper">
+<select id="mandatLiquid" resultType="com.ylxx.fx.service.po.AccExMandatLiquid">
+		select m.*,r.cuno,r.cuac,r.tlno from mview_trd_riskdegree_${prod} m, 
+		trd_regmsg_${prod} r where m.trac=r.trac
+</select>
+<select id="generateLCNO" resultType="String">
+		select lpad(LCNO${ptid}.nextval,8,0)  as LCNO from dual
+</select>
+<update id="upAutoForceStat" >
+		update cmm_ptpara_${prod} set valu = #{stat} where paid = 'AUTOFORCE'
+</update>
+<select id="getAutoForceStat" resultType="HashMap">
+		select * from cmm_ptpara_${prod} where paid = 'AUTOFORCE'
+</select>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.CalendarShowMapper">
+	
+	<!-- 日历规则的展示 -->
+	<select id="selectRule" resultType="com.ylxx.fx.service.po.calendar.CalendarVO">
+		select * from trd_calendarrules
+		where calendarid in
+		(select calendarid from trd_calendar 
+		where ptid=#{proId} and trcd=#{tradeCode})
+		and leveltype=#{levelType}
+	</select>
+	
+	<select id="selTradeCodeList" resultType="com.ylxx.fx.service.po.calendar.TradeCodeVO">
+		select * from trd_trancode_${proid}
+	</select>
+</mapper>

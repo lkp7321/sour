@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.GoldFavruleMapper">
+	
+	<!-- P002,分行优惠机构 -->
+	<select id="queryOrganS" resultType="java.util.HashMap">
+		select ogcd,ognm from trd_ogcd 
+		<if test='userorgleve == "0"'>
+			where (leve='1' or leve='0') 
+		</if>
+		<if test='userorgleve == "1"'>
+			where leve='1' and ogcd = #{userorgn} 
+		</if>
+		order by ogcd
+	</select>
+	<!-- P002  分行优惠数据 -->
+	<select id="SelectFavrule" resultType="com.ylxx.fx.service.po.Favrule">
+		select a.ogcd as ogcd,b.ognm as ognm,a.fvid as fvid, 
+		a.fvnm as fvnm,a.rule as rule,
+		decode (a.stat,'0','启用','1','停用','未知') stat
+		from TRD_FAVRULE_P002 a,trd_ogcd b where a.ogcd=b.ogcd
+		<if test='"all"!=ogcd'>
+			and a.ogcd=#{ogcd} 
+		</if>
+		order by a.ogcd
+	</select>
+	<!-- 启用 P002 -->
+	<update id="Begin">
+		update TRD_FAVRULE_P002 set stat = 0 
+		where trim(ogcd) = #{ogcd} and trim(fvid) = #{fvid}
+	</update>
+	<!-- 停用 P002-->
+	<update id="End">
+		update TRD_FAVRULE_P002 set stat = 1 
+		where trim(ogcd) = #{ogcd} and trim(fvid) = #{fvid}
+	</update>
+	<!-- 渠道优惠,P002 --> 
+	<select id="SelChann" resultType="String">
+		select qdnm from TRD_CHANNEL_p002 where  trim(qdno)=#{qdno}
+	</select>
+	<!-- 渠道优惠 -->
+	<select id="SelctChannel" resultType="java.util.HashMap">
+	select * from TRD_CHANNEL_P002
+	</select>
+	<select id="SelClient" resultType="String">
+		select tynm from FX_CUTYT_P002 where  trim(cuty)=#{cuty}
+	</select>
+	<select id="selectPrice" resultType="java.util.HashMap">
+		select * from CMM_CURRMSG_p002 where extp='1' order by extp
+	</select>
+	<update id="onsave">
+		update trd_favrule_p002 set rule = #{rule}
+		where trim(ogcd) = #{ogcd} and trim(fvid) = #{fvid}
+	</update>
+	<!-- 客户优惠,P002 -->
+	<select id="select" resultType="java.util.HashMap">
+		select * from FX_CUTYT_P002 order by cuty
+	</select>
+	<insert id="insRule">
+		insert into trd_favrule_p002 
+		select distinct 
+		#{ogcd}
+		,'F01','渠道优惠','int getvar(String para){ int fvda=0;return fvda;}','0' from trd_ogcd 
+		UNION
+		select distinct 
+		#{ogcd}
+		,'F02','币别对优惠','int getvar(String para){ int fvda=0;return fvda;}','0' from trd_ogcd 
+		UNION
+		select distinct 
+		#{ogcd}
+		,'F04','客户优惠','int getvar(String para){ int fvda=0;return fvda;}','0' from trd_ogcd 
+		 UNION
+		select distinct 
+		#{ogcd}
+		,'F03','金额优惠','int getvar(double para){ int fvda=0;return fvda;}','0' from trd_ogcd 
+		UNION
+		select distinct #{ogcd}
+		,'F05','机构优惠','0','0' from trd_ogcd
+	</insert>
+	
+</mapper>

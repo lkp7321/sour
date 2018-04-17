@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 货币对配置-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.pricesource.ExnmMapper">
+	<!-- 获取货币对配置所有数据 -->
+	<select id="selectCMMPRICE" resultType="com.ylxx.fx.service.po.CmmPrice">
+		select a.*,b.tpnm as tpnm from QUT_CMMPRICE_${mkinfo} a,
+		qut_tpfgt b where a.tpfg=b.tpfg
+	</select>
+	<!-- 获取市场下拉框 -->
+	<select id="selectPdtinfo" resultType="java.util.HashMap">
+		select mkid,mknm from CMM_MKTINFO order by mkid
+	</select>
+	
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.kondor.kondorrv.KonCashTradeMapper">
+	<!-- 查询页面数据 -->
+	<select id="selCashTrade" resultType="com.ylxx.fx.service.po.Kon_CashTradeBean">
+		SELECT REQUESTDATE,REQUESTTIME,FRONTSERIALDATA,PRODUCTCODE,
+		ACTIONCODE,ACTIONTYPE,DOWNLOADKEY,DEALSTATUS,TRADEDATE,TYPEOFEVENT,
+		COMMENTS,PAYMENTDATE,ENDDATE,CASHFLOW,CASHFLOWTYPE,PERIODTYPE,USED,
+		USERSSHORTNAME,CPTYSHORTNAME,FOLDERSSHORTNAME,PURPOSESSHORTNAME,
+		CURRENCIESSHORTNAME,RESPONSEDATE,RESPONSETIME,KONDORSERIALDATA,TRADESTATUS,
+		ERRORCODE,ERRORMESSAGE,ACCOUNTSTATUS FROM KON_CASHTRADE 
+		WHERE FRONTSERIALDATA LIKE '%${rpcNo}%'
+		<if test="startDate!=null and startDate!='' and endDate!=null and endDate!=''">
+			and REQUESTDATE>=#{startDate} and #{endDate}>=REQUESTDATE
+		</if>
+		ORDER BY REQUESTDATE DESC,REQUESTTIME DESC
+	</select>
+</mapper>

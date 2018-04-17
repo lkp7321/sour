@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.AccumuQTranTradeMapper">
+	<select id="selectAccumuTranTrade" resultType="com.ylxx.fx.service.po.Tranlist">
+		
+		select b.trsn lcno,a.cuac,decode(a.rgtp,'0','签约','1','解约')rgtp,a.rgdt,a.rgtm,a.crdt,a.crtm,a.msfy,a.byam 
+		from trd_regmsglist_p003 a ,trd_tranlist_p003 b where a.lcno=b.lcno 
+	 <if test='trdtbegin!=null and !trdtbegin.equals("")'>
+		and a.rgdt>=#{trdtbegin}
+	</if>
+	<if test='trdtend!=null and !trdtend.equals("")'>
+		and #{trdtend}>=a.rgdt 
+	</if>
+	<if test='!strcuac.equals("")'>
+		and a.cuac like CONCAT(CONCAT('%', #{strcuac}), '%')
+	</if>
+	<if test='comdata1.equals("2")'>
+		<if test='!comdata3.equals("all")'>
+			 and a.rgtp = #{comdata3}  
+		</if>
+	</if> 
+	</select>
+</mapper>

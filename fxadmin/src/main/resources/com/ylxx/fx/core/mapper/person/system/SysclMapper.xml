@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.system.SysclMapper">
+	<!-- 获取总渠道信息 -->
+	<select id="selectTesttrac" resultType="com.ylxx.fx.service.po.Testtrac">
+		select * from TRD_TESTTRAC_${prcd}
+	</select>
+	<!-- 修改 -->
+	<update id="upTesttrac">
+		update TRD_TESTTRAC_${prcd} 
+		set 
+		USFG=#{testtrac.usfg} 
+		where 
+		trim(CUAC)=#{testtrac.cuac}
+	</update>
+	<!-- 添加前的查询 -->
+	<select id="selectTesttracD" resultType="String">
+		select TRAC from TRD_REGMSG_${prcd} where cuac=#{cuac}
+	</select>
+	<!-- 添加 -->
+	<insert id="insertTesttracD">
+		insert into TRD_TESTTRAC_${prcd} 
+		values(#{trac},#{testtrac.usfg},#{testtrac.cuac})
+	</insert>
+	<!-- 删除 -->
+	<delete id="deleteSyscl">
+		delete TRD_TESTTRAC_${prcd} where trim(CUAC)=#{cuac}
+	</delete>
+	
+	<!-- 修改平盘总控状态 -->
+	<update id="upPpsys">
+		update cmm_ckptpara set valu = #{sysctl.valu} where prcd = #{sysctl.prod}
+	</update>
+	<!-- 修改系统总控状态 -->
+	<update id="upSysclCon">
+		update TRD_SYSCTL_${sysctl.prod}
+		SET USFG=#{sysctl.usfg}, OPNO=#{sysctl.opno}, TRTM=#{sysctl.trtm}
+	</update>
+	<!-- 系统总控 -->
+	<select id="selectSysctl" resultType="String">
+		SELECT USFG FROM TRD_SYSCTL_${prod} WHERE 1>=ROWNUM and opno='admin'
+	</select>
+	<!-- 平盘总控 -->
+	<select id="selectpp" resultType="String">
+		select valu from cmm_ckptpara where prcd = #{prod}
+	</select>
+	
+</mapper>

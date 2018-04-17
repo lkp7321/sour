@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.AccumuAddCutyMapper">
+	<select id="doSearchList" resultType="java.util.HashMap">
+		select cuty,tynm,gstp,bpvl from trd_customerlever_${ptid} where 1=1
+		<if test="null!=gstp and !''.equals(gstp)">
+			<if test='gstp.equals("3")'>
+			</if>
+			<if test='!gstp.equals("3")'>
+				and gstp=#{gstp}
+			</if>
+		</if>
+		order by cuty
+	</select>
+	<select id="getCutyMax" resultType="String">
+		select max(cuty) cuty from trd_customerlever_${ptid} where  tynm=#{tynm}
+	</select>
+	<insert id="insertCuty">
+		insert into trd_customerlever_${ptid} values(#{level},#{name},#{gstp},#{bp})
+	</insert>
+	<select id="selMaxCuty" resultType="String">
+		SELECT max(cuty) from TRD_CUSTOMERLEVER_P003 WHERE tynm = #{tynm}
+	</select>
+</mapper>

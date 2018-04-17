@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+<title>告警查询</title>
+</head>
+<body>
+<div class="top priceuse">
+	<div class='head'>
+		<span>当前位置:</span>
+		<span>告警管理>告警事件查询</span>
+	</div>	
+	<div class="bott">
+		<p class="dat">
+			<span>交易日期&nbsp;</span>
+			<input type="text" id='d1' readonly='readonly' class="cal calander" onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd',maxDate:'#F{$dp.$D(\'d2\')||\'%y-%M-%d\'}'})">
+		</p>
+		<p class="cl1">
+			<span>错误代码&nbsp;</span>
+			<select class="acudeal">
+			</select>
+			<span class="tit"></span>
+		</p>
+		<p>
+			<button class="sear">查询</button>
+		</p>
+	</div>
+</div>
+<div class='boxtop'>
+	<div class="box"></div>
+</div>
+<div id="page"></div>
+	</body>
+	<script src="/fx/layui/layui.js"></script>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/priceplatform/priceuse"></script>	
+</html>

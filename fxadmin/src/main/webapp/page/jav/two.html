@@ -1,0 +1,120 @@
+<!-- <!DOCTYPE html> -->
+<!-- <html> -->
+<!-- <head> -->
+<!--     <title>Hello WebSocket</title> -->
+<!--     <link href="/fx/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+<!--     <link href="/fx/page/jav/main.css" rel="stylesheet"> -->
+<!--     <script src="/fx/js/js_files/jquery-1.9.1.min.js"></script> -->
+<!--     <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script> -->
+<!--    <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script> -->
+<!--     <script src="/fx/page/jav/app.js"></script> -->
+<!-- </head> -->
+<!-- <body> -->
+<!-- <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being -->
+<!--     enabled. Please enable -->
+<!--     Javascript and reload this page!</h2></noscript> -->
+<!-- <div id="main-content" class="container"> -->
+<!--     <div class="row"> -->
+<!--         <div class="col-md-6"> -->
+<!--             <form class="form-inline"> -->
+<!--                 <div class="form-group"> -->
+<!--                     <label for="connect">WebSocket connection:</label> -->
+<!--                     <button id="connect" class="btn btn-default" type="submit">Connect</button> -->
+<!--                     <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect -->
+<!--                     </button> -->
+<!--                 </div> -->
+<!--             </form> -->
+<!--         </div> -->
+<!--         <div class="col-md-6"> -->
+<!--             <form class="form-inline"> -->
+<!--                 <div class="form-group"> -->
+<!--                     <label for="name">What is your name?</label> -->
+<!--                     <input type="text" id="name" class="form-control" placeholder="Your name here..."> -->
+<!--                 </div> -->
+<!--                 <button id="send" class="btn btn-default" type="submit">Send</button> -->
+<!--             </form> -->
+<!--         </div> -->
+<!--     </div> -->
+<!--     <div class="row"> -->
+<!--         <div class="col-md-12"> -->
+<!--             <table id="conversation" class="table table-striped"> -->
+<!--                 <thead> -->
+<!--                 <tr> -->
+<!--                     <th>Greetings</th> -->
+<!--                 </tr> -->
+<!--                 </thead> -->
+<!--                 <tbody id="greetings"> -->
+<!--                 </tbody> -->
+<!--             </table> -->
+<!--         </div> -->
+<!--     </div> -->
+<!-- </div> -->
+<!-- </body> -->
+<!-- </html> -->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/fx/js/js_files/jquery-1.9.1.min.js"></script>
+    <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<div >
+	<a href = "a.html">aaa</a>
+</div>
+<div id="conversationDiv">
+</div>
+<script>		
+	$.ajax({
+		'url':'/fx/selJshPdtCustPriceStart.do',
+		'type':'get',
+		'dataType':'html',
+		'async':true,
+		'success':function(data){
+		}
+	});
+	var socket = new SockJS('/fx/webSocket'); //链接地址
+	stompClient = Stomp.over(socket);
+	stompClient.connect({}, function (frame) {
+	    console.log('Connected:' + frame);
+	    //会话消息监听地址
+	    stompClient.subscribe('/topic/lancy/testWebSocket/new', function (greeting) {
+	    	console.log("agfdgadfsfas")
+	        console.log(greeting.body);
+	        $('#conversationDiv').append('<p>'+greeting.body+'</p >');
+	    })
+	});
+	window.onbeforeunload = onbeforeunload_handler;     
+	    window.onunload = onunload_handler;     
+	    function onbeforeunload_handler()  
+	    {     
+	        $.ajax({
+				'url':'/fx/selJshPdtCustPriceClose.do',
+				'type':'get',
+				'dataType':'html',
+				'async':true,
+				'success':function(data){
+				}
+			});    
+	    }     
+	         
+	    function onunload_handler()  
+	    {     
+	       $.ajax({
+				'url':'/fx/selJshPdtCustPriceClose.do',
+				'type':'get',
+				'dataType':'html',
+				'async':true,
+				'success':function(data){
+				}
+			});  
+	    }   
+</script>
+</body>
+</html>

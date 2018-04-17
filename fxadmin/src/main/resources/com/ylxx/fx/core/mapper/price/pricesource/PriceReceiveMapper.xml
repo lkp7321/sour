@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 价格接收-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.pricesource.PriceReceiveMapper">
+	<!-- 下拉框1 -->
+	<select id="selectMarketinfo" resultType="java.util.HashMap">
+		select mkid,mknm,usfg from CMM_MKTINFO order by mkid
+	</select>
+	<!-- 查询数据 -->
+	<select id="getPriceRecList" resultType="com.ylxx.fx.core.domain.price.PriceRecVo">
+		select q.*,c.mknm,m.calendarname from trd_calendarrules m inner 
+		join QUT_CALENDARA q on m.calendarid=q.calendarid inner join CMM_MKTINFO c on q.mkid=c.mkid  
+		<if test='mkcode=="all" and exnm=="all"'>
+		</if>
+		<if test='mkcode!="all" and exnm=="all"'>
+			where q.mkid=#{mkcode}
+		</if>
+		<if test='mkcode!="all" and exnm!="all"'>
+			where q.mkid=#{mkcode} and q.exnm=#{exnm}
+		</if>
+	</select>
+	<!-- 币别 -->
+	<select id="getBiBieDuiList" resultType="String">
+		select exnm from qut_cmmprice_${mkid}
+	</select>
+	
+	<!-- 添加保存 -->
+	<insert id="insertPriceRec">
+		insert into QUT_CALENDARA(MKID,EXNM,calendarID) 
+		values(#{mkid},#{exnm},#{calendarId})
+	</insert>
+	<!-- 修改保存 -->
+	<update id="updatePriceRec">
+		update QUT_CALENDARA set MKID=#{mkid},EXNM=#{exnm},calendarID=#{calendarId}  
+		where  MKID=#{mkpk1} and EXNM=#{mkpk2} and calendarID=#{mkpk3}
+	</update>
+	<!-- 删除 -->
+	<delete id="deletePriceRec">
+		delete from  QUT_CALENDARA where  MKID=#{mkid} and EXNM=#{exnm} and calendarID=#{calendarID}
+	</delete>
+	<update id="batchUpPriceRecRule">
+		update QUT_CALENDARA set calendarID=#{calendarId} 
+		where MKID=#{priceRecBean.mkid} and EXNM=#{priceRecBean.exnm} and calendarID=#{priceRecBean.calendarID}
+	</update>
+	<select id="selRule" resultType="com.ylxx.fx.service.po.calendar.CalendarVO">
+		select * from trd_calendarrules where calendarid in
+		(select calendarid from QUT_CALENDARA 
+		where mkid=#{mkid} and exnm=#{exnm} )and leveltype=#{levelType}
+	</select>
+</mapper>

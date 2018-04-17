@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.system.MserrorMapper">
+	<select id="selMsgError" resultType="com.ylxx.fx.service.po.Mserror">
+		select ERCD,ERTX,ERIN erxs from trd_errorcode where 1=1
+		<if test='StrTxt!=null and !"".equals(StrTxt)'>
+			and trim(ercd)=#{StrTxt}
+		</if>
+		<if test='StrTxt1!=null and !"".equals(StrTxt1)'>
+			and trim(ertx) =#{StrTxt1}
+		</if>
+		order by ercd
+	</select>
+	<insert id="addErrorCode">
+		insert into trd_errorcode VALUES (#{ercd},#{ertx},#{erin})
+	</insert>
+	<update id="upsErrorCode">
+		update trd_errorcode set ertx=#{ertx}, erin=#{erin} where ercd=#{ercd}
+	</update>
+	<delete id="delErrorCode">
+		delete from trd_errorcode where ercd=#{ercd} 
+	</delete>
+</mapper>

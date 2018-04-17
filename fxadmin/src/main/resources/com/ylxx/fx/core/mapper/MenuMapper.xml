@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.MenuMapper">
+	<!-- 查询主页一级菜单 -->
+	<select id="findMenuOne" resultType="com.ylxx.fx.service.po.MenuBean">
+		select 
+		a.mnid idno, b.sbmn sbmn,b.sqno sqno,b.ur urls
+		from MNG_NRLRGT a, mng_nrgt b where trim(a.mnid)=trim(b.idno) and trim(a.ptid) 
+		IN(
+			select uspt from mng_user c, MNG_ROLE d 
+			where trim(c.usnm)=#{user.usnm}  
+			and trim(c.pswd)=#{user.pswd} 
+			and trim(c.prod)=#{user.prod}
+			and trim(c.uspt)=trim(d.ptid) and trim(d.usfg)='0'
+		) 
+		and trim(b.clas)='1' and a.rofg='0' order by b.idno
+	</select>
+	
+	<!-- 查询主页二级菜单 -->
+	<select id="findMenuTwo" resultType="com.ylxx.fx.service.po.MenuBean">
+		select a.mnid idno,b.sbmn sbmn,b.sqno sqno,b.ur urls
+		from MNG_NRLRGT a, mng_nrgt b
+		where 
+			trim(a.mnid)=trim(b.idno) and trim(a.ptid)=#{ptid} 
+			and trim(b.rltn)=#{idno} and trim(sqno)=#{prod}
+			and trim(b.clas)='2' and a.rofg='0' 
+		order by b.idno ,b.mamn
+		
+		<!--
+		select a.mnid idno,b.sbmn sbmn,b.sqno sqno,b.ur urls
+		from MNG_NRLRGT a, mng_nrgt b
+		where 
+		trim(a.mnid)=trim(b.idno) and trim(a.ptid)=#{ptid} 
+		and trim(b.mamn)=
+		(
+			select mamn from mng_nrgt 
+			where trim(sbmn)=#{sbmn} 
+			and trim(sqno)=#{sqno}
+		) 
+		and trim(b.clas)='2' and a.rofg='0' order by b.idno ,b.mamn
+		-->
+	</select>
+	
+	<!-- 查询其它菜单 -->
+	<select id="findMenuOther" resultType="com.ylxx.fx.service.po.MenuBean">
+		select a.mnid idno, b.mamn mamn, b.sbmn sbmn, b.ur urls
+		from MNG_NRLRGT a ,mng_nrgt b 
+		where 
+			trim(a.mnid)=trim(b.idno) and trim(a.ptid)=#{ptid} and trim(b.sqno)=#{prod}
+			and trim(b.rltn)=#{idno} and trim(b.clas)='3'  and a.rofg='0' 
+		order by b.idno ,b.mamn
+	</select>
+</mapper>

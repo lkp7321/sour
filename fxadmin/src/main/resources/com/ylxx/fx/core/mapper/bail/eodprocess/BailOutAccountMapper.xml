@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.bail.eodprocess.BailOutAccountMapper">
+	<!-- 查询交易码  -->
+	<select id="querytrancode" resultType="java.util.HashMap">
+		select trcd,trds from trd_trancode_p009 where trcd in 
+		('M5704','M5703','M5705','M5711','M5713','M5714') order by trcd
+	</select>
+	<!-- 选择核对时的所有数据  -->
+	<select id="selectOutAccountHDList" resultType="com.ylxx.fx.service.po.BailTranlist">
+		select LCNO,TRDT,TRTM,CUNO ,CUAC,ACCO TRAC,USAM,cxfg,decode(STCD,'0','初始值','1',
+		'MT4出金成功','2','已核对','3','已复核','S','出金成功','R','出金失败','未知') STCD,ERCD 
+		from PM_TRCRT_P009 where TRCD='M5704' and TRDT >=#{hddate} and #{enddate}>=TRDT 
+		and STCD =#{status} order by TRDT ,TRTM 
+	</select>
+	<!-- 核对提交 -->
+	<update id="hedui">
+		update PM_TRCRT_P009 set STCD='2' where LCNO=#{lcno}
+	</update>
+	<!-- 核对取消 -->
+	<update id="cancelHedui">
+		update PM_TRCRT_P009 set STCD='1' where LCNO=#{lcno}
+	</update>
+	<!-- 复核 -->
+	<update id="fuhe">
+		update PM_TRCRT_P009 set STCD='3' where LCNO=#{lcno}
+	</update>
+</mapper>

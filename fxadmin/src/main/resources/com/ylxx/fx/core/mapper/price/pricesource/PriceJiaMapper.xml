@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 价格加工-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.pricesource.PriceJiaMapper">
+	<!-- 查询页面数据 -->
+	<select id="selPriceJiaList" resultType="com.ylxx.fx.core.domain.price.PriceJiaVo">
+		select b.ptid,b.calendarID,q.ptnm,m.calendarname 
+		from trd_calendarrules m inner join QUT_CALENDARB b 
+		on 
+		m.calendarid=b.calendarid 
+		inner join 
+		qut_calendar_product q on b.ptid=q.ptid order by b.ptid
+	</select>
+	
+	<!-- 添加  产品列表-->
+	<select id="getProList" resultType="java.util.HashMap">
+		select ptid,ptnm from qut_calendar_product
+	</select>
+	<!-- 添加保存 -->
+	<insert id="savePriceJia">
+		insert into QUT_CALENDARB(PTID,calendarID) values(#{ptid},#{calendarId})
+	</insert>
+	<delete id="delPriceJia">
+		delete from  QUT_CALENDARB where  PTID=#{ptid}  and calendarID=#{calendarId}
+	</delete>
+	<update id="upPriceJia">
+		update QUT_CALENDARB set PTID=#{ptid},calendarID=#{calendarId} 
+		where  PTID=#{mkpk1} and calendarID=#{mkpk2} 
+	</update>
+	
+	<select id="selcalPricesetRule" resultType="com.ylxx.fx.service.po.calendar.CalendarVO">
+		select * from trd_calendarrules where calendarid in
+		(select calendarid from QUT_CALENDARB where ptid=#{ptid})and leveltype=#{levelType}
+	</select>
+	
+</mapper>

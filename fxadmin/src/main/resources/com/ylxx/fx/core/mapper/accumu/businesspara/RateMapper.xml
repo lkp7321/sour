@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.RateMapper">
+	<!--查询列表  -->
+	<select id="searchList" resultType="com.ylxx.fx.service.po.RateBean">
+		select 
+			PDTP,DESP,PDTM,PDBR,RATE,MINT,UPDT,GAIN,
+			CASE JXTP
+			WHEN 'D' THEN
+				'利率'
+			WHEN 'G' THEN
+				'份额'
+			ELSE
+				JXTP
+			END as JXTP
+			from TRD_RATE_P003
+	</select>
+	<!--插入列表  -->
+	<insert id="doInsert" >
+		INSERT INTO TRD_RATE_P003
+			VALUES(
+			'${pdtp}',
+			'${desp}',
+			'${pdtm}',
+			'${pdbr}',
+			'${rate}',
+			'${mint}',
+			'${updt}',
+			'${jxtp}',
+			'${gain}')
+	</insert>
+	<!--向利率历史表里添加记录  -->
+	<insert id="doInsertHis" >
+		INSERT INTO TRD_RATE_HIS_P003
+			VALUES(
+			'${pdtp}',
+			'${desp}',
+			'${pdtm}',
+			'${pdbr}',
+			'${rate}',
+			'${mint}',
+			'${updt}',
+			'${jxtp}',
+			'${gain}')
+	</insert>
+	<!--删除利率历史表记录  -->
+	<delete id="doDelete">
+		delete trd_rate_his_p003 
+			<where>
+				pdtp = #{pdtp} 
+				and updt = #{time}
+			</where> 
+	</delete>
+	<!--更新利率历史表记录  -->
+	<update id="doUpdate">
+		UPDATE trd_rate_p003
+			SET gain = '${gain}',
+			 	rate = '${rate}',
+			 	mint = '${mint}',
+			 	updt = '${updt}'
+			WHERE
+				pdtp = '${pdtp}' 
+	</update>
+</mapper>

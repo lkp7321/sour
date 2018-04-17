@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>价格接收设置</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top priceget pricegetstyle">
+	<div class='head'>
+		<p><span>当前位置:</span><span>价格源管理>价格接收设置</span></p>
+    </div>
+	<ul class="cen fourtul">
+			<li class='add pub_add'><span>添加</span></li>
+			<li class='modify pub_modify'><span>修改</span></li>
+			<li class='del pub_delete'><span>删除</span></li>
+			<!-- <li><button class="query">查询</button></li> -->
+	 </ul>
+	 <div class="bott">
+	   <p class="markname"><span>市场名称</span>
+			<select> </select>
+		</p>
+		<p class="cuurpair"><span>货币对</span>
+			<select >
+				<option>所有</option>
+			</select>
+		</p>
+		<p class="markname1">
+			<span>规则等级</span>
+			<select class="rulelev">
+	        	<option tit="">所有</option>
+	        	<option tit="1">每周每日</option>
+	        	<option tit="2">每周特殊日</option>
+	        	<option tit="3">年度特殊日</option>
+	       	</select>
+		</p>
+		<p class="markname1">
+			<span>日历规则</span>
+	       	<select class="calalev" onmousedown="if(this.options.length>6){this.size=7}" onblur="this.size=0" onchange="this.size=0" size="0">
+	       	</select>
+		</p>
+		<button class="query">查询</button>
+		<button class="batchmodify">批量修改</button>
+	 </div>
+</div>
+<div class="boxtop">
+	<div class='box'></div>
+</div>	
+</body>
+<script src="/fx/js/js_files/require.js" data-main="/fx/js/priceplatform/priceget"></script>
+</html>

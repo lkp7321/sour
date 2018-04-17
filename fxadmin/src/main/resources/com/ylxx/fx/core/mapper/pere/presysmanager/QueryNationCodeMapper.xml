@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.pere.presysmanager.QueryNationCodeMapper">
+<select id="selctCouList" resultType="com.ylxx.fx.service.po.QueryNationCode">
+select NAME,COUT,CMBCCOUT,COPYCOUT from CMM_DICTIONARY_COUNTRY order by NAME
+</select>
+
+<select id="selctCouListByCondition" resultType="com.ylxx.fx.service.po.QueryNationCode">
+select NAME,COUT,CMBCCOUT,COPYCOUT from CMM_DICTIONARY_COUNTRY
+<if test="fieldValue != null and fieldValue !=''">
+    where ${fieldName} like CONCAT(CONCAT('%', #{fieldValue}), '%')
+</if>
+    order by name
+</select>
+
+
+	
+</mapper>

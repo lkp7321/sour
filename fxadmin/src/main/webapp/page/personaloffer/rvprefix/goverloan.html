@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>国债流水查询</title>
+		<link rel="stylesheet" href="/fx/css/userinfo.css" />
+	</head>
+	<body>
+		<div class="top govertop">
+			<div class='head'>
+				<p><span>当前位置:</span><span>RV前置交易>国债流水查询</span></p>
+				<p class="dat">
+					<span>交易起始日期&nbsp;</span>
+					 <i class="tody d1"></i> 
+					<input type="text" id='d1' readonly='readonly' class="cal calander" onclick="WdatePicker({dateFmt:'yyyyMMdd',maxDate:'#F{$dp.$D(\'d2\')||\'%y-%M-%d\'}',onpicking:function(dp){this.previousSibling.previousSibling.innerHTML=''},minDate:'#F{$dp.$D(\'d2\',{d:-30})}' })" onchange='setEndTimeDurationWhileStartTimeChange();'>
+					
+				</p>
+				<p class="dat">
+					<span>交易结束日期&nbsp;</span>
+					 <i class="tody d2"></i> 
+					 <input type="text" id="d2" readonly='readonly' class="cal calander">
+				</p>
+				<p class="cardNu">交易请求流水号&nbsp;<input type="text" /><button class="sear">查询</button></p>
+			</div>
+		</div>
+		<div class="boxtop"><div class='box'></div></div>
+		<div id="page"></div>
+	</body>
+	  <script src="/fx/layui/layui.js"></script>
+	 <script src="/fx/js/js_files/require.js" defer data-main="/fx/js/rv/goverloan"></script>
+	 <script src='/fx/js/js_files/jquery-1.9.1.min.js'></script>
+	<script>
+	    // 设置结束时间的最大可取值为today
+	    $('#d2').unbind("click");
+	    $('#d2').bind("click",function(){
+	        WdatePicker({
+	            dateFmt:'yyyyMMdd ',
+	            minDate:'#F{$dp.$D(\'d1\')}',
+	            maxDate:'#F{\'%y-%M-%d\'}',
+	            onpicking:function(dp){
+	            	$(this).prev().text(' ');
+	            }
+	        });
+	    });
+		// 开始时间值改变时,改变结束时间值得范围
+		function setEndTimeDurationWhileStartTimeChange(){
+		    var start = $('#d1').val(); // 格式：2017-05-01 
+		    // 如果选中了开始时间
+		    if(start != "" && start != null){
+		        // endMaxDate = 开始时间+29天
+		       // start = start.replace(/-/g,"/");
+		        var endMaxDate = new Date(start.slice(0,4)+'/'+start.slice(4,6)+'/'+start.slice(6,8) );
+		        endMaxDate.setDate(endMaxDate.getDate()+30); 
+		   
+		        // today = 今天
+		        var today = new Date();
+		        today.setHours(0);    
+		        today.setMinutes(0);    
+		        today.setSeconds(0);    
+		        today.setMilliseconds(0);
+		       
+		        // 如果endMaxDate>today
+		        if(endMaxDate.getTime()>today.getTime()){
+		            // 设置结束时间的最大可取值为today
+		            $('#d2').unbind("click");
+		            $('#d2').bind("click",function(){
+		                WdatePicker({
+		                    readOnly:true,
+		                    dateFmt:'yyyyMMdd',
+		                    minDate:'#F{$dp.$D(\'d1\')}',
+		                    maxDate:'#F{\'%y-%M-%d\'}',
+				            onpicking:function(dp){
+				            	$(this).prev().text(' ');
+				            }
+		                });
+		            });
+		        }else{
+		            // 设置结束时间的最大可取值为endMaxDate
+		            $('#d2').unbind("click");
+		            $('#d2').bind("click",function(){
+		                WdatePicker({
+		                    readOnly:true,
+		                    dateFmt:'yyyyMMdd',
+		                    minDate:'#F{$dp.$D(\'d1\')}',
+		                    maxDate:'#F{$dp.$D(\'d1\',{d:30})}',
+				            onpicking:function(dp){
+				            	$(this).prev().text(' ');
+				            }
+		                });
+		            });
+		        }
+		    }
+		    // 如果清空了开始时间,重设结束时间的范围,到今天为止
+		    else{
+		        // 设置结束时间的最大可取值为today
+		        $('#d2').unbind("click");
+		        $('#d2').bind("click",function(){
+		            WdatePicker({
+		                readOnly:true,
+		                dateFmt:'yyyyMMdd',
+		                minDate:'#F{$dp.$D(\'d1\')}',
+		                maxDate:'#F{\'%y-%M-%d\'}',
+			            onpicking:function(dp){
+			            	$(this).prev().text(' ');
+			            }
+		            });
+		        });
+		    }
+		}
+	</script>
+</html>

@@ -1,0 +1,21 @@
+[
+	{"username":"Administrator",
+	 "password":"Liuxing@1234",
+	 "prolist":[
+	 	"个人实盘","个人纸黄金","民生金","个人结售汇","账户交易","保证金前置","RV前置","报价平台"
+	 ]
+	},
+	{"username":"李",
+	 "password":"123456",
+	 "prolist":[
+	 	"个人实盘","个人结售汇"
+	 ]
+	},
+	{"username":"111111",
+	 "password":"abc123",
+	 "prolist":[
+	 	"账户交易","保证金前置","RV前置","报价平台"
+	 ]
+	 
+	}
+]

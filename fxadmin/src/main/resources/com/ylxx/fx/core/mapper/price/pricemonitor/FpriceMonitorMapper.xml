@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 报价平台的所有监控-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.pricemonitor.FpriceMonitorMapper">
+	<!-- 利率市场监控1 -->
+	<select id="selectAllMaket" resultType="com.ylxx.fx.core.domain.price.AllMakPrice">
+		select a.mknm,b.*,
+		decode(b.ercd,'00000','正常','00001','手工停盘','00002','自动停盘','00003','买卖价倒置','00004','超过合法值范围','00005','价格源不可交易','00006','中间价波动异常','00007','未浮动次数超过范围') ercn,
+		c.tpnm from cmm_mktinfo a , (
+		select * from  QUT_CMMPRICE_${mkid}
+		) b,(select * from qut_tpfgt) c where  a.mkid=b.mkid and c.tpfg=b.tpfg
+		order by cxfg,exnm
+	</select>
+	<!-- 利率市场2 -->
+	<select id="selMike" resultType="String">
+		select a.Tname Tname from tab a,cmm_mktinfo b where a.tname like concat('QUT_CMMPRICE','%')
+		and substr(a.tname,14,17)=b.mkid and b.usfg='0'
+	</select>
+	
+	<!-- 利率市场3 -->
+	<select id="selMike2" resultType="com.ylxx.fx.core.domain.price.AllMakPrice">
+		select 
+		a.mknm,b.*,decode(b.ercd,'00000','正常','00001','手工停盘','00002','自动停盘','00003','买卖价倒置','00004','超过合法值范围','00005','价格源不可交易','00006','中间价波动异常','00007','未浮动次数超过范围') ercn,
+		c.tpnm from cmm_mktinfo a ,(
+		${sqel}
+		) b,(select * from qut_tpfgt) c where  a.mkid=b.mkid and c.tpfg=b.tpfg
+		order by cxfg,a.mkid
+	</select>
+	
+	<!-- 价格源监控 ,市场，货币对-->
+	<select id="selAllMk" resultType="java.util.HashMap">
+		select mknm,mkid,usfg from cmm_mktinfo where usfg='0' order by mknm
+	</select>
+	<select id="selAllexnm" resultType="java.util.HashMap">
+		select exnm,excn from cmm_currmsg where extp='0'
+	</select>
+	<!-- 产品源监控 -->
+	<select id="selectAllPdtprod" resultType="com.ylxx.fx.core.domain.FxipMonitorVo">
+		select a.*,
+		decode(a.ercd,'00000','正常','00001','手工停盘','00002','自动停盘','00003','买卖价倒置','00004','超过合法值范围','00005','价格源不可交易','00006','中间价波动异常','00007','未浮动次数超过范围') ercn,
+		b.mknm 
+		from qut_pdtprice_${prcd} a,CMM_MKTINFO b,CMM_CURRMSG c 
+		where a.prsc=b.mkid and a.exnm=c.exnm order by c.extp,a.exnm
+	</select>
+</mapper>

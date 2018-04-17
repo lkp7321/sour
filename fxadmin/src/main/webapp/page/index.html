@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>亚联(天津)信息技术有限责任公司</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="http://www.afcat.com.cn/favicon.ico" rel="shortcut icon">
+		<link rel="stylesheet" href="/fx/css/index.css" />
+		<style>
+			.ico {display:none;}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="left">
+				<div class="topleft">
+					<img src="/fx/img/log.png" class="log1" />
+					<img src="/fx/img/sidebar.png"  class="log2"/>
+				</div>
+				<div class="botleft">
+					<div class="center">
+						<img src="/fx/img/Group.png" />
+						<span class="loginus">登录用户:</span><span class='username'>Admin</span>
+					</div>
+					<div class='leftlist'>
+						<ul class='siderbars'>
+						</ul>
+					</div>					
+				</div>
+			</div>
+			<div class='right'>
+				<div class='topright'>
+					<h6></h6>
+					<form id="myfro" action='/fx/logingout.do' method="post">
+			  		 	<button type="submit" id="logon1" class="lockbtn"><img src="/fx/img/Signout.png"/>退出</button>
+	  				</form>
+					<!-- <i class='fa fa-bars showbtn'></i> -->
+				</div>
+				<div class="botright">
+					<iframe src="" frameborder="0" width='100%' scrolling="false" height='100%' id='ifra' allowTransparency="true"></iframe>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+	<script src="/fx/js/js_files/require.js"  data-main="/fx/js/index"></script> 
+	<!-- <script src="/fx/js/js_files/require.js"  data-main="/fx/js/index1"></script>-->
+	<script type='text/html' class='tem'>
+		<%for(var i=0,num=menuList.length;i<num;i++){%>
+			<li>		
+					<i class='ico ico<%:=i%>'></i><a href='javascript:;'><%:=menuList[i].menu1.nm%></a><i class='icol ico-carset'></i>	
+					<ul class='list-group-ul user'>
+					<%for(var j=0,nu=menuList[i].menu2.length;j<nu;j++){%>	
+						<%if(menuList[i].menu2[j].menKey2.length>0){%>
+							<li class='list-group-thr'>
+						<%}else{%>
+							<li>
+						<%}%>
+						<i class='ico icon<%:=i%><%:=j%>'></i><a href='javascript:;' ur='<%:=menuList[i].menu2[j].menKey1.ur%>'><%:=menuList[i].menu2[j].menKey1.nm%></a> 						
+						    <%if( menuList[i].menu2[j].menKey2.length>0 ){%>
+						    	<i class='icol ico-carset'></i>
+						    	<ul class="list-group-thrul">
+						    	<%for(var jj=0,nus=menuList[i].menu2[j].menKey2.length;jj<nus;jj++){%>	
+										<li class='list_thr'><a href='javascript:;' ur='<%:=menuList[i].menu2[j].menKey2[jj].ur%>'><%:=menuList[i].menu2[j].menKey2[jj].nm%></a></li>
+								<%}%>
+								</ul>
+							<%}%>
+						</li>
+					<%}%>
+					</ul>
+			</li>
+		<%}%>		
+	</script>
+	<script>
+		window.unonload = function(){alert('确定要离开吗?');}
+	</script>
+</html>

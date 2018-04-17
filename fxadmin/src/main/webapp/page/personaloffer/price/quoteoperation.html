@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>报价操作查询</title>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top quoteoperation">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>价格管理>报价操作查询</span>
+		</div>
+		<div class='cerbot'>
+			<p><span>用户名&nbsp;<input type="text" class="usnm"/></span></p>
+			<p><span>操作日期&nbsp;</span><input type="text" id='d1' readonly="true" /><i onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd'})" class='calander'></i></p>
+		    <button class="pub_button quoquery">查询</button>
+		</div>			
+	</div>
+	<div class='boxtop'>
+		<div class="box"></div>
+	</div>
+	<div id="page"></div>
+	</body>
+	<script src="/fx/layui/layui.js"></script>
+	<script src="/fx/js/js_files/require.js" async="true" data-main="/fx/js/personaloffer/quoteoperation"></script>
+</html>

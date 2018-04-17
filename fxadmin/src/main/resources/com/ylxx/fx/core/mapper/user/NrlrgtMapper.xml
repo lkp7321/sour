@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.user.NrlrgtMapper">
+	
+	<!-- 权限管理,添加时获取的权限列表 -->
+	<select id="selectAddNr" resultType="com.ylxx.fx.service.po.NrlrgtUp">
+		SELECT idno mnid,rltn rltn,clas mamn,sbmn sbmn from MNG_NRGT where sqno=#{sqno} and clas in('1') and 
+		idno not in 
+		(select mnid from mng_nrlrgt where trim(ptid)=#{ptid})
+		UNION
+		SELECT idno mnid,rltn rltn,clas mamn,sbmn sbmn from MNG_NRGT where rltn in (SELECT rltn from MNG_NRGT where sqno=#{sqno} and clas in('1')) and clas in('2') and 
+		idno not in 
+		(select mnid from mng_nrlrgt where trim(ptid)=#{ptid})
+		UNION
+		select idno mnid,rltn rltn,clas mamn,sbmn sbmn from MNG_NRGT where rltn in (SELECT idno from MNG_NRGT where rltn in (SELECT rltn from MNG_NRGT where sqno=#{sqno} and clas in('1')) and clas in('2')) and clas in('3') and 
+		idno not in 
+		(select mnid from mng_nrlrgt where trim(ptid)=#{ptid})
+		ORDER BY rltn,mnid
+	</select>
+	<!-- 查询上级权限是否存在 -->
+	<select id="isLevelNrgt" resultType="int">
+		select count(*) from mng_nrgt where idno=#{rltn} and clas in('1','2','3')
+	</select>
+	
+	<!-- 权限添加,批量操作 -->
+	<insert id="addNrlrgt" parameterType="java.util.List">
+		insert into mng_nrlrgt (ptid,mnid,rofg)
+		<foreach item="item" collection="list" index="index" separator="union all">
+     		(SELECT
+     		#{item.ptid,jdbcType=VARCHAR},
+     		#{item.mnid,jdbcType=VARCHAR},
+     		'1'
+     		FROM DUAL
+     		)
+		</foreach>
+	</insert> 
+	
+	
+ 	<!-- 查询已有的权限 -->
+ 	<select id="selectDelNrlrgt1" parameterType="String" resultType="com.ylxx.fx.service.po.Nrlrgt">
+ 		select * from MNG_NRLRGT where trim(ptid)=#{ptid}
+ 	</select>
+ 	<!-- 查询所有的权限 -->
+	<select id="selectDelNrlrgt2" parameterType="String" resultType="com.ylxx.fx.service.po.NrlrgtUp">
+		select idno mnid, clas mamn ,sbmn sbmn ,rltn rltn
+		from mng_nrgt 
+		where 
+		trim(sqno) =#{sqno} and clas in ('1','2','3') 
+		order by rltn,mnid,idno
+	</select>
+	<!-- 权限查看的查询 -->
+	<select id="showNrlrgt" resultType="com.ylxx.fx.service.po.NrlrgtUp">
+		SELECT b.idno mnid,b.rltn rltn,b.clas mamn,b.sbmn sbmn,decode(c.rofg,'0','1','1','1','0') rofg 
+		from MNG_NRGT b
+		LEFT OUTER JOIN MNG_NRLRGT c
+		on(b.idno=c.mnid and  c.ptid=#{ptid})
+		where b.sqno=#{sqno} and b.clas in ('1')
+		UNION
+		SELECT b.idno mnid,b.rltn rltn,b.clas mamn,b.sbmn sbmn,decode(c.rofg,'0','1','1','1','0') rofg 
+		from MNG_NRGT b 
+		LEFT OUTER JOIN MNG_NRLRGT c
+		on(b.idno=c.mnid and c.ptid=#{ptid})
+		where b.rltn in (SELECT rltn from MNG_NRGT where sqno=#{sqno} and clas in('1')) and clas in('2')
+		UNION
+		select b.idno mnid,b.rltn rltn,b.clas mamn,b.sbmn sbmn,decode(c.rofg,'0','1','1','1','0') rofg
+		from MNG_NRGT b
+		LEFT OUTER JOIN MNG_NRLRGT c
+		on(b.idno=c.mnid and c.ptid=#{ptid})
+		where b.rltn in (SELECT idno from MNG_NRGT where rltn in (SELECT rltn from MNG_NRGT where sqno=#{sqno} and clas in('1')) and clas in('2')) and clas in('3')
+		ORDER BY rltn,mnid
+	</select>
+	<!-- 删除权限的分页 -->
+	<select id="delnrlist" resultType="com.ylxx.fx.service.po.NrlrgtUp">
+		select idno mnid, clas mamn ,sbmn sbmn ,rltn rltn
+		from mng_nrgt a
+		where 
+		trim(sqno) =#{sqno}
+		and clas in ('1','2','3') 
+		and idno in(select mnid from MNG_NRLRGT where ptid=#{ptid} )
+		order by rltn, mnid, idno
+	</select>
+	<!-- 复核权限的分页 -->
+	<select id="selnrlist" resultType="com.ylxx.fx.service.po.NrlrgtUp">
+		select idno mnid, clas mamn ,sbmn sbmn, rltn rltn
+		from mng_nrgt 
+		where 
+		trim(sqno) =#{sqno} 
+		and clas in ('1','2','3') 
+		and idno in (select mnid from MNG_NRLRGT where trim(ptid)=#{ptid} and rofg='1')
+		order by rltn,mnid,idno
+	</select>
+	<!-- 删除 一级的权限-->
+	<delete id="delOneNr">
+		delete mng_nrlrgt 
+		where ptid=#{ptid} and mnid in 
+		(select idno from mng_nrgt where rltn in
+		(select idno from mng_nrgt where rltn=#{rltn}))
+	</delete>
+	 <!-- 删除二级的权限 -->
+	<delete id="delTwoNr">
+		delete mng_nrlrgt 
+		where 
+		ptid=#{ptid} and mnid in 
+		(select idno from mng_nrgt where rltn=#{rltn} or idno=#{idno})
+	</delete>
+	<!-- 删除三级的权限 -->
+	<delete id="delOthNr">
+		delete MNG_NRLRGT where trim(ptid)=#{ptid} and mnid=#{mnid}
+	</delete>
+	
+		
+	<!--复核弹窗 -->
+	<!-- 再加上  id="selNrlrgt2"-->
+	<select id="selRoNl" resultType="com.ylxx.fx.service.po.Nrlrgt">
+		select * from MNG_NRLRGT 
+		where trim(ptid)=#{ptid} and rofg='1'	
+	</select>
+	
+	<!-- 复核,未通过 -->
+	<delete id="roleNrlrgtNO" parameterType="java.util.List">
+		delete MNG_NRLRGT where 
+		<foreach collection="list" item="item" index="index" separator="or">
+			(
+			trim(ptid)=#{item.ptid,jdbcType=VARCHAR} 
+			and mnid=#{item.mnid,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</delete>
+	
+	<!-- 复核  -->
+	<!-- 复核本级菜单，和一级菜单 -->
+	<update id="isPrice">
+		update MNG_NRLRGT 
+		set rofg='0' 
+		where 
+		ptid=#{nrlrgt.ptid} and mnid=#{nrlrgt.mnid}
+	</update>
+	<!-- 当没有父级菜单时，插入一条父级菜单 -->
+	<insert id="iPrice">
+		insert into MNG_NRLRGT values(#{ptid},
+		(select rltn from mng_nrgt 
+		where trim(sqno)=#{sqno} and trim(idno)=#{mnid}),'0')
+	</insert>
+	
+	<!-- 插入一条上上级菜单 -->
+	<insert id="isPri">
+		insert into MNG_NRLRGT values(#{ptid},
+		(select rltn from mng_nrgt
+		where 
+		idno=(select rltn from mng_nrgt 
+		where sqno=#{sqno} and idno=#{mnid})),'0')
+	</insert>
+	
+	<!-- 查看上级 -->
+	<select id="selPrice" resultType="com.ylxx.fx.service.po.Nrlrgt">
+		select ptid,mnid from MNG_NRLRGT 
+		where 
+		mnid=(select rltn from mng_nrgt 
+		where 
+		trim(sqno)=#{sqno} and trim(idno)=#{mnid}) and trim(ptid)=#{ptid}
+	</select>
+	<!-- 查看上上级 -->
+	<select id="selPric" resultType="com.ylxx.fx.service.po.Nrlrgt">
+		select * from MNG_NRLRGT 
+		where mnid=(select rltn from mng_nrgt
+		where idno=(select rltn from mng_nrgt 
+		where sqno=#{sqno} and  idno=#{mnid})) and ptid=#{ptid}
+	</select>
+</mapper>

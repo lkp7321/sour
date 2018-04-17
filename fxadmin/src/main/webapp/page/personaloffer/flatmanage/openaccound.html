@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>手工敞口抹账</title>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top openaccound">
+			<div class='head'>
+				<span>当前位置:</span>
+				<span>平盘管理>手工敞口抹账</span>
+			</div>
+			<div class='cerbot'>
+				<p><span>登记起始日期：</span><input type="text" id='d12'/><i class='calander' onclick="WdatePicker({el:'d12',maxDate:'#F{$dp.$D(\'d13\')}',dateFmt:'yyyyMMdd'})"></i></p>
+				<p><span>登记结束日期：</span><input type="text" id='d13'/><i class='calander'  onclick="WdatePicker({el:'d13',minDate:'#F{$dp.$D(\'d12\')}',dateFmt:'yyyyMMdd'})"></i></p>
+			    <button class="pub_button openquery">查询</button>
+			    <button class="pub_button mozhang">抹账</button>
+			</div>
+	 </div>
+	<div class='boxtop'><div class="box"></div></div>
+ 	<script  src="/fx/js/js_files/require.js" data-main="/fx/js/personaloffer/openaccound" ></script>
+</body>
+</html>

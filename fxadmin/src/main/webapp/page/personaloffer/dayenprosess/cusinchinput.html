@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>客户未平头寸录入</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<link rel="stylesheet" href="/fx/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+
+</head>
+<body>
+     <div class="top cusinchrev">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>日终处理>保证金头寸录入</span>
+		</div>
+		<div class='bott'>
+		   <p><span>并账日期:</span><input type="text" id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd'})"></i></p>
+		   <p><button class="query">查询</button></p>
+		   <p><button class="luru">录入</button></p>
+		</div>
+	</div>
+	
+	<div class="maintext">
+	   <div class="currencypairs">
+	       <table class="table table-bordered"></table>
+	    </div>
+	    <div class='boxtop'><div class='box'></div></div>
+	</div>
+	<script src="/fx/js/js_files/require.js"  data-main="/fx/js/bond/cusinchinput"></script>
+     
+</body>
+</html>

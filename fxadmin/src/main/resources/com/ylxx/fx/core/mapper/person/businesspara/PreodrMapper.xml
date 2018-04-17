@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.PreodrMapper">
+	<!-- 查询所有 P001,P002,P003-->
+	<!-- 根据产品查询 挂单流水 -->
+	<select id="selectPreodr" resultType="com.ylxx.fx.service.po.Preodrlist">
+		select * from(select d.cuac,e.ognm,a.rqno as RQNO,a.trdt,
+		decode(a.odtp,'0','正常挂单','1','止盈追加','2','止损追加','3','一对多挂单','未知') odtp,
+		decode(a.bsfg,'0','买','1','卖','未知') bsfg ,
+		a.exse ,a.exnm,a.excd ,b.trds,a.trtm, a.vddt,
+		nvl( a.prdt,' ')prdt,nvl(a.prtm,' ')prtm,nvl(a.tlcs,' ')tlcs ,
+		nvl(a.cuno,' ')cuno,a.trac,nvl(a.cyen,' ')cyen,a.bynm,a.slnm ,
+		decode (a.cxfg,'2','钞','1','汇','其他')cxfg,
+		a.akpc ,a.zspc,a.byam,a.slam,nvl(a.usam,'0')usam,a.fvda,
+		nvl(a.mtpc,'0')mtpc,nvl(a.expc,'0')expc,nvl(a.pram,'0')pram,
+		nvl(a.cono,' ')cono,a.sequ,'' qdtp,
+		decode (a.stcd,'A','挂盘申请','M','匹配撤单','P','成交','O','超期撤单','C','客户撤单','W','等待生效',
+		'I','生效撤单','F','记账失败','未知') stcd,
+		nvl(a.ercd,' ')ercd,nvl(a.ertx,' ')ertx 
+		from 
+		view_querypreodrlist_${prod} a,trd_trancode_${prod} b,trd_regmsg_${prod} d,trd_ogcd e 
+		where 
+		a.trcd=b.odcd and a.trac=d.trac and d.ogcd=e.ogcd
+		<if test='trdtbegin != "" and trdtend != ""'>
+			and a.trdt >= #{trdtbegin} and #{trdtend} >= a.trdt
+		</if>
+		<if test='strcuac != ""'>
+			and d.cuac like concat(concat('%',#{strcuac}),'%')
+		</if>
+		<if test='comaogcd != "" and combogcd != ""'>
+			<if test='comaogcd == "0001" and combogcd == "all"'>
+			
+			</if>
+			<if test='comaogcd == "0001" and combogcd != "all"'>
+				and e.ogup = #{combogcd} 
+			</if>
+			<if test='comaogcd != "0001" and combogcd == "all"'>
+				and (e.ogup = #{comaogcd} or e.ogcd = #{comaogcd})
+			</if>
+			<if test='comaogcd != "0001" and combogcd != "all"'>
+				and e.ogcd = #{combogcd}
+			</if>
+		</if>
+		)
+	</select>
+	
+	<!-- 获取第一个机构下拉框 P001,P002-->
+	<select id="queryOneOrgan" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select ornm ognm,ogcd,'0001' as ogup,leve from Trd_Organ order by ogcd
+	</select>
+	
+	<!-- 获取第二个机构下拉框 P001,P002-->
+	<select id="queryTwoOrgan" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select ogcd,ognm,usfg,leve,ogup,orgn
+		from 
+		trd_ogcd 
+		where 
+		usfg='0' and 
+		ogup=#{comaogcd} and 
+		ogcd!=#{comaogcd} 
+		order by ogcd
+	</select>
+</mapper>

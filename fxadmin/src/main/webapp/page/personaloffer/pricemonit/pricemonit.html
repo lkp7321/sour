@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>价格源监控</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top pricemonit">
+	<div class='head'>
+		<span>当前位置:</span>
+		<span>价格监控>价格源监控</span>
+	</div>	
+	<div class="bott">
+		<p class="cl1">
+			<span>市场</span>
+			<select class="acudeal" onmousedown="if(this.options.length>6){this.size=7}" onblur="this.size=0" onchange="this.size=0" size="0">
+			</select>
+		</p>
+		<p class="cl1">
+			<span>币别对</span>
+			<select class="acudea" onmousedown="if(this.options.length>6){this.size=7}" onblur="this.size=0" onchange="this.size=0" size="0">
+			</select>
+		</p>
+		<p>
+			<span>价格源校验器状态:<i class="state"></i></span>&nbsp;&nbsp;
+			<button class="pribtn">打开/关闭价格源校验器</button>
+			<button class="refrebtn">刷新价格源校验器</button>
+		</p>
+	</div>
+</div>
+<div class='boxtop'>
+	<div class="box"></div>
+</div>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/priceplatform/accounttrans"></script>	
+</body>
+</html>

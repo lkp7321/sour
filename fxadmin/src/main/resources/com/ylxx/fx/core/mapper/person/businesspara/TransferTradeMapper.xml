@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.TransferTradeMapper">
+	<!-- 查询P001 -->
+	<select id="selectTranlist" resultType="com.ylxx.fx.service.po.Tranlist">
+		select b.ognm,a.cuac,a.lcno,a.trdt,a.trtm,
+		decode(a.trty,'0','转入专户','1','转出专户') as trds,a.trac,a.cyen,
+		decode(a.cxfg,'2','钞','1','汇','其他') as cxfg,a.amut,
+		decode(a.stcd,'S','成功','失败') as stcd,a.ercd 
+		from 
+		view_querytranlist_p001 a,trd_ogcd b 
+		where  
+		a.stcd='S' and a.trcd='S1201' and a.ogcd=b.ogcd
+		<if test='lcno != ""'>
+			and a.lcno like concat(concat('%',#{lcno}),'%')
+		</if>
+		<if test='strcuac != ""'>
+			and a.cuac like concat(concat('%',#{strcuac}),'%')
+		</if>
+		<if test='trdtbegin != "" and trdtend != ""'>
+			and a.trdt>=#{trdtbegin} 
+			and #{trdtend}>=a.trdt
+		</if>
+		<if test='comaogcd != "" and combogcd != ""'>
+			<if test='comaogcd == "0001" and combogcd == "all"'>
+			</if>
+			<if test='comaogcd == "0001" and combogcd != "all"'>
+				and b.ogup = #{combogcd} 
+			</if>
+			<if test='comaogcd != "0001" and combogcd == "all"'>
+				and ( b.ogup = #{comaogcd} or b.ogcd = #{comaogcd} )
+			</if>
+			<if test='comaogcd != "0001" and combogcd != "all"'>
+				and b.ogcd = #{combogcd}
+			</if>
+		</if>
+	</select>
+	
+	<!-- 查询P002 -->
+	<select id="selectTranlist2" resultType="com.ylxx.fx.service.po.Tranlist">
+		select b.ognm,a.cuac,a.lcno,a.trdt,a.trtm,
+		decode(a.trty,'0','转入专户','1','转出专户') as trds,a.trac,a.cyen,
+		decode(a.cxfg,'2','钞','1','汇','其他') as cxfg,a.amut,
+		decode(a.stcd,'S','成功','失败') as stcd,a.ercd 
+		from view_querytranlist_p002 a,trd_ogcd b, trd_regmsg_p002 c 
+		where  
+		a.stcd='S' and a.trcd='G1201' and 
+		c.ogcd=b.ogcd and a.trac =c.trac
+		
+		<if test='lcno!=""'>
+			and a.lcno like concat(concat('%',#{lcno}),'%')
+		</if>
+		<if test='strcuac!=""'>
+			and a.cuac like concat(concat('%',#{strcuac}),'%')
+		</if>
+		<if test='trdtbegin!="" and trdtend!=""'>
+			and a.trdt>=#{trdtbegin} and #{trdtend}>=a.trdt
+		</if>
+		<if test='comaogcd!="" and combogcd!=""'>
+			<if test='comaogcd=="0001" and combogcd=="all"'>
+				
+			</if>
+			<if test='comaogcd=="0001" and combogcd!="all"'>
+				and b.ogup = #{combogcd}
+			</if>
+			<if test='comaogcd!="0001" and combogcd=="all"'>
+				and (b.ogup = #{comaogcd}
+				or b.ogcd = #{comaogcd} )
+			</if>
+			<if test='comaogcd!="0001" and combogcd!="all"'>
+				and b.ogcd = #{combogcd}
+			</if>
+		</if>
+	</select>
+	<!-- P003 -->
+	<select id="selectTranlist3" resultType="com.ylxx.fx.service.po.Tranlist">
+		select b.ognm,a.cuac,a.lcno,a.trdt,a.trtm,
+		decode(a.trty,'0','转入专户','1','转出专户') as trds,a.trac,a.cyen,
+		decode(a.cxfg,'2','钞','1','汇','其他') as cxfg,a.amut,
+		decode(a.stcd,'S','成功','失败') as stcd,a.ercd 
+		from view_querytranlist_p003 a,trd_ogcd b, trd_regmsg_p003 c 
+		where  a.stcd='S' and a.trcd='G1201' and c.ogcd=b.ogcd and a.trac =c.trac
+		<if test='lcno!=""'>
+			and a.lcno like concat(concat('%',#{lcno}),'%')
+		</if>
+		<if test='strcuac!=""'>
+			and a.cuac like concat(concat('%',#{strcuac}),'%')
+		</if>
+		<if test='trdtbegin!="" and trdtend!=""'>
+			and a.trdt>=#{trdtbegin} and #{trdtend}>=a.trdt
+		</if>
+		<if test='comaogcd!="" and combogcd!=""'>
+			<if test='comaogcd=="0001" and combogcd=="all"'>
+				
+			</if>
+			<if test='comaogcd=="0001" and combogcd!="all"'>
+				and b.ogup = #{combogcd}
+			</if>
+			<if test='comaogcd!="0001" and combogcd=="all"'>
+				and (b.ogup = #{comaogcd}
+				or b.ogcd = #{comaogcd} )
+			</if>
+			<if test='comaogcd!="0001" and combogcd!="all"'>
+				and b.ogcd = #{combogcd}
+			</if>
+		</if>
+	</select>
+</mapper>

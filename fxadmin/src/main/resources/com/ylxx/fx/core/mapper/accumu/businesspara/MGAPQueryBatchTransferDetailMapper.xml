@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.MGAPQueryBatchTransferDetailMapper">
+	<select id="getSearch" resultType="java.util.HashMap">
+		select a.*,b.chnl,b.bhid,b.trtl from trd_transfer_p003 a,trd_trademsghead_p003 b where b.trsn=a.trsn and  b.trid='A2106'
+		<if test='number!=null and !"".equals(number)'>
+			and a.bnum=#{number}
+		</if>
+		<if test='status!=null and !"".equals(status)'>
+			<if test='!status.equals("")'>
+				and a.stcd=#{status}
+			</if>
+		</if>
+		order by TODT desc, TRTM desc, seqno
+	</select>
+	
+</mapper>

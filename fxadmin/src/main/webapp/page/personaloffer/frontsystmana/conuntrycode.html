@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>国别代码对照查询</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top registsafe">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>前置系统管理>国别代码对照查询&nbsp;&nbsp;</span>
+		</div>
+		<div class="bott">
+			<div class='dealdate'>
+				<p>
+					<span>国别</span>
+				    <select id='byExnm' class='small' onmousedown="if(this.options.length>3){this.size=4}" 
+				onblur="this.size=0" onchange="this.size=0">
+						 <option value='NAME'>国别</option>
+						 <option value='CMBCCOUT'>民生国别</option>
+						 <option value='COUT'>外管局国别</option>
+					</select>
+				</p>
+			</div>
+			<input type="text" class="titi"/>
+			<button class='search'>查询</button>
+		</div>
+</div>
+<div class='boxtop'>
+	<div class='box'></div>
+</div>
+<div id="page"></div>
+</body>
+<script src="/fx/layui/layui.js"></script>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/settlement/conuntrycode"></script>
+</html>

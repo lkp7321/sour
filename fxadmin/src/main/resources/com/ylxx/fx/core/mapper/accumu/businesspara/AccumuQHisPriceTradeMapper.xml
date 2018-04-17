@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 定期申购历史价格查询 返回发布日期、时间、交易币种、定期申购价格,价格序列号 -->
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.AccumuQHisPriceTradeMapper">
+	<select id="selectAccumuHisPrice" resultType="java.util.HashMap">
+	select exnm,trdt,trtm,tcsl,sequ from trd_price_p003 where 1=1
+			<if test="!trdtbegin.equals('') and !trdtend.equals('')">
+				<![CDATA[and trdt>=#{trdtbegin} and trdt<=#{trdtend}]]>
+			</if>
+		order by trdt desc,trtm desc
+	</select>
+</mapper>

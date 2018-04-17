@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>交易信息统计</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top dealtotal">
+	<div class='head'>
+		<span>当前位置:</span>
+		<span>交易管理>交易信息统计&nbsp;&nbsp;</span>
+	</div>
+	<div class='cer'>
+		<p class="fits"><span>机构名称&nbsp;</span>
+			<select class="fitnma">
+			</select>
+		</p>
+		<div class='dealdate'>
+			<span>交易日期:</span>
+			<p><input type='text' id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd',maxDate:'#F{$dp.$D(\'d2\')||\'%y-%M-%d\'}'})"></i></p>
+			<span class='to'>&nbsp;到&nbsp;</span>
+			<p><input type='text' id='d2'/><i class='calander' onclick="WdatePicker({el:'d2',dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d1\')}',maxDate:'%y-%M-%d'})"></i></p>
+		</div>
+		<button class="serch">查询</button>
+		<button class="toexcel">导出</button>
+	</div>
+</div>
+<div class='boxtop'><div class='box'></div></div>
+</body>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/personaloffer/dealtotal"></script>
+</html>

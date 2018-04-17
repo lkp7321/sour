@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.AccInfoMapper">
+	<!--查询列表  -->
+	<select id="searchAccInfoList" resultType="com.ylxx.fx.service.po.AccInfoManageBean">
+		SELECT
+			A .trac,
+			A .ogcd,
+			A .cuno,
+			b.cunm,
+			c.cblv,
+			D .ognm,
+			CASE c.flag
+			WHEN '0' THEN
+				'计息'
+			WHEN '1' THEN
+				'不计息'
+			ELSE
+				c.flag
+			END as flag
+		FROM
+			trd_regmsg_p003 A
+		LEFT JOIN trd_custinfo_p003 b ON A .trac = b.trac
+		LEFT JOIN trd_accinfo_p003 c ON A .trac = c.trac
+		LEFT JOIN trd_ogcd D ON A .ogcd = D .ogcd
+		WHERE
+			A .caty IN ('2', '3')
+		AND c.cyen = 'KAU'
+		<if test="orgn != '' and orgn != null and orgn != '0001'">
+			and D.ogcd = #{orgn}
+		</if>
+	</select>
+	<!--为第一个机构下拉框赋值  -->
+	<select id="queryOneOrgan1" resultType="com.ylxx.fx.service.po.TrdOrganBean">
+		select ornm ognm,ogcd,'0001' as ogup,leve from Trd_Organ order by ogcd
+	</select>
+	
+	<!--查询当前用户机构名称  -->
+	<select id="queryUserOrganForAcc" resultType="com.ylxx.fx.service.po.TrdOgcdBean">
+		select ognm,ogcd,leve from trd_ogcd where ogcd = #{userorg}
+	</select>
+	<!-- <select id="queryUserOrganForAcc" resultType="String">
+		select '${value}' || wmsys.wm_concat('${val1}' || ognm || '${val2}' || ogcd || '${val8}' || leve || '${val4}') || '${valueend}' leve from trd_ogcd where ogcd = #{userorg}
+	</select> -->
+	
+</mapper>

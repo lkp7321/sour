@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.jsh.JshTradeMapper">
+	<!--插入国别  -->
+	<insert id="insetrcout">
+		INSERT INTO CMM_DICTIONARY_COUNTRY (NAME,CMBCCOUT,COUT,COPYCOUT) VALUES (#{name},#{cmbccout},#{cout},#{copycout})
+	</insert>
+	<!-- 修改国别 -->
+	<update id="updatecout">
+		UPDATE CMM_DICTIONARY_COUNTRY SET  NAME =#{name}, COPYCOUT=#{copycout}, COUT=#{cout} where CMBCCOUT=#{cmbccout}
+	</update>
+	<!-- 查询国别 -->
+	<select id="selectcout" resultType="java.util.HashMap">
+		select * from CMM_DICTIONARY_COUNTRY
+		<where>
+		<if test='name!=null and !name.equals("")'>
+			name like concat(concat('%',#{name}),'%')
+			or cmbccout like concat(concat('%',#{name}),'%')
+			or cout like concat(concat('%',#{name}),'%')
+			or copycout like concat(concat('%',#{name}),'%')
+		</if>
+		</where>
+		
+	</select>
+	<!--删除国别  -->
+	<delete id="deletecout">
+		DELETE FROM CMM_DICTIONARY_COUNTRY WHERE cmbccout=#{cmbccout}
+	</delete>
+	
+	<!-- 查询流水表 -->
+	<select id="selecttranlist" resultType="com.ylxx.fx.service.po.jsh.Trd_tranlist">
+		select 
+		a.lcno, a.trdt, a.trtm, a.trcd, a.cuno, a.cuac, a.trac, a.cyen, a.caty,
+		a.cxfg, a.trtp, a.bycy, a.bynm, a.slcy, a.slnm, a.uspc, a.trty, a.rrdt,
+		a.byam, a.expc, a.slam, a.pram, a.amut, a.fvda, a.busd, a.susd, a.brsy,
+		a.usam, a.olno, a.tcby, a.tcsl, a.tbby, a.tbsl, a.exna, a.elcb, a.elcs,
+		a.elbb, a.elbs, a.exnb, a.ercb, a.ercs, a.erbb, a.erbs, a.trfg, a.stcd,
+		b.ertx error,   a.culv, a.cyam, a.fxid, a.cash, a.exfg, a.exid, a.cutp, 
+		a.extr, a.pftp, a.fram, a.frid, a.vlfg, a.csof, a.soac, a.ctof, a.toac,
+		a.sfid, a.bspc, a.olnl, a.trsn, a.trtl, a.tram, a.FONM, a.CYNM, a.ogcd,
+		a.bktr, a.bktl, a.pitr, a.pitl, a.sevd, a.idcd, a.cros, a.dttl, a.dttr,
+		a.rttl, a.rttr, a.todt, a.idtp, a.idno, a.cunm, a.extp, a.FOAM, a.trog,
+		a.dealtime,     a.bksn, a.pdld, a.otsn, a.optp, a.pety, a.bytp, a.cont,
+		a.safe, a.gscd, a.gcnm, a.dlcd, a.dlnm, a.bacd, a.smry, a.bezh, a.excp,
+		a.ywtp, a.status_code
+		from TRD_TRANLIST_P004 a ,TRD_ERRORCODE b 
+		<where>
+			<!-- 流水号 -->
+			<if test='trsn !=null and !"".equals(trsn)'>
+				a.trsn like concat(concat('%',#{trsn}),'%')
+			</if>
+			<!-- 客户号 -->
+			<if test='cuno!=null and !"".equals(cuno)'>
+				and	a.cuno like concat(concat('%',#{cuno}),'%')
+			</if>
+			<!-- 时间 -->
+			<if test='trdt!=null and !"".equals(trdt)'>
+				and a.trdt=#{trdt}
+			</if>
+			<!-- 状态 -->
+			<if test='ercd!=null and !"".equals(ercd)'>
+				and a.ercd like concat(concat('%',#{ercd}),'%')
+			</if>
+			and a.ercd = b.ercd
+		</where>
+	</select>
+	
+	<!-- 查询告警表 -->
+	<select id="selecterror" resultType="com.ylxx.fx.service.po.jsh.Trd_errorstate">
+		select a.*, b.ertx error from TRD_ERRORSTATE a, TRD_ERRORCODE b where 1=1
+		<if test='trdt!=null and !trdt.equals("")'>
+			and a.trdt = #{trdt}
+		</if>
+		<if test='lcno!=null and !lcno.equals("")'>
+			and a.lcno like concat(concat('%', #{lcno}), '%')
+		</if>
+		and a.trcd = b.ercd 
+		order by a.trdt desc
+	</select> 
+	<!-- 查询错误码 -->
+	<select id="selecterrorcode" resultType="String">
+	select ERTX from TRD_ERRORCODE where ERCD=#{ERCD}
+	</select>
+	<!-- 删除告警表里的数据 -->
+	<delete id="deleteerror">
+		DELETE FROM TRD_ERRORSTATE WHERE ORIGINATECHANNELSERIALNO=#{originatechannelserialno}
+	</delete>
+	
+	<!-- 冲销外管局 -->
+	<select id="getmsgno" resultType="String">
+	select lpad(safelcnop004.nextval,8,0) as msgno from dual
+	</select>
+	
+	<!-- 更新流水表中的记录状态及错误码 -->
+	<update id="upTranlist">
+		update TRD_TRANLIST_P004 set stcd='S',ercd='00000' where trsn=#{trsn}
+		<!-- lcno=#{lcno} and trdt=#{trdt} -->
+	</update>
+	
+	<!-- 更新告警表的处理标记 -->
+	<update id="upError">
+		update trd_errorstate set flag='1' where ORIGINATECHANNELSERIALNO=#{trsn}
+		<!-- lcno=#{lcno} and trdt=#{trdt} and productcode=#{ptid} -->
+	</update>
+	
+	<!-- 查询柜员号、密码 -->
+	<select id="getLoginOgcd" resultType="com.ylxx.fx.service.po.jsh.TbTrd_safeAccinfo">
+		SELECT OGCD, TRTL, PASS FROM TRD_SAFEACCINFO_P004 WHERE BHID = #{bhid,jdbcType=CHAR} 
+		AND CHNL = #{chnl,jdbcType=CHAR} AND TLTP = '0'
+	</select>
+	
+	<!-- 获取流水号 -->
+	<select id="getMsgno" resultType="String">
+		select lpad(safelcnop004.nextval,8,0) as msgno from dual
+	</select>
+	<!-- 根据流水号查询流水表 -->
+	<select id="getlist" resultType="String">
+	select TRCD from TRD_TRANLIST_P004 where TRSN=#{trsn}
+	</select>
+	<!-- 根据告警表的流水号查询流水表的业务参号 -->
+	<select id="getfxid" resultType="String">
+	select fxid from TRD_TRANLIST_P004 where TRSN=#{trsn}
+	</select>
+</mapper>

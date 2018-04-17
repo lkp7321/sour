@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.bail.eodprocess.BailTouCunInputMapper">
+	<!-- 选择保证金头寸录入的所有数据 -->
+	<select id="selectTouCunList" resultType="com.ylxx.fx.service.po.BailTouCunBean">
+		select * from (select lcno,exnm,left,righ,lbzam,rbzam,
+		decode(stcd,'0','录入','1','处理中','2','复核','3','过期无效',stcd)stcd,
+		trsn,trid,bzdt,row_number() over(partition by exnm order by bzdt desc ) rn  
+		from pm_cktrt_p009 where #{hddate}>=bzdt and trid='M5712' and 
+		stcd in('0','1','2')) where 3>rn
+	</select>
+</mapper>

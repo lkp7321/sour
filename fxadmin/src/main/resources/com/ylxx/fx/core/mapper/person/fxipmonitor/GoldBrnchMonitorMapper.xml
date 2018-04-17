@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- gold -->
+<mapper namespace="com.ylxx.fx.core.mapper.person.fxipmonitor.GoldBrnchMonitorMapper">
+	<!-- 总分行价格监控 -->
+	<select id="selectAllPdtBrnch" resultType="com.ylxx.fx.core.domain.FxipMonitorVo">
+		select 
+		a.udfg udfg,a.exnm exnm,
+		a.nemd nemd,a.neby neby,
+		a.nesl nesl,a.mdtm mdtm,
+		decode(a.stfg,'0','开盘','1','停盘')stfg,
+		decode(a.trfg,'0','可交易','1','不可交易')trfg,
+		decode(a.ercd,'00000','正常','00001','手工停盘','00002','自动停盘',
+		'00003','买卖价倒置','00004','超过合法值范围','00005','价格源不可交易',
+		'00006','中间价波动异常','00007','未浮动次数超过范围') ercd,
+		b.mknm mknm
+		from 
+		QUT_PDTBRNCH_P002 a,(select * from CMM_MKTINFO) b 
+		where a.prsc=b.mkid
+	</select>
+	
+	<!-- 客户价格监控 -->
+	<select id="selectAllPdtCust" resultType="com.ylxx.fx.core.domain.FxipMonitorVo">
+		select 
+		a.udfg udfg,a.exnm exnm,
+		a.nemd nemd,a.neby neby,
+		a.nesl nesl,a.mdtm mdtm,
+		decode(a.stfg,'0','开盘','1','停盘')stfg,
+		decode(a.trfg,'0','可交易','1','不可交易')trfg,
+		decode(a.ercd,'00000','正常','00001','手工停盘',
+		'00002','自动停盘','00003','买卖价倒置','00004','超过合法值范围',
+		'00005','价格源不可交易','00006','中间价波动异常','00007','未浮动次数超过范围') ercd,
+		b.mknm 
+		from 
+		QUT_PDTCUST_P002 a,(select * from CMM_MKTINFO) b 
+		where a.prsc=b.mkid
+	</select>
+	
+	<!-- 敞口监控 -->
+	<select id="selectwebPrice" resultType="com.ylxx.fx.service.po.GckwebBean">
+		select A.exnm,C.excn,A.lamt,A.ramt,A.toyk,a.ppyk,a.zcyk,a.ppyk,a.sgyk,a.tryk,B.neby,B.nesl,b.udfg 
+		from ck_total A,QUT_PDTCUST_P002 B,CMM_CURRMSG_P002 C WHERE A.EXNM =B.EXNM 
+		AND C.EXNM = B.EXNM and a.prcd='P002' order by a.exnm desc
+	</select>
+	
+	<!-- 分类敞口 -->
+	<select id="selectGoldCkno" resultType="java.util.HashMap">
+		select ckno,cknm from ck_rulet  where prcd='P002'
+	</select>
+	<select id="selectGoldclassPrice" resultType="com.ylxx.fx.core.domain.FormuleVo">
+		select 
+		c.udfg,a.prcd,a.exnm,a.excd ,
+		a.lamt lamt,
+		a.ramt ramt,
+		a.fdsy fdsy,a.sgyk,a.zcyk,a.tryk,a.toyk,a.ppyk, c.neby,c.nesl 
+		from
+		ck_classTotal a,QUT_PDTBRNCH_P002 c 
+		where 
+		a.exnm=c.exnm and trim(a.ckno)=#{ckno} and a.prcd='P002' 
+		order by exnm
+	</select>
+</mapper>

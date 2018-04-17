@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 告警用户设置-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.alarm.AlarmUserMapper">
+	<select id="selectAlarmn" resultType="com.ylxx.fx.service.po.Cmmalarmuser">
+		select * from CMM_ALARMUSER
+	</select>
+	
+	<update id="upAlarm">
+		update CMM_ALARMUSER 
+		SET 
+		USIP=#{cmmAlarmUser.usip},MUSC=#{cmmAlarmUser.musc},TLNO=#{cmmAlarmUser.tlno}, 
+		MBNO=#{cmmAlarmUser.mbno},STCD=#{cmmAlarmUser.stcd} 
+		where trim(USID)=#{cmmAlarmUser.usid} and trim(USNM)=#{cmmAlarmUser.usnm}
+	</update>
+	
+	<insert id="insertAlarm">
+		insert into CMM_ALARMUSER(USID,USNM,USIP,MUSC,TLNO,MBNO,STCD) 
+		values(
+		#{cmmAlarmUser.usid},#{cmmAlarmUser.usnm},
+		#{cmmAlarmUser.usip},#{cmmAlarmUser.musc},
+		#{cmmAlarmUser.tlno},#{cmmAlarmUser.mbno},
+		#{cmmAlarmUser.stcd})
+	</insert>
+		
+	<delete id="deleteAlarm">
+		delete CMM_ALARMUSER where trim(USID)=#{usid} and trim(USNM)=#{usnm}
+	</delete>
+	<select id="selAlarmUsid" resultType="String">
+		select lpad(AlarmUSID.nextval,4,0) as usid from dual
+	</select>
+</mapper>

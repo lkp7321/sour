@@ -1,0 +1,382 @@
+
+@charset "UTF-8";
+@import './reset.css';
+@import './mmGrid.css';
+@import '../layui/css/layui.css';
+@import './style.css';
+ 
+.top{
+	/* height:79px; */
+	line-height: 79px;
+	height: calc(7.14rem*0.78);
+	line-height:calc(7.14rem*0.78);
+	background:#fff;
+	position: relative;
+	box-shadow:0 5px 19px 0 #cad1e2;
+	min-width: 100%;
+}
+button[disabled]{
+	background:brown;
+	cursor:auto;
+}
+#fornm{
+	position:relative;
+	display:inline-block;
+    
+}
+.positionnews #fornm{
+	margin-left: 36px;
+}
+#fornm input{
+	position:absolute;
+	top:-300px;
+	left:0;
+}
+#logon{
+	width:80px;
+    height: 26.8px;
+}
+.mmGrid{
+	/* margin:30px 0 0 30px; */
+	margin: 15px 0 0 19px;
+}
+.mmGrid .mmg-bodyWrapper .mmg-body tr {
+    height: 54px;
+    font-size: 0.9rem;
+}
+.boxtop1 .mmg-bodyWrapper .mmg-body tr,.boxtop2 .mmg-bodyWrapper .mmg-body tr,.boxtop3 .mmg-bodyWrapper .mmg-body tr{
+	height:30px;
+}
+.boxtop1 .mmGrid{
+	margin:15px 0 0 30px;
+}
+.boxtop2 .mmGrid,.boxtop3 .mmGrid{
+	margin:0 0 0 30px;
+}
+.platecontro{
+	display:none;
+}
+.setlist{
+	width: 100px;
+	position: absolute;
+	right: 13px;
+	top: 58px;
+	z-index:999;
+	background:#fff;
+	border: 1px solid #BBBBBB;
+	box-shadow:0 1px 4px 1px #ccc;
+	display:none;
+}
+.setlist li{
+	line-height: 24px;
+	padding-left: 10px;
+	width: 100%;
+}
+.setlist li:hover{
+	background:#ccc;
+}
+@media screen and (max-width:750px){
+	.mmGrid{
+		margin:15px 8px;
+	}
+}
+input[type='text'],input[type="password"]{
+	height:25px;
+	font-size: 0.9rem;
+}
+/*日历样式*/
+input.cal{
+    width: 100px;
+    border: none;
+    border: 1px solid #5a8bff;
+}
+.pub_add{
+	background: url(../img/add.png) no-repeat 4px 26px;
+	padding-left: 30px;
+}
+.pub_modify{
+	background: url(../img/modify.png) no-repeat 2px 26px;
+	padding-left: 30px;
+}
+.pub_delete{
+	background: url(../img/delete.png) no-repeat 2px 26px;
+	padding-left: 30px;
+}
+.pub_reset{
+	background: url(../img/Reset.png) no-repeat 2px 26px;
+	padding-left: 32px;
+}
+
+.pub_serch{
+	float: left;
+    margin-right: 425px;
+}
+.pub_serch .pub_seript{
+	border: none;
+	border: 1px solid #5B8CFF;
+	padding-left: 25px;
+    background: url(../img/userinfoserch.png) no-repeat 5px;
+}
+.pub_serch .pub_serbtn{
+	width: 55px;
+}
+.pub_button{
+	padding:5px 10px;
+ }
+.hands_stop{
+	background-color:rgba(0,0,0,.5);
+}
+select{
+	height: auto;
+    position: absolute;
+    z-index: 10;
+    background-color: #fff;
+    padding: 4px 0 4px 5px;
+    border: 1px solid #5a8bff;
+}
+/*
+ * ----------------------鐢ㄦ埛绠＄悊------------------------------------
+ */
+/*鐢ㄦ埛淇℃伅*/
+.head{
+	float: left;
+}
+.sysbtn{
+	margin-left: 60px;
+}
+.head{
+/* 	font-size: 14px; */
+	margin-left: 20px;	
+}
+i.sett{
+	font-style:normal;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+.fourtul{
+	line-height: calc(0.78*7.14rem);
+    display: inline-block;
+    float: left;
+    margin-left:60px;
+}
+.cen li{
+  display: inline-block;
+  margin-right: 10px;
+  cursor:pointer;
+  position: relative;
+}
+.cen li img{
+	width: 18px;
+	height: 18px;
+	margin-right: 8px;
+	position: relative;
+	top: 2px;
+}
+.set{
+	float: right;
+	font-size: 1.2rem;
+	margin:0px 10px 0 0;
+	background:none;
+	border:none;
+}
+.bott{
+	margin-left: 20px;
+	display: inline-block;
+}
+.calander{
+	width: 20px;
+	height: 22px;
+	display:inline-block;
+	position: absolute;
+	right: -25px;
+	top: 8px;
+	border-radius:5px;
+	background:url(../img/calander.png) 0 0 no-repeat;
+}
+
+/*价格管理 撮合*/
+.cuohe{
+	line-height:36px;
+}
+.cuohe .bott{
+	display:block;
+}
+.cuohe .bott p{
+	display:inline-block;
+ 	position:relative;
+    margin-right: 30px;
+}
+.cuohe .bott input{
+   border: 1px solid #5a8bff;
+}
+.cuohe .bott p select{
+    top: 5px;
+    left: 36px;
+    width: 100px;
+    background-position: 80px;
+}
+.cuohe .fourtul{
+	float:none;
+    line-height: 30px;
+    height: 36px;
+}
+.cuohe .bott .query {
+	margin-left:100px;
+}
+/*价格管理 客户价格公告板*/
+.customerPrice .fourtul li{
+	position: relative;
+}
+.customerPrice .currency select{
+	top: -15px;
+    width: 100px;
+    background-position: 80px;
+} 
+.customerPrice .sign select{
+	top: -15px;
+    left: 100px;
+    width: 100px;
+    background-position: 80px;
+} 
+.customerPrice .qurey{
+	margin-left: 210px;
+}
+/*价格管理 参数设置*/
+.priceParameter .qurey{
+	margin-left: 106px;
+}
+/*外管局管理  柜员管理*/
+/* .tellerManage .fourtul .pub_add{
+	background: url(../img/add.png) no-repeat 4px 3px;
+}
+.tellerManage .fourtul .pub_modify{
+	 background: url(../img/modify.png) no-repeat 2px 3px;
+}
+.tellerManage .fourtul .pub_delete{
+	  background: url(../img/delete.png) no-repeat 2px 3px;
+}
+.tellerManage .bott{
+	 display: inline-block;
+}*/
+.tellerManage .bott p{
+	 margin-right: 15px;
+	 display: inline-block;
+}
+.tellerManage .bott .query {
+    margin-left: 10px;
+}
+/*折美元利率*/
+.rateManage .currency select{
+    width: 100px;
+    background-position: 80px;
+    top: -16px;
+}
+.rateManage .qurey button{
+	 margin-left: 100px;
+}
+
+/*定投管理*/
+.dtqian .dealdate,.dtqian .signout,.dt_qian,.cuu_pair,.dt_bot{
+	display:inline-block;
+}
+.dtqian .dealdate p{
+	display: inline-block;
+    position: relative;
+    width: 121px;
+}
+.dtqian .calander{
+	 right: 3px;
+    top: 26px;
+}
+.dt_data{
+	width: 120px;
+	height:24px;
+}
+.cuu_pair{
+	position:relative;
+	width: 150px;
+}
+.cuu_pair select{
+	position: absolute;
+    width: 100px;
+    left: 43px;
+    top: 22px;
+    background-position: 82px;
+}
+.dt_bot button{
+	height:25px;
+	padding: 0 5px;
+	font-size:13px;
+}
+/*国别管理*/
+.differentCountries .info_seript{
+	margin-right:15px;
+}
+/*日志管理*/
+.logmanage .calander{
+   top: 26px;
+}
+.logmanage .cen .logdata{
+	margin-right:30px;
+}
+/* 分页样式 */
+.page{
+	text-align:center;
+	margin-top:6px;
+}
+.page span{
+	/* width:60px; */
+	display:inline-block;
+}
+.first,.last,.prev,.next{
+	cursor:pointer;
+}
+.page span.nopage,.page span.totalpage{
+	width:111px;
+}
+.query .errorcode{
+	padding: 4px 12px;
+	margin-top: 2px;
+}
+.layui-laypage a, .layui-laypage span{
+	background-color:transparent;
+}
+.layui-laypage button{
+	color:#000;
+}
+.layui-laypage select{
+	position:static;
+	width: 60px;
+	padding-right:10px;
+	background-position:right;
+}
+/*外管局管理-交易流水*/
+.tradeWater .dealdate{
+	float: left;
+    margin-left: 10px;
+}
+.tradeWater .dealdate p{
+	position:relative;
+	display:inline-block;
+}
+.tradeWater .fourtul{
+	margin-left: 6px;
+}
+.tradeWater .calander{
+	right: 3px;
+    top: 26px;
+}
+.blacklist .selectAttention{
+	padding:5px;
+}
+.boxtop .chongxiao{
+	padding:5px;
+}
+#fornm{
+	margin-left: 10px;
+}
+.alarmManage .calander{
+    right: 3px;
+  		top: 26px;
+}

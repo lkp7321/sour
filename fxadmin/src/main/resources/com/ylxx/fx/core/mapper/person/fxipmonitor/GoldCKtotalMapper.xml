@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- gold 总敞口监控-->
+<mapper namespace="com.ylxx.fx.core.mapper.person.fxipmonitor.GoldCKtotalMapper">
+	<!-- 市场报价 -->
+	<select id="ckTotalData" resultType="com.ylxx.fx.service.po.CkTotalBean">
+		 select 
+		 '贵金属买卖' prnm,a.exnm,a.neby,a.nemd,
+		 a.nesl,a.mdtm,'' mkid,'产品客户价' mknm,
+		 decode(a.stfg,'0','开盘','1','停盘','未知') stfg,
+		 a.udfg
+		 from qut_pdtcust_p002 a order by exnm
+	</select>
+	
+	<!-- 总敞口 -->
+	<select id="ckTotalYk" resultType="com.ylxx.fx.service.po.CkTotalBean">
+		select 
+		a.exnm,a.excd,
+		decode(a.exnm,'KAGRMB','克白银/人民币(客户交易)','KAURMB',
+		'克黄金/人民币(客户交易)','OAUUSD','盎司黄金/美元(境外平盘)',
+		'OAGUSD','盎司白银/美元(境外平盘)','AGBRMB','克白银/人民币(金交所平盘)',
+		'AUBRMB','克黄金/人民币(金交所平盘)','USDRMB','美元/人民币', '未知币种') nmex, 
+		a.lamt,a.ramt,a.zcyk,a.sgyk,a.ppyk,
+		nvl((select neby from qut_pdtcust_p002 where exnm='KAURMB'),0) neby,
+		nvl((select nesl from qut_pdtcust_p002 where exnm='KAURMB'),0) nesl 
+		from ck_total a where  a.prcd='P002' and a.exnm ='AUBRMB' 
+		union
+		select 
+		a.exnm,a.excd,
+		decode(a.exnm,'KAGRMB','克白银/人民币(客户交易)','KAURMB',
+		'克黄金/人民币(客户交易)','OAUUSD','盎司黄金/美元(境外平盘)',
+		'OAGUSD','盎司白银/美元(境外平盘)','AGBRMB','克白银/人民币(金交所平盘)',
+		'AUBRMB','克黄金/人民币(金交所平盘)','USDRMB','美元/人民币', '未知币种') nmex, 
+		a.lamt,a.ramt,a.zcyk,a.sgyk,a.ppyk,
+		nvl((select neby from qut_pdtcust_p002 where exnm='KAGRMB'),0) neby,
+		nvl((select nesl from qut_pdtcust_p002 where exnm='KAGRMB'),0) nesl
+		from ck_total a where a.prcd='P002' and a.exnm ='AGBRMB' 
+		union 
+		select 
+		a.exnm,a.excd,
+		decode(a.exnm,'KAGRMB','克白银/人民币(客户交易)','KAURMB',
+		'克黄金/人民币(客户交易)','OAUUSD','盎司黄金/美元(境外平盘)','OAGUSD',
+		'盎司白银/美元(境外平盘)','AGBRMB','克白银/人民币(金交所平盘)','AUBRMB',
+		'克黄金/人民币(金交所平盘)','USDRMB','美元/人民币', '未知币种') nmex, 
+		a.lamt,a.ramt,a.zcyk,a.sgyk,a.ppyk,
+		nvl(b.neby,0) neby,nvl(b.nesl,0) nesl 
+		from ck_total a,qut_pdtcust_p002 b  where a.exnm=b.exnm and a.prcd='P002'
+		order by exnm 
+	</select>
+	
+	<!--  -->
+	<select id="USDCNYNEMD" resultType="double">
+		select nemd from qut_cmmprice_m0201 where exnm='USDRMB'
+	</select>
+	<!-- 更新敞口中对外损益 -->
+	<update id="updateCKZCYK">
+		update ck_total set zcyk=zcyk+${ckTotalBean.zcyk} 
+		where exnm = #{ckTotalBean.exnm}
+	</update>
+	
+	<insert id="insertTQTranList">
+		insert into ck_tranlist 
+		(tqnm,tqdt,tqtm,mkpr,exnm,excd,blamt,bramt,bcbhl,bzcyk,alamt,aramt,acbhl,azcyk)
+		values(
+		#{usnm},#{currDate},
+		#{currTime},#{ckTotalBean.Nemd},
+		#{ckTotalBean.exnm},#{ckTotalBean.excd},
+		#{ckTotalBean.lamt},#{ckTotalBean.bramt},
+		#{ckTotalBean.bcbhl},#{ckTotalBean.bzcyk},
+		#{ckTotalBean.lamt},#{ckTotalBean.ramt},
+		#{ckTotalBean.cbhl},#{ckTotalBean.zcyk})
+	</insert>
+</mapper>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+	<title>成交流水监控</title>
+</head>
+<body>
+	<div class="top dealwater">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>监控管理>成交流水监控</span>
+			<p>
+				<span>当日成交量:<i></i></span>
+				<span>当日交易笔数:<i></i></span>
+			</p>
+		</div>
+		<div class='bort'>
+			<p><span>开始日期:</span><input type="text" id='d12'/><i class='calander' onclick="WdatePicker({el:'d12',dateFmt:'yyyyMMdd'})"></i></p>
+			<p><span>结束日期:</span><input type="text" id='d13'/><i class='calander'  onclick="WdatePicker({el:'d13',dateFmt:'yyyyMMdd'})"></i></p>
+			<p><span>刷新频率:</span><input type="text" value="30" class="refrof"/>秒</p>
+			<button class="chaun">查询</button>
+		</div>	
+	</div>
+	<div class='boxtop'><div class='box'></div></div>
+	<script src="/fx/js/js_files/require.js" async="true" data-main="/fx/js/personaloffer/dealwatermonitor1"></script>
+</body>
+</html>

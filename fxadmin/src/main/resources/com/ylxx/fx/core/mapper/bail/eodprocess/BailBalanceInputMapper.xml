@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.bail.eodprocess.BailBalanceInputMapper">
+	<!-- 选择保证金余额录入/保证金利息录入的所有数据 -->
+	<select id="selectBalanceInputList" resultType="com.ylxx.fx.service.po.BailBalanceBean">
+		select * from (select rownum rnum,b.* from 
+		(select * from pm_bzamt_p009 a  where #{hddate}>=bzdt
+		and trid=#{tradeCode} and stcd in('0','1','2') order by bzdt desc) b ) c 
+		where 2>=c.rnum
+	</select>
+	<!-- 保证金渠道流水号中生成10位顺序号  -->
+	<select id="generatorseq1" resultType="String">
+		select lpad(bailseq1.nextval,10,0) as bzjno1 from dual
+	</select>
+	<!-- 保证金渠道流水号中生成6位顺序号  -->
+	<select id="generatorseq2" resultType="String">
+		select  lpad(bailseq2.nextval,6,0) as bzjno2 from dual
+	</select>
+</mapper>

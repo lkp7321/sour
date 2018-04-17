@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace ="com.ylxx.fx.core.mapper.pere.PereYh.PereChannelFavRuleMapper">
+	
+	<insert  id="addChannelFavRule"  parameterType="String">
+	insert into trd_favrule_channel_p004 (OGCD,EXNM,CHNL,BYDS,SLDS,STDT,EDDT )
+	values(#{bean.ogcd,jdbcType=VARCHAR},#{bean.currency,jdbcType=VARCHAR},#{bean.chnl,jdbcType=VARCHAR},#{bean.byds,jdbcType=VARCHAR},
+	#{bean.slds,jdbcType=VARCHAR},#{bean.beginDate,jdbcType=VARCHAR},#{bean.endDate,jdbcType=VARCHAR})
+	</insert>	
+
+ <select id="exist"  resultType="String">
+	select ogcd  from trd_favrule_channel_p004 where EXNM=#{exnm,jdbcType=CHAR} and OGCD=#{ogcd,jdbcType=CHAR} and CHNL=#{chnl,jdbcType=CHAR}
+	</select>
+	
+	<delete id="deleteChannelFavrRule">
+	
+	delete from trd_favrule_channel_p004 where ogcd =#{ogcd,jdbcType=VARCHAR} and EXNM =#{exnm,jdbcType=VARCHAR} and chnl=#{chnl,jdbcType=VARCHAR}
+	
+	</delete>
+	
+	<update  id="updateRuleByChannels">
+	
+	update trd_favrule_channel_p004 set BYDS =#{bean.byds,jdbcType=VARCHAR} ,SLDS =#{bean.slds,jdbcType=VARCHAR} ,STDT =#{bean.beginDate,jdbcType=VARCHAR} ,EDDT = #{bean.endDate,jdbcType=VARCHAR} where ogcd = #{bean.ogcd,jdbcType=VARCHAR} and EXNM =#{exnm,jdbcType=VARCHAR} and
+	chnl= #{bean.chnl,jdbcType=VARCHAR}
+
+	</update>
+	
+	<select id="getChannelFavRuleByOgcd" parameterType="String" resultType="com.ylxx.fx.service.po.Trd_FavruleOgcd">
+	select OGCD,EXNM,BYDS,SLDS,CHNL,STDT,EDDT  from trd_favrule_channel_p004 where ogcd =#{ogcd,jdbcType=VARCHAR}  and chnl = #{chnl,jdbcType=VARCHAR} order by EXNM
+	</select>
+</mapper>

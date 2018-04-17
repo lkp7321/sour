@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>平盘损益查询</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top platprofitloss">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>敞口管理>平盘损益查询</span>
+		</div>
+		<div class='cerbot'>
+			<p><span>交易起始日期:</span><input type="text" id='d1' readonly="true"/><i onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd',maxDate:'#F{$dp.$D(\'d2\')||\'%y-%M-%d\'}'})" class='calander'></i></p>
+			<p><span>交易结束日期:</span><input type="text" id='d2' readonly="true" /><i onclick="WdatePicker({el:'d2',dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d1\')}',maxDate:'%y-%M-%d'})" class='calander'></i></p>
+			<button class="plat_serch">查询</button>
+			<p class="onlyre">自损益：<input type="text" id='selfnum'></p>
+			<p class="onlyre">自动损益总和：<input type="text" id='autonum' ></p>
+			<p class="onlyre">手工平盘总和：<input type="text" id='handnum'></p>
+			<form action="outputexcelCKPp.do" method="post" id="fornm">
+				<button type="submit" id="logon">导出excel</button>
+			</form>
+		</div>	
+	</div>
+    <div class="clear"></div>
+	<div class="boxtop">
+		<div class='box'></div>
+	</div>
+</body>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/personaloffer/platprofitloss"></script>
+</html>

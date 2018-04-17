@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 交叉盘计算-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.pricemanager.PriceConTexpMapper">
+	<!-- 交叉 盘计算查询 -->
+	<select id="selContexpPrice" resultType="com.ylxx.fx.core.domain.price.Countexp">
+		select exnm,excd,exna,exnb,mudi,expr from QUT_CMMACOUNTEXP
+	</select>
+	<!-- 策略字典 查询 -->
+	<select id="selPriceFile" resultType="com.ylxx.fx.core.domain.price.CmmFiltrate">
+		select gmid,gmnm,decode(usfg,'0','启用','1','停用')usfg from QUT_CMMFILTRATE
+	</select>
+	<!-- 交叉盘计算2 -->
+	<select id="selectAccExPrice" resultType="com.ylxx.fx.core.domain.price.Countexp">
+		select exnm,excd,exna,exnb,mudi,expr from QUT_CMMACOUNTEXP_P007
+	</select>
+	
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.PdtStoperMapper">
+	<!-- 获取所有的产品价格停牌数据-->
+	<select id="selectAllPdtStoper" resultType="com.ylxx.fx.service.po.PdtStoperBean">
+		select decode(a.tpfg,'SPT','即期','FWD','远期','SWP','掉期','OPT','期权','FXP','结售汇') tpfg,
+		decode(a.stfg,'0','未停牌','1','停牌') stfg ,a.stid,a.term,a.exnm,
+		decode(a.usfg,'0','可用','1','失效') usfg,decode(a.cxfg,'2','钞','1','汇') cxfg,a.stnm,a.excd,b.tpnm 
+		from QUT_PDTSTOPER_${ptid} a,QUT_tpfgt b where a.tpfg=b.tpfg order by a.stfg desc
+	</select>
+</mapper>

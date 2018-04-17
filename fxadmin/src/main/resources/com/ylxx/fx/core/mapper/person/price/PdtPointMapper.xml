@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.PdtPointMapper">
+	<!-- 查询产品点差列表 -->
+	<select id="selectAllPdtPoint" resultType="com.ylxx.fx.service.po.PdtPointBean">
+		select a.term,a.exnm,decode(a.cxfg,'1','汇','2','钞',a.cxfg) cxfg,
+		decode(a.prtp,'0','双边价','1','中间价',a.prtp) prtp,a.excd,a.bhbd,a.bhsd,a.cubd,a.cusd,a.qtcy,b.tpnm tpfg,
+		decode(c.exnm||c.pion,'USDRMB2','分','USDRMB3','厘','USDRMB4','毫',
+		'KAURMB2','分','KAGRMB3','厘','OAGUSD2','美分','OAGUSD3','厘',
+		'OAUUSD2','美分','OAUUSD3','厘','未知单位') unit from QUT_PDTPOINT_${ptid} a,
+		QUT_tpfgt b,Cmm_Currmsg_${ptid} c where a.tpfg=b.tpfg and a.exnm=c.exnm
+	</select>
+</mapper>

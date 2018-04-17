@@ -1,0 +1,294 @@
+@charset "UTF-8";
+@import './reset.css';
+@import './style.css'; 
+
+body,html{
+  width:100%;
+  height:100%;
+  font-family:'SimHei,Arial';
+}
+.loginbox{
+   width: 100%;
+   height: 100%;
+   background-image:url(../img/login/bg.png);
+   background-size: 100% 100%;
+}
+.login-left{
+   width:60%;
+   height:100%;
+   float: left;
+   // display:none;
+    
+}
+.login-left .logo{
+    width:215px;
+    height:45px;
+    margin-top:5%;
+    margin-left:11%;
+    background-image:url(../img/login/logo.png);
+    background-size:100% 100%;
+}
+.login-left .img1{
+     width: 21%;
+     height: 5%;
+     margin-top: 9%;
+     margin-left: 27%;
+     background-image: url(../img/login/zi1.png);
+     background-size:100% 100%;
+}
+.login-left .img2{
+     width: 42%;
+     height: 5%;
+     margin-top:54px;
+     margin-left: 44%;
+     background-image:url(../img/login/zi2.png);
+     background-size:100% 100%;
+}
+.login-left .img3{
+     width: 68%;
+     height: 21%;
+     margin-top:108px;
+     margin-left: 19%;
+     background-image:url(../img/login/tu.png);
+     background-size:100% 100%;
+}
+
+
+.login-right{
+  width:40%;
+  height:100%;
+  float: right;
+ }
+.login-right .login-form{
+  width: 56%;
+  height: 66%;
+  // width: 514px;
+  // height: 718px;
+  margin-top:108px;
+  background-color: #fff;
+  border-radius: 2%;
+  overflow:hidden;
+}
+.login-right .login-form .logo2{
+  width: 36%;
+  height: 21%;
+  margin:0 auto;
+  margin-top: 11%;
+  margin-bottom: 9%;
+  background:url(../img/login/logo2.png) no-repeat;
+  background-size: 100% 100%;
+}
+.login-form .form-group{
+   width: 47%;
+   height:28px;
+   margin:0 auto;
+   margin-bottom:17px;
+   border-bottom: 1px solid #ccc;
+   position:relative;
+   overflow:hidden\9;
+}
+.login-form{
+	min-width:306px;
+	min-height:370px;
+}
+.login-form .form-group .formtips{
+  position:absolute; 
+  top:32px;
+  right:0;
+  color:red;
+  font-size:6px;
+  font-size:11px\9;
+  
+}
+.login-form .form-group .icon{
+  display: block;
+  width: 12px;
+  height: 13px;
+  width:17px\9;
+  height:17px\9;
+  position: absolute;
+  top:5px;
+  left:0;
+
+}
+.login-form .form-group .icon-user{
+   background:url(../img/login/user.png) no-repeat; 
+   background-size:100% 100%;
+}
+.login-form .form-group .icon-pw{
+   background:url(../img/login/Password.png) no-repeat;
+   background-size:100% 100%;
+}
+.login-form .form-group .icon-pro{
+   background:url(../img/login/product.png) no-repeat;
+   background-size:100% 100%;
+}
+.login-form .form-group .icon-del{
+  display:block;
+  width: 8px;
+  height: 8px;
+  width:13px\9;
+  height:13px\9;
+  position:absolute;
+  top:5px;
+  right:0;
+  background:url(../img/login/Close.png) no-repeat;
+  background-size:100% 100%;
+  cursor:pointer;
+}
+.login-form .form-group .icon-close{
+  background:url(../img/login/del.png) no-repeat;
+  background-size:100% 100%;
+}
+.login-form .form-group .form-control{
+  border: none;
+  outline: none;
+  padding-left: 35px;
+  width:179px;
+  font-size:14px\9;
+}
+.login-form .form-group #product{
+	height:28px;
+    width:100%;
+    width:214px\9;
+    border-width: 0px;
+    outline-style: none;
+    border:none;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    padding-left:34px;
+    color: #4B0082;
+    background: url("../img/login/down.png") no-repeat scroll right center transparent;
+    background: url("../img/login/down.png") no-repeat scroll 147px center transparent\9;
+ }
+ .login-form .form-group #product option{
+ 	height:30px;
+ 	color:#4B0082;
+ }
+ .login-form .reset{
+   padding-left:15px;
+  height:12px;
+  line-height:12px;
+  margin-left:62%;
+  margin-top:-5px;
+  font-size:9px;
+  color:#ABABAD;
+  cursor:pointer;
+  background:url(../img/login/Reset.png) no-repeat left center;
+ }
+.login-form .default{
+    width: 47%;
+    height:28px;
+    line-height: 28px;
+    display:block;
+    color: #fff;
+    font-size:13px;
+    background: #4B7BE9;
+    border-radius: 30px;
+    margin:0 auto; 
+    margin-top: 35px;
+    text-align: center;
+}
+ 
+@media screen and (max-width: 780px){
+  .login-left{display:none;width:0;height:0;} 
+  .login-right{ width:80%; margin:0 auto;} 
+ }
+.abs{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom:0;
+    margin:auto;
+    background:#fff;
+    border-radius:10px;
+}
+.centbot{
+    text-align:center;
+    margin-top:18px;
+}
+.centbot button{
+	margin-right: 5px;
+	padding:5px 10px;
+}
+.zhezhao .box{
+	width: 300px;
+	height: 210px;
+}
+button{
+    border:none;
+    background:none;
+    background:#5a8bff;
+    color:#fff;
+    border-radius:5px;
+    cursor:$cursor;
+}
+::-ms-clear, ::-ms-reveal{display: none;}
+input[type='text'],input[type="password"]{
+    height:22px;
+}
+.pubhead{
+        height: 28px;
+         line-height: 28px;
+         color: #fff;
+         background: #5a8bff;
+         border-radius: 10px 10px 0 0;
+}    
+.pubhead span{
+     float: left;
+     margin-left: 13px;
+     font-size: 14px;
+ }
+.close{
+    font-size: 20px;
+    float:right;
+    margin-right: 8px;
+    cursor:pointer;
+    font-weight: 700;
+}
+.zhezhao .cer{
+	margin:10px;
+}
+.zhezhao .cer p span{
+	/* width: 65px; */
+	text-align: right;
+	display: inline-block;
+	margin-right: 8px;
+	position: absolute;
+	left: 58px;
+	top: 19px;
+	font-size: 11px;
+	color: red;
+}
+.zhezhao .cer p{
+	margin-top: 8px;
+	position: relative;
+	line-height: 32px;
+}
+.zhezhao .cer p r{
+	/* position: absolute; */
+	color: #363030;
+	font-size: 10px;
+	/* top: 2px;
+	left: 74px; */
+	width: 50px;
+	display: inline-block;
+	text-align: right;
+	margin-right: 2px;
+}
+.psdset .psdset_btn{
+	text-align:center;
+	margin-top:18px;
+}
+.psdset .psdset_btn button{
+	padding:3px 6px;
+}
+#myfro{
+	filter:alpha(opacity=0);   
+    -moz-opacity:0;   
+    -khtml-opacity: 0;   
+    opacity: 0;   
+}
+

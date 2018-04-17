@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>余额并账录入</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+      <div class="top balaninput">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>日终处理>保证金余额录入&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		</div>
+		<div class='bott'>
+		   <p><span>并账日期:</span><input type="text" id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd',maxDate:'%y-%M-%d',minDate:'%y-%M-%d'})"></i></p>
+		   <p><span>&nbsp;交易类型:</span> 
+		       <select class="chestate">
+		          <option value="All">请选择</option> 
+		          <option value="M5715">损益并账录入</option>
+		          <option value="M5716">利息并账录入</option> 
+		       </select>
+		   </p>
+		   <p><button class="query">查询</button></p>
+		</div>
+	</div>
+	
+	<div class="profitlossbox">
+	   <span>并账损益</span>
+	   <div class='profitloss'>
+		   <p>已平仓损益：<input type="text" class="already" value="0"></input></p>
+		   <p>未平仓损益：<input type="text" class="notsy" value="0"></input></p>  
+		   <p>未平仓利息：<input type="text" class="notlx" value="0"></input></p>  
+		   <p><button class='enter'>录入</button></p>    
+	   </div>
+	</div>
+	<div class="profitlossbox">
+	   <span>并账利息</span>
+	   <div class='interest'>
+	     <p>&nbsp;&nbsp;&nbsp;红利：<input type="text" class="redlx" value="0"></input></p>
+	     <p><button class='enter'>录入</button></p> 
+	   </div>
+	   
+	</div>
+	
+	
+	<div class='boxtop'><div class='box'></div></div>
+	<script src="/fx/js/js_files/require.js"  data-main="/fx/js/bond/balaninput"></script>
+</body>
+</html>

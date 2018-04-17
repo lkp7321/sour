@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>渠道优惠</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+      <div class="top userlevaldiscount channeldiscount">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>交易管理>渠道优惠设置</span>
+		</div>
+		<ul class="cen fourtul">
+			<li class='add pub_add'><span>添加</span></li>
+			<li class='modify pub_modify'><span>修改</span></li>
+			<li class='del pub_delete'><span>删除</span></li>
+			<li class='qurey'><button>查询</button></li>
+		</ul>
+	    <div class='bott'>
+	        <p><span>机构名称:</span><input type='text' disabled='disabled' class='agentname' value='中国民生银行清算中心'></input></p>
+		    <p><span>机构号:</span><input type='text' disabled='disabled' class='agentnum' value='0001'></input></p>
+			<p><button class="choose">选择</button></p>
+			<p><span>渠道：</span> 
+			    <select class='long' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+					<option value="1001">1001-柜面</option>
+					<option value="1101">1101-网银</option>
+					<option value="1103">1103-手机</option>
+					<option value="1105">1105-自助</option>
+				</select>
+			</p>
+	   </div>
+	</div>
+	<div class='boxtop'><div class='box'></div></div>
+	<div id="page"></div>
+	<script src="/fx/layui/layui.js"></script>
+	<script src="/fx/js/js_files/require.js"  data-main="/fx/js/settlement/channeldiscount"></script>
+</body>
+</html>

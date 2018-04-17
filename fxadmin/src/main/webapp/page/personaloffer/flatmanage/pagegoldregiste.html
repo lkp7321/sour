@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>手工敞口登记</title>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top openregiste">
+			<div class='head'>
+				<span>当前位置:</span>
+				<span>平盘管理>手工敞口登记</span>
+			</div>
+			
+	</div>
+	<div id='box'>
+		<div class="open_register pagegoldregister">
+			 <div class="registop"> 
+				 <span>登记编辑器</span> 
+				<!--  <span class="regis_close">×</span>  -->
+			 </div>
+			 <div class="regiscont pripubdivs">
+				    <div><span>交易员</span><input type="text" class="dealer" disabled="disabled"/></div> 
+                    <div>
+                    	<span>敞口名称</span>
+                    	<select class="product" id=" "> 
+                    	     
+                    	</select>
+                    </div> 
+                    <div>
+                    	<span>买入币种</span><select class="product1" id=" "> </select>
+                    </div>
+                    <div>
+                    	<span>卖出币种</span><select class="product2" id=" "> </select>
+                    </div> 
+                    <div><span>买入金额</span><input type="text" class="left"/></div> 
+			        <div><span>卖出金额</span><input type="text" class="price"/></div>
+			        <div><span>成交汇率</span><input type="text" class="right"/></div> 
+			        <div>
+                    	<span>钞汇标志</span>
+                    	<select class="product3" id=" "> 
+                    	    <option value="2">钞</option>
+                    	    <option value="1">汇</option>
+                    	</select>
+                    </div>
+			        <div class="divcalan"><span>平盘日期</span><input type="text" id='d12'/><i class='calander' onclick="WdatePicker({el:'d12',maxDate:'#F{$dp.$D(\'d13\')}',dateFmt:'yyyyMMdd'})"></i></div>  
+			        <div><span>平盘对手</span><input type="text" class="bottom"/></div>  
+			 </div> 
+			 <div class="regisbot"> 
+				     <button class="regis_add">登记</button> 
+				     <button class="regis_cancel">重填</button> 
+		    </div> 
+		</div>        
+	 </div>
+ 	<script  src="/fx/js/js_files/require.js" data-main="/fx/js/pagegold/pagegoldregiste" ></script>
+   
+</body>
+</html>

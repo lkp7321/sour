@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.system.OrganizationMapper">
+	<!-- 根据机构名称查询机构等级 -->
+	<select id="queryOgcdLeve" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select ogcd,ognm,usfg,leve,ogup,orgn 
+		from trd_ogcd 
+		where trim(ogcd)=#{userOrgn}
+	</select>
+	
+	<!-- 查询所有的机构数据 -->
+	<select id="queryAllOrgan" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select 
+		nvl(OGCD,' ') OGCD,nvl(OGNM,' ') OGNM,
+		nvl(USFG,' ') USFG,nvl(LEVE,' ') LEVE,
+		nvl(OGUP,' ') OGUP,nvl(ORGN,' ') ORGN 
+		from trd_ogcd 
+		<if test='orgLeve == "0"'>
+			order by ogcd
+		</if>
+		<if test='orgLeve == "1"'>
+			where (ogcd=#{userOrgn} or ogup=#{userOrgn}) 
+			order by ogcd
+		</if>
+		<if test='orgLeve == "2"'>
+			where ogcd=#{userOrgn}
+			order by ogcd
+		</if>
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insertOgcd">
+		insert into trd_ogcd(OGCD,OGNM,USFG,LEVE,OGUP,ORGN) 
+		values(#{ogcdObj.ogcd},#{ogcdObj.ognm},
+		#{ogcdObj.usfg},#{ogcdObj.leve},
+		#{ogcdObj.ogup},#{ogcdObj.orgn})
+	</insert>
+	
+	<!-- 添加事务 -->
+	<insert id="insertOrgan">
+		insert into trd_organ(OGCD,ORNM,LEVE,ORGN) 
+		values(#{ogcdObj.ogcd},#{ogcdObj.ognm},
+		#{ogcdObj.leve},#{ogcdObj.orgn})
+	</insert>
+	
+	<!-- 修改 -->
+	<!-- 当机构等级不为1 -->
+	<update id="update">
+		update trd_ogcd 
+		set 
+		OGNM=#{ogcdObj.ognm},USFG=#{ogcdObj.usfg},
+		LEVE=#{ogcdObj.leve},OGUP=#{ogcdObj.ogup},
+		ORGN=#{ogcdObj.orgn} 
+		where trim(OGCD)=#{ogcdObj.ogcd}
+	</update>
+	<!-- 当机构等级为1时 -->
+	<update id="updateOgran">
+		update trd_organ
+		set 
+		ORNM=#{ogcdObj.ognm},LEVE=#{ogcdObj.leve},OGCD=#{ogcdObj.ogcd} 
+		where trim(ORGN)=#{ogcdObj.orgn}
+	</update>
+	
+	<!-- 添加机构的下拉框 -->
+	<!-- leve==1 -->
+	<select id="queryOrgan" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select ornm,ogcd from trd_organ where leve = '0' and orgn='000'
+	</select>
+	<!-- leve==3 -->
+	<select id="oneTwoLeve" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select * from trd_ogcd"
+		where leve in ('1','2') and usfg = '0' order by ogcd
+	</select>
+	<!-- leve==其他 -->
+	<select id="selleve" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select * from trd_ogcd 
+		where (trim(ogcd)=#{userogcd} or trim(ogup)=#{userogcd})
+		and usfg = '0' and trim(leve)='1' 
+		order by ogcd
+	</select>
+	
+	<!-- 修改机构时的下拉框 -->
+	<!-- userogcd=='0001' -->
+	<select id="upQueryOrgan1" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select * from trd_ogcd where (trim(ogcd)=#{userogcd}
+		or trim(ogup)=#{userogcd}) 
+		and usfg = '0' and trim(leve)='1' order by ogcd
+	</select>
+	<select id="upQueryOrgan2" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select * from trd_ogcd 
+		where 
+		(ogcd=(select ogup from trd_ogcd 
+		where ogcd=#{userogcd}) or ogcd=#{userogcd}) 
+		and usfg = '0' and trim(leve)='1' order by ogcd
+	</select>
+	
+	<!-- 机构合并时，查询一级机构下的所有机构 -->
+	<select id="queryOneOgcd" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		 select * from trd_ogcd 
+		 where usfg = '0' and ogcd!=#{ogcd} 
+		 and (ogup = #{ogup} or ogcd=#{ogup}) 
+		 order by ogcd
+	</select>
+	
+	<!-- 事务控制 -->
+	<update id="updateOgcd">
+		update TRD_REGMSG_${prod}
+		set ogcd=#{newogcd} where rgog=#{oldogcd} and ogcd=#{oldogcd}
+	</update>
+	<update id="updateRgog">
+		update TRD_REGMSG_${prod}
+		set rgog=#{newogcd} where rgog=#{oldogcd}
+	</update>
+	
+	<!-- 查询此机构下有没有签约信息 -->
+	<select id="queryUser" resultType="int">
+		select count(*) from TRD_REGMSG_${prod} where rgog=#{ogcd}
+	</select>
+	<delete id="deleCytp">
+		delete trd_ogcd where ogcd=#{ogcd}
+	</delete>
+	
+	
+	
+	
+	
+	
+	<!-- 不使用：查询被合并撤销的机构/直接从页面中获取当前机构信息 -->
+	<select id="queryOgcd" resultType="int">
+		select count(*) from trd_ogcd order by ogcd
+	</select>
+</mapper>

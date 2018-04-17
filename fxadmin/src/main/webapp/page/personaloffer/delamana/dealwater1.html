@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>交易流水查询</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top deal1">
+	<div class='head'>
+		<span>当前位置:</span>
+		<span>交易管理>交易流水&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	</div>
+	<div class='cer'>
+		<p class="d0">
+			<span>机构名称:</span>
+			<select name="" id="comboxA" class='long' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+			</select> 
+			<select id="comboxB" class='long' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+			    <option value='all'>所有</option>
+			</select>
+		</p>
+		<!-- <p class="d1">
+			<span>交易类型:</span>
+			<select name="" id='dealtype' class='short' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+				 <option value="all">所有</option>
+			 	<option value="0">结汇</option>
+			 	<option value="1">售汇</option>
+			 	<option value="2">系统内结汇</option>
+			 	<option value="3">系统内售汇</option>
+			</select> 
+		</p>
+		<p class="d2">
+			<span>交易:</span>
+			<select class='sml deal' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+			    <option value='0'>所有</option>
+			    <option value='1'>交易</option>
+			</select>
+			<select class='cen dealty' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+			</select>
+		</p>-->
+	</div>
+	<div class="bott">
+		<div class='dealdate'>
+			<span>交易日期:</span>
+			<p class='ca'><input type='text' id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd',maxDate:'#F{$dp.$D(\'d2\')||\'%y-%M-%d\'}'})"></i></p>
+			<span class='to'>到</span>
+			<p class='ca'><input type='text' id='d2'/><i class='calander' onclick="WdatePicker({el:'d2',dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d1\')}',maxDate:'%y-%M-%d'})" ></i></p>
+			<p class='ca'>
+				<span>渠道:</span>
+				<select id="tranCode1" class='short'>
+				 	 <option value="all">所有</option>
+				 	<option value="1001">柜面</option>
+				 	<option value="1101">网络银行</option>
+				 	<option value="1102">电话银行</option>
+				 	<option value="1103">手机银行</option>
+				 	<option value="1104">本机ATM</option>
+				 	<option value="1105">本机自助终端</option>
+				 	<option value="1261">国际卡支付</option> 
+				</select>
+			</p>
+			<p class="d1">
+			<span>交易类型:</span>
+			<select name="" id='dealtype' class='short' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+				 <option value="all">所有</option>
+			 	<option value="0">结汇</option>
+			 	<option value="1">售汇</option>
+			 	<option value="2">系统内结汇</option>
+			 	<option value="3">系统内售汇</option>
+			</select> 
+		</p>
+		<p class="d2">
+			<span>交易:</span>
+			<select class='sml deal' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+			    <option value='0'>所有</option>
+			    <option value='1'>交易</option>
+			</select>
+			<select class='cen dealty' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+			</select>
+		</p>
+			<!-- <p class="pc"><span>卡号:</span><input type="text" class="cardnum"/></p>
+			<p class="pc"><span>证件号码:</span><input type="text" class="policard"/></p>
+			<p class="pc"><span>流水号:</span><input type="text" class="cashnum"/></p> -->
+		</div>
+		<!--<button class='search'>查询</button>  
+		<form action="TransOutputexcelP04.do" method="post" id="fornm">
+			<button type="submit" id="logon">导出excel</button>
+		</form>-->
+	</div>
+	<div class="bott bottom">
+	     <p class="pc"><span>卡号:</span><input type="text" class="cardnum"/></p>
+		 <p class="pc"><span>证件号码:</span><input type="text" class="policard"/></p>
+		 <p class="pc"><span>流水号:</span><input type="text" class="cashnum"/></p>
+		 <p class="pc"> <button class='search pub_button'>查询</button></p>
+	     <form action="TransOutputexcelP04.do" method="post" id="fornm">
+			<button type="submit" id="logon">导出excel</button>
+		 </form>
+	</div>
+</div>
+<div class='boxtop'>
+	<div class='box'>
+	</div>
+</div>
+<div id="page"></div>
+</body>
+<script src="/fx/layui/layui.js"></script>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/reserve/dealwater1"></script>
+</html>

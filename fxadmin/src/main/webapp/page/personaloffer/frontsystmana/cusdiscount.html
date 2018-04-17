@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>客户优惠查询</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top electricteller">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>前置系统管理>客户优惠查询&nbsp;&nbsp;</span>
+		</div>
+		<ul class="cen fourtul">
+				<li class='add pub_add'><span>添加</span></li>
+				<li class='modify pub_modify'><span>修改</span></li>
+				<li class='del pub_delete'><span>删除</span></li>
+			</ul>
+		<div class="bott">
+			<div class='dealdate'>
+				<p><buttom class="refresh">刷新</buttom>&nbsp;&nbsp;<span>客户号&nbsp;</span><input type="text" class="cusnum"></p>
+				<p><span>机构&nbsp;</span><input type="text" readonly="true"  class="fitna"><button class="choice">选择</button></p>
+				<p class="stat"><span>状态&nbsp;</span><input type="radio" checked="true" name="aa" tit="0">启用&nbsp;<input type="radio" name="aa" tit='1'>停用</p>
+				<p><button class='search'>查询</button></p>
+				<!--<span>柜员号&nbsp;</span><input type="text">  -->
+			</div>
+			
+		</div>
+</div>
+<div class='boxtop'>
+	<div class='box'></div>
+</div>
+<div id="page"></div>
+</body>
+<script src="/fx/layui/layui.js"></script>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/settlement/electricteller"></script>
+</html>

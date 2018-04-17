@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>价格接收展示</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top priceget">
+	<div class='head'>
+		<p><span>当前位置:</span><span>价格源管理>价格接收展示</span></p>
+		<p class="markname"><span>市场名称</span>
+			<select  onmousedown="if(this.options.length>6){this.size=7}" onblur="this.size=0" onchange="this.size=0" size="0">
+				<option>所有</option>
+				<option>UBS1</option>
+				<option>UBS2</option>
+			</select>
+		</p>
+		<p class="cuurpair"><span>货币对</span>
+			<select  onmousedown="if(this.options.length>6){this.size=7}" onblur="this.size=0" onchange="this.size=0" size="0">
+				<option>所有</option>
+			</select>
+		</p>
+		<p class="calar"><span>交易时间&nbsp;</span><b class="showEndt"></b><input type="text" onclick="WdatePicker({el:'d13',isShowClear:false,isShowToday:false,isShowOthers:false,dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d12\')}',maxDate:'%y-%M-%d',onpicking:function(dp){this.previousSibling.innerHTML=''}})" id='d13'/><i class='calander'  onclick="WdatePicker({el:'d13',dateFmt:'yyyyMMdd',onpicking:function(dp){this.previousSibling.innerHTML=''}})"></i></p>
+		
+		<button class="searc">查询</button>
+		<button class="liveon">生效</button>
+	</div>
+</div>
+<div class="boxtop">
+	<div class='box'></div>
+</div>	
+</body>
+<script src="/fx/js/js_files/require.js" data-main="/fx/js/priceplatform/prigetsh"></script>
+</html>

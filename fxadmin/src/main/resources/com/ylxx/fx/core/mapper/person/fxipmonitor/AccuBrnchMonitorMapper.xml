@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 积存金，价格监控 -->
+<mapper namespace="com.ylxx.fx.core.mapper.person.fxipmonitor.AccuBrnchMonitorMapper">
+	<!-- 积存金，总分行价格 -->
+	<select id="selectAccumAllPdtBrnch" resultType="com.ylxx.fx.core.domain.FxipMonitorVo">
+		select a.*,decode(a.ercd,'00000','正常','00001','手工停盘','00002','自动停盘',
+		'00003','买卖价倒置','00004','超过合法值范围','00005','价格源不可交易',
+		'00006','中间价波动异常','00007','未浮动次数超过范围') ercn,b.mknm 
+		from QUT_PDTBRNCH_P003 a,(select * from CMM_MKTINFO) b where a.prsc=b.mkid
+	</select>
+	<!-- 积存金，客户价格 -->
+	<select id="selectAccumAllPdtCust" resultType="com.ylxx.fx.core.domain.FxipMonitorVo">
+		select a.*,decode(a.ercd,'00000','正常','00001','手工停盘',
+		'00002','自动停盘','00003','买卖价倒置','00004','超过合法值范围',
+		'00005','价格源不可交易','00006','中间价波动异常','00007','未浮动次数超过范围') ercn,
+		b.mknm from QUT_PDTCUST_P003 a,(select * from CMM_MKTINFO) b where a.prsc=b.mkid
+	</select>
+	
+	<!-- 民生金，总敞口 -->
+	<!--查询市场报价 -->
+	<select id="ckTotalData" resultType="com.ylxx.fx.service.po.CkTotalBean">
+		select '贵金属买卖' prnm,a.exnm,a.neby,a.nemd,a.nesl,a.mdtm,'' mkid,'产品客户价' mknm,
+		decode(a.stfg,'0','开盘','1','停盘','未知') stfg,a.udfg   
+		from qut_pdtcust_p003 a order by exnm
+	</select>
+	<select id="ckTotalYk" resultType="com.ylxx.fx.service.po.CkTotalBean">
+		select a.exnm,a.excd,decode(a.exnm,'KAGRMB','克白银/人民币(客户交易)','KAURMB','克黄金/人民币(客户交易)','OAUUSD','盎司黄金/美元(境外平盘)','OAGUSD','盎司白银/美元(境外平盘)','AGBRMB','克白银/人民币(金交所平盘)','AUBRMB','克黄金/人民币(金交所平盘)','USDRMB','美元/人民币', '未知币种') nmex, a.lamt,a.ramt,a.zcyk,a.sgyk,a.ppyk,
+		nvl((select neby from qut_pdtcust_p003 where exnm='KAURMB'),0) neby,nvl((select nesl from qut_pdtcust_p003 where exnm='KAURMB'),0) nesl 
+		from ck_total a where  a.prcd='P003' and a.exnm ='AUBRMB' union 
+		select a.exnm,a.excd,decode(a.exnm,'KAGRMB','克白银/人民币(客户交易)','KAURMB','克黄金/人民币(客户交易)','OAUUSD','盎司黄金/美元(境外平盘)','OAGUSD','盎司白银/美元(境外平盘)','AGBRMB','克白银/人民币(金交所平盘)','AUBRMB','克黄金/人民币(金交所平盘)','USDRMB','美元/人民币', '未知币种') nmex, a.lamt,a.ramt,a.zcyk,a.sgyk,a.ppyk,nvl(b.neby,0) neby,nvl(b.nesl,0) nesl 
+		from ck_total a,qut_pdtcust_p003 b  where a.exnm=b.exnm and a.prcd='P003'
+		order by exnm	
+	</select>
+	
+	<!-- 提取损益  -->
+	<update id="updateCKZCYK">
+		update ck_total set zcyk=zcyk+${ckTotalBean.zcyk} where exnm ={ckTotalBean.exnm}
+	</update>
+	<insert id="insertTQTranList">
+		insert into ck_tranlist (tqnm,tqdt,tqtm,mkpr,exnm,excd,blamt,bramt,bcbhl,bzcyk,alamt,aramt,acbhl,azcyk)values(
+		#{usnm},#{currDate},#{currTime},#{ckTotalBean.nemd},
+		#{ckTotalBean.exnm},#{ckTotalBean.excd},#{ckTotalBean.lamt},
+		#{ckTotalBean.bramt},#{ckTotalBean.bcbhl},#{ckTotalBean.bzcyk},
+		#{ckTotalBean.lamt},#{ckTotalBean.ramt},#{ckTotalBean.cbhl},#{ckTotalBean.zcyk})
+	</insert>
+	
+	<select id="USDCNYNEMD" resultType="double">
+		select nemd from qut_cmmprice_m0201 where exnm='USDRMB'
+	</select>
+	
+	<!-- 分类敞口列表-->
+	<select id="accumCknoTree" resultType="java.util.HashMap">
+		select ckno,cknm from ck_rulet  where prcd='P003'
+	</select>
+	<!-- 分类敞口数据，根据敞口编号查询 -->
+	<select id="selectclassCk" resultType="com.ylxx.fx.core.domain.FormuleVo">
+		select c.udfg,a.prcd,a.exnm,a.excd ,a.lamt lamt,a.ramt ramt,
+		a.fdsy fdsy,a.sgyk,a.zcyk,a.tryk,a.toyk,a.ppyk, c.neby,c.nesl from
+		ck_classTotal a,QUT_PDTBRNCH_${prcd} c 
+		where a.exnm=c.exnm and trim(a.ckno)=#{ckno} and a.prcd=#{prcd} order by exnm
+	</select>
+	<!-- 账户信息统计 -->
+	<!-- 查询机构等级 -->
+	<select id="selLevel" resultType="String">
+		select leve from trd_ogcd where ogcd=#{orgn}
+	</select>
+	<!-- 查询当前用户机构 -->
+	<select id="selOgcdNm" resultType="com.ylxx.fx.service.po.Trd_ogcd">
+		select ogcd,ognm,leve from trd_ogcd where ogcd=#{orgn}
+	</select>
+	<!-- 查询账户信息统计level=="1" -->
+	<select id="selAccumTrdLevel1" resultType="com.ylxx.fx.service.po.AccinfoMonitorBean">
+		select a.accdate,a.nowtime,b.ogcd,b.ognm,a.hqam,a.dqam,a.amnt 
+		from cache_accinfo_p003 a left join trd_ogcd b on trim(a.ogcd) = b.ogcd 
+		where 1=1 
+		<if test='date!=null and !date.equals("")'>
+			and accdate =#{date}
+		</if>
+		and b.orgn = #{orgn}
+	</select>
+	<!-- 查询账户信息统计level=="0" -->
+	<select id="selAccumTrdLevel2" resultType="com.ylxx.fx.service.po.AccinfoMonitorBean">
+		select accdate,nowtime,d.ogcd ogcd,ornm ognm,hqam,dqam,amnt 
+		from (select max(accdate) accdate,max(nowtime) nowtime,ogcd,sum(hqam) hqam,sum(dqam) dqam,sum(amnt) amnt
+		from (select a.accdate accdate,a.nowtime nowtime,b.orgn ogcd,a.hqam hqam,a.dqam dqam,a.amnt amnt
+		from cache_accinfo_p003 a left join trd_ogcd b on trim(a.ogcd) = b.ogcd
+		where 1=1 
+		<if test='date!=null and !date.equals("")'>
+			and accdate = #{date}
+		</if>
+		) group by ogcd) c 
+		inner join trd_organ d on c.ogcd = d.orgn
+	</select>
+	
+	<!-- 查询交易信息统计 leve='0'-->
+	<select id="selChangeInfoList1" resultType="com.ylxx.fx.service.po.ChangeInfoList">
+		select tr1.ornm ognm , m1.* from 
+		(select tg.orgn ogcd,nvl(sum(byku),0) sumbyku,nvl(sum(bycy),0) sumbycy,
+		nvl(sum(slku),0) sumslku,nvl(sum(slcy),0) sumslcy,nvl(sum(swku),0) sumswku 
+		from cache_tranlist_p003 c join trd_ogcd tg on tg.ogcd = trim(c.ogcd) 
+		where tg.orgn in (select tr.orgn from trd_organ tr) 
+		<if test='dateBegin!=null and !dateBegin.equals("")'>
+			and c.accdate>=#{dateBegin}
+		</if>
+		<if test='dateEnd!=null and !dateEnd.equals("")'>
+			and #{dateEnd}>=c.accdate
+		</if>
+		group by tg.orgn )m1 join trd_organ tr1 on tr1.ogcd=m1.ogcd
+	</select>
+	<!-- 查询交易信息统计 leve='1'-->
+	<select id="selChangeInfoList2" resultType="com.ylxx.fx.service.po.ChangeInfoList">
+		select tr1.ognm , m1.* from (select tg.ogcd ogcd,nvl(sum(tg.byku),0) sumbyku,
+		nvl(sum(tg.bycy),0) sumbycy,nvl(sum(tg.slku),0) sumslku,nvl(sum(tg.slcy),0) sumslcy,
+		nvl(sum(tg.swku),0) sumswku from (select c.* from cache_tranlist_p003 c join 
+		(select t.ogcd ogcd from trd_ogcd t where t.orgn = #{comaogcd})m 
+		on m.ogcd = trim(c.ogcd) where 1=1 
+		<if test='dateBegin!=null and !dateBegin.equals("")'>
+			and c.accdate>=#{dateBegin}
+		</if>
+		<if test='dateEnd!=null and !dateEnd.equals("")'>
+			and #{dateEnd}>=c.accdate
+		</if>
+		) tg 
+		group by tg.ogcd)m1 join trd_ogcd tr1 on tr1.ogcd=m1.ogcd
+	</select>
+	<!-- 签约信息统计 leve == '0' -->
+	<select id="selqy1" resultType="com.ylxx.fx.service.po.QYInfoList">
+		select max(accdate) accdate,max(nowtime) nowtime,#{ogcd} ogcd,#{ognm} ognm,sum(qynm) qynm,sum(qydt) qydt from ( 
+			select accdate,nowtime,d.ogcd ogcd,ornm,qynm,qydt from
+			(select max(accdate) accdate,max(nowtime) nowtime,ogcd,sum(qynm) qynm,sum(qydt) qydt from ( 
+			select a.accdate accdate,a.nowtime nowtime,b.orgn ogcd,a.qynm qynm,a.qydt qydt
+			from cache_regmsg_p003 a left join 
+			trd_ogcd b on trim(a.ogcd) = b.ogcd  where 1=1 
+			<if test='trdtbegin!=null and !trdtbegin.equals("")'>
+				and accdate = #{trdtbegin}
+			</if>
+			) group by ogcd) c inner join 
+			trd_organ d on c.ogcd = d.orgn) union 
+			select accdate,nowtime,d.ogcd ogcd,ornm ognm,qynm,qydt from 
+			(select max(accdate) accdate,max(nowtime) nowtime,ogcd,sum(qynm) qynm,sum(qydt) qydt 
+			from (select a.accdate accdate,a.nowtime nowtime,b.orgn ogcd,
+			a.qynm qynm,a.qydt qydt from cache_regmsg_p003 a 
+			left join trd_ogcd b on trim(a.ogcd) = b.ogcd 
+			where 1=1 
+			<if test='trdtbegin!=null and !trdtbegin.equals("")'>
+				and accdate = #{trdtbegin}
+			</if>
+			) group by ogcd) c 
+			inner join trd_organ d on c.ogcd = d.orgn
+	</select>
+	<!-- 签约信息统计 leve == '1' -->
+	<select id="selqy2" resultType="com.ylxx.fx.service.po.QYInfoList">
+		select max(accdate) accdate,max(nowtime) nowtime,#{ogcd} ogcd,#{ognm} ognm,sum(qynm) qynm 
+		from ( select a.accdate,a.nowtime,b.ogcd,b.ognm,a.qynm,a.qydt 
+			from cache_regmsg_p003 a left join trd_ogcd b on trim(a.ogcd) = b.ogcd 
+			where 1=1 
+			<if test='trdtbegin!=null and !trdtbegin.equals("")'>
+				and accdate = #{trdtbegin}
+			</if>
+			and b.orgn = #{ogcd} )
+			union 
+			select accdate,nowtime,d.ogcd ogcd,d.ognm,qynm from (
+			select max(accdate) accdate,max(nowtime) nowtime, ogcd,sum(qynm) qynm,sum(qydt) qydt from (
+			select a.accdate,a.nowtime,b.ogcd,b.ognm,a.qynm,a.qydt from cache_regmsg_p003 a 
+			left join trd_ogcd b on trim(a.ogcd) = b.ogcd 
+			where 1=1
+			<if test='trdtbegin!=null and !trdtbegin.equals("")'>
+				and accdate = #{trdtbegin}
+			</if>
+			and b.orgn = #{ogcd} and b.orgn != #{ogcd}) m group by m.ogcd) m1 
+			join trd_ogcd d on m1.ogcd = d.ogcd
+	</select>
+</mapper>

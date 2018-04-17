@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.DivideParaMapper">
+	<!--查询分紅列表  -->
+	<select id="searchDivideParaList" resultType="com.ylxx.fx.service.po.DivideParaBean">
+		SELECT
+			dddt,
+			updt
+		FROM
+			TRD_DIVIDENDPARA_P003
+		ORDER BY
+			dddt DESC
+	</select>
+	<!--删除分红表记录  -->
+	<delete id="doDeleteDividePara">
+		DELETE TRD_DIVIDENDPARA_P003
+			WHERE
+				dddt = #{dddt} 
+	</delete>
+	<!--取得cmm_ptpara_p003的更新时间-->
+	<select id="getP003UPDT" resultType="String">
+		select valu from cmm_ptpara_p003 where paid='C016'
+	</select>
+	<!--更新CmmPara  -->
+	<update id="updateCmmPara">
+		UPDATE cmm_ptpara_p003
+		SET valu = #{time}
+		WHERE
+			paid = 'C016'
+	</update>
+	<!--插入分红  -->
+	<insert id="insertDividePara">
+		INSERT INTO TRD_DIVIDENDPARA_P003
+		VALUES(#{time},#{currentTime})
+	</insert>
+</mapper>

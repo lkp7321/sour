@@ -1,0 +1,29 @@
+ <!doctype html>
+ <html lang="en">
+ <head>
+ 	<meta charset="UTF-8" />
+ 	<title>手工停牌</title>
+ 	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+ </head>
+ <body>
+ 	<div class="top handstop">
+			<div class='head'>
+				<span>当前位置:</span>
+				<span>价格管理>手工停牌</span>
+			</div>
+			<ul class="cen handcen">
+			    <li class='product'> </li>
+				<li class='currencylist'>币种: <select onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+				<option value='所有' selected="selected">所有</option></select></li> 
+				<li><button class="hands_open pub_button">开牌</button></li>
+				<li><button class="hands_stop pub_button">停牌</button></li>
+			</ul>
+			
+	</div>
+	<div class='boxtop'>
+	    <div class='box'></div>
+	</div>
+ 	<script  src="/fx/js/js_files/require.js"  data-main="/fx/js/personaloffer/handstop" ></script>
+ </body>
+ </html>

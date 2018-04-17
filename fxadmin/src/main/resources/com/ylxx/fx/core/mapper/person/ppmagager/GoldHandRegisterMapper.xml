@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.ppmagager.GoldHandRegisterMapper">
+	<!-- 查询结售汇交易币种 -->
+	<select id="selJSHTabUs" resultType="com.ylxx.fx.core.domain.CmmCymsgBean">
+		select * from CMM_CYMSG_${prod} where usfg='0' and cyen in ('USD','RMB')
+	</select>
+	<!-- 查询境外平盘币种 -->
+	<select id="selJWTabUs" resultType="com.ylxx.fx.core.domain.CmmCymsgBean">
+		select * from CMM_CYMSG_${prod} where usfg='0' and (cyen like 'OA%' or cyen ='USD') 
+	</select>
+	<!-- 查询金交所币种 -->
+	<select id="selJJSTabUs" resultType="com.ylxx.fx.core.domain.CmmCymsgBean">
+		select * from CMM_CYMSG_JS_${prod} where usfg='0' 
+		<if test="prod=='P002'">
+			and cyen in('AUB','AGB','RMB')
+		</if>
+		<if test="prod=='P003'">
+			and cyen in('AUB','RMB')
+		</if>
+	</select>
+	<!-- 根据产品筛选标准币别对  -->
+	<select id="selCurrencyPair" resultType="java.lang.String">
+		<!-- select * from CMM_CURRMSG_${prod} -->
+		select exnm from CMM_CURRMSG_${prod}
+	</select>
+	<!-- 查询货币对 -->
+	<select id="selExnm" resultType="String">
+		select exnm from ck_total where exnm in ('${exnm1}','${exnm2}') and prcd=#{prod}
+	</select>
+</mapper>

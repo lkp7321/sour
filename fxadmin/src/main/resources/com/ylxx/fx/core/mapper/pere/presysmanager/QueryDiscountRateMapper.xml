@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.pere.presysmanager.QueryDiscountRateMapper">
+<select id="selDisRateList" resultType="com.ylxx.fx.service.po.QueryDiscountRate">
+select TRDT,CYEN,PRICE,COUT  from TRD_SAFEPRICE_P004 order by TRDT
+</select>
+	
+</mapper>

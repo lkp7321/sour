@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.PdtCtrlSwhMapper">
+	<!-- 得到当前所有干预器列表及状态 -->
+	<select id="selectPrice" resultType="com.ylxx.fx.service.po.PdtCtrlSwhBean">
+		select a.*,b.tpnm tpnm from QUT_PDTCTRLSWH_${ptid} a,QUT_tpfgt b where a.tpfg=b.tpfg
+	</select>
+	<!-- 得到所有币种信息 -->
+	<select id="selectPriceUSD" resultType="com.ylxx.fx.service.po.PdtRParaTBean">
+		select * from QUT_PDTRATEPRAR_${ptid} where exnm like '%USD%'
+	</select>
+	<!-- 查询产品信息 -->
+	<select id="selectObjPrice" resultType="com.ylxx.fx.service.po.PdtinfoBean">
+		select * from qut_cmmpdtinfo where trim(ptid) = #{ptid}
+	</select>
+	<!-- 查询实盘产品价格干预器总控 -->
+	<select id="selectPri" resultType="com.ylxx.fx.service.po.PdtCtrlSwhBean">
+		select * from QUT_PDTCTRLSWH_${ptid} where trim(TPFG)=#{pdtCtrl.tpfg} and 
+		trim(TERM)=#{pdtCtrl.term} and trim(EXNM)=#{pdtCtrl.exnm}
+	</select>
+	<!-- 更新实盘产品价格干预器总控 -->
+	<update id="updatePri">
+		Update QUT_PDTCTRLSWH_${ptid} set CXFG=#{pdtCtrl.cxfg},USFG=#{pdtCtrl.usfg},
+		NBUP=#{pdtCtrl.nbup},NBLW=#{pdtCtrl.nblw},NSUP=#{pdtCtrl.nsup},NSLW=#{pdtCtrl.nslw},
+		FBUP=#{pdtCtrl.fbup},FBLW=#{pdtCtrl.fblw},FSUP=#{pdtCtrl.fsup},FSLW=#{pdtCtrl.fslw}
+		Where trim(TPFG)=#{pdtCtrl.tpfg} and trim(TERM)=#{pdtCtrl.term} and trim(EXNM)=#{pdtCtrl.exnm}
+	</update>
+	<!-- 添加实盘产品价格干预器总控 -->
+	<insert id="insertPri">
+		insert into QUT_PDTCTRLSWH_${ptid}(TPFG,TERM,EXCD,CXFG,EXNM,USFG,NBUP,NBLW,NSUP,NSLW,FBUP,
+		FBLW,FSUP,FSLW) values(#{pdtCtrl.tpfg},#{pdtCtrl.term},#{pdtCtrl.excd},#{pdtCtrl.cxfg},
+		#{pdtCtrl.exnm},#{pdtCtrl.usfg},#{pdtCtrl.nbup},#{pdtCtrl.nblw},#{pdtCtrl.nsup},
+		#{pdtCtrl.nslw},#{pdtCtrl.fbup},#{pdtCtrl.fblw},#{pdtCtrl.fsup},#{pdtCtrl.fslw})
+	</insert>
+	<!-- 写审计日志 -->
+	<insert id="insertLog">
+		insert into mng_log (RZDT,RZSJ,USEM,TYMO,REMK,VOLD,VNEW,PROD) 
+		values(#{logfile.rzdt},#{logfile.rzsj},#{logfile.usem},#{logfile.tymo},#{logfile.remk},
+		#{logfile.vold},#{logfile.vnew},#{logfile.prod})
+	</insert>
+	<!-- 删除点差干预上限 -->
+	<delete id="deletePrice">
+		delete  QUT_PDTCTRLSWH_${ptid} where trim(TPFG)=#{tpfg} and trim(TERM)=#{term} 
+		and trim(EXNM)=#{exnm} and trim(CXFG)=#{cxfg}
+	</delete>
+	<!-- 启用/停用 -->
+	<update id="updateUsfg">
+		Update QUT_PDTCTRLSWH_${ptid} set USFG=#{pdtCtrl.usfg} where trim(TPFG)=#{pdtCtrl.tpfg} 
+		and trim(TERM)=#{pdtCtrl.term} and trim(EXNM)=#{pdtCtrl.exnm} and trim(CXFG)=#{pdtCtrl.cxfg}
+	</update>
+</mapper>

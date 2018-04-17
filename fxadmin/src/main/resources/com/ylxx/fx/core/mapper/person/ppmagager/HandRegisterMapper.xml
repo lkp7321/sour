@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.ppmagager.HandRegisterMapper">
+	<!-- 获取货币对列表 -->
+	<select id="selectCurrencyPair" resultType="java.util.HashMap">
+		select exnm cyen,excd cytp from ck_total where prcd=#{prod}
+	</select>
+	<!-- 获取敞口列表 -->
+	<select id="selectCkno" resultType="java.util.HashMap">
+		select cknm,ckno from ck_rulet where usfg='0' and TRIM(prcd) =#{prod} order by leve desc
+	</select>
+	<!-- 获取平盘对手列表 -->
+	<select id="selectPPDS" resultType="java.util.HashMap">
+		select PPDS,PPCD from trd_handckpara order by to_number(PPID)
+	</select>
+	<!-- 获取平盘对手列表:账户交易>>手工平盘 -->
+	<select id="selPPDS" resultType="java.util.HashMap">
+		select * from trd_handckpara_p007 order by to_number(PPID)
+	</select>
+</mapper>

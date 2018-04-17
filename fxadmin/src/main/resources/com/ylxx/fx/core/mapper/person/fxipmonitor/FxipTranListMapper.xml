@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.fxipmonitor.FxipTranListMapper">
+	
+	<!-- selectTran -->
+	<select id="selectTran" resultType="com.ylxx.fx.service.po.Tranlist">
+		select 
+		nvl(LCNO,' ')LCNO,nvl(TRDT,' ')TRDT,
+		nvl(TRTM,' ')TRTM,nvl(BYNM,' ')BYNM,nvl(SLNM,' ')SLNM,
+		nvl(BYAM,'0')BYAM,nvl(SLAM,'0')SLAM,nvl(USAM,'0')USAM,
+		nvl(EXPC,'0')EXPC,nvl(FVDA,'0')FVDA,nvl(TRAC,' ')TRAC
+		from trd_tranlist_${prod}
+		where trdt=#{time}
+		and stcd='S' and trcd in ('S3101','S2102','S2103') and 
+		20>=rownum order by trdt desc,trtm desc
+	</select>
+	
+	<!-- selectTimeTran -->
+	<select id="selectTimeTran" resultType="com.ylxx.fx.service.po.Tranlist">
+		select * from 
+		(select 
+		nvl(LCNO,' ')LCNO,nvl(TRDT,' ')TRDT,nvl(TRTM,' ')TRTM,
+		nvl(BYNM,' ')BYNM,nvl(SLNM,' ')SLNM,nvl(BYAM,'0')BYAM,
+		nvl(SLAM,'0')SLAM,nvl(USAM,'0')USAM,nvl(EXPC,'0')EXPC,
+		nvl(FVDA,'0')FVDA,nvl(TRAC,' ')TRAC,nvl(CUAC,' ')CUAC 
+		from trd_tranlist_${prod}
+		where 
+		trdt>=#{bTime}
+		and #{eTime}>=trdt
+		and stcd='S' and trcd in ('S3101','S2102','S2103') 
+		order by trdt desc,trtm desc) where 200>=rownum
+	</select>
+	
+	<!-- selectTimeCount -->
+	<select id="selectTimeCount" resultType="int">
+		select count(*) from trd_tranlist_${prod}
+		where trdt=#{curTime}
+		and stcd='S' and trcd in ('S3101','S2102','S2103')
+	</select>
+	
+	<!-- selectUsamCount -->
+	<select id="selectUsamCount" resultType="String">
+		select 
+		nvl(sum(usam),0) as usam from trd_tranlist_${prod}
+		where trdt=#{curTime}
+		and stcd='S' and trcd in ('S3101','S2102','S2103')
+	</select>
+</mapper>

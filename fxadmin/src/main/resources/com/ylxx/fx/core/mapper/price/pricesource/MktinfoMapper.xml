@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 价格源注册-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.pricesource.MktinfoMapper">
+	<!-- 获取价格源注册所有数据 -->
+	<select id="selectMkPrice" resultType="com.ylxx.fx.service.po.Mktinfo">
+		select 
+		amlw,amup,ctnu,fham,fhnu,trim(mkid) mkid,
+		trim(mknm) MKNM,trim(mkip) mkip,remk,
+		decode(trtp,'0','可平盘','1','不可平盘') trtp,
+		decode(usfg,'0','正常','1','关闭','2','达下限','关闭') usfg,putnm,hcid 
+		from cmm_mktinfo order by mkid
+	</select>
+	<!-- 校验器设置 查询所有 -->
+	<select id="jiaoyansel" resultType="com.ylxx.fx.service.po.CmmChkpara">
+		select a.mkid ,b.mknm, c.tpnm,a.tpfg,  a.term,a.excd,
+		decode(a.cxfg,'1','汇','2','钞') CXFG,a.exnm,a.mxmd,
+		a.mdmd,a.mimd,a.mxdp,a.mxbp,a.mxct,a.mxud,
+		a.ctnu,a.udnu,a.usfg  
+		from QUT_CMMCHKPARA a,CMM_MKTINFO  b,qut_tpfgt c 
+		where a.tpfg=c.tpfg and a.mkid=b.mkid 
+		order by a.mkid,a.exnm
+	</select>
+	<!-- 条件查询 -->
+	<select id="jiaoyansel1" resultType="com.ylxx.fx.service.po.CmmChkpara">
+		select a.mkid ,b.mknm, c.tpnm,a.tpfg,  a.term,a.excd,
+		decode(a.cxfg,'1','汇','2','钞') CXFG,a.exnm,a.mxmd,
+		a.mdmd,a.mimd,a.mxdp,a.mxbp,a.mxct,a.mxud,
+		a.ctnu,a.udnu,a.usfg  
+		from QUT_CMMCHKPARA a,CMM_MKTINFO  b,qut_tpfgt c 
+		where a.tpfg=c.tpfg and a.mkid=b.mkid 
+		and a.mkid like concat(#{mkid},'%')
+		and a.exnm like concat(#{exnm},'%')
+		order by a.usfg
+	</select>
+	
+	<update id="updateUsfg">
+		update QUT_CMMCHKPARA set USFG=#{ppch.usfg} where trim(MKID)=#{ppch.mkid} and trim(EXNM)=#{ppch.exnm} 
+	</update>
+	
+	<insert id="insertPrice">
+		insert into QUT_CMMCHKPARA 
+		(
+		mkid,tpfg,term,excd,
+		cxfg,exnm,mxmd,mdmd,
+		mimd,mxdp,mxbp,mxct,
+		mxud,ctnu,udnu,mxft,mdft,mift,qjft,blft,
+		usfg)
+		values(
+		#{cmmbean.mkid},#{cmmbean.tpfg},#{cmmbean.term},#{cmmbean.excd},
+		#{cmmbean.cxfg},#{cmmbean.exnm},#{cmmbean.mxmd},#{cmmbean.mdmd},
+		#{cmmbean.mimd},#{cmmbean.mxdp},#{cmmbean.mxbp},#{cmmbean.mxct},
+		#{cmmbean.mxud},'0','0','0','0','0','0','0',
+		#{cmmbean.usfg})
+	</insert>
+	<update id="updatePrice">
+		update QUT_CMMCHKPARA set 
+		mdmd=#{cmmbean.mdmd},mimd=#{cmmbean.mimd},mxmd=#{cmmbean.mxmd},
+		mxdp=#{cmmbean.mxdp},mxbp=#{cmmbean.mxbp},
+		mxct=#{cmmbean.mxct},mxud=#{cmmbean.mxud},usfg=#{cmmbean.usfg} 
+		where 
+		mkid=#{cmmbean.mkid} and tpfg=#{cmmbean.tpfg} and 
+		trim(term)=#{cmmbean.term} and excd=#{cmmbean.excd} and cxfg=#{cmmbean.cxfg}
+	</update>
+	<!-- 修改时的查询 -->
+	<select id="selectPrice" resultType="int">
+		select count(*) from QUT_CMMCHKPARA where mkid=#{cmmbean.mkid} and 
+		tpfg=#{cmmbean.tpfg} and trim(term)=#{cmmbean.term} and exnm=#{cmmbean.exnm} and cxfg=#{cmmbean.cxfg}
+	</select>
+	
+	<!-- 修改页面的数据查询 价格类型 -->
+	<select id="selUpType" resultType="java.util.HashMap">
+		select tpfg,tpnm from qut_tpfgt
+	</select>
+	
+	<!-- 修改操作的查询 -->
+	<select id="selectPION" resultType="int">
+		select pion from cmm_currmsg where exnm=#{exnm}
+	</select>
+</mapper>

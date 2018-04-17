@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 交易产品日历 -->
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.TradeProCalendarMapper">
+	
+	<!-- 日历规则展示 -->
+	<select id="selectProCalender" resultType="com.ylxx.fx.service.po.calendar.TradeProCalVO">
+		select 
+		t.ptid ptid,t.calendarID calendarID,t.trcd trcd,
+		p.TRDS trds,q.ptnm ptnm,m.calendarname calendarName,
+		m.LEVELTYPE leveType
+		from 
+		QUT_CMMPDTINFO q inner join TRD_CALENDAR t on q.ptid=t.ptid  
+		inner join trd_trancode_${proid} p on t.trcd=p.trcd 
+		inner join trd_calendarrules m on t.calendarid=m.calendarid 
+		where 
+		(t.ptid = #{proidl} 
+		or t.ptid = #{proidu})
+		<if test='calendarID != null and calendarID != ""'>
+			<if test='calendarID == "all"'>
+				and t.calendarid in 
+				(select calendarid from trd_calendarrules 
+				where  leveltype=#{levelTy})
+			</if>
+			<if test='calendarID != "all"'>
+				and t.calendarid = #{calendarID}
+			</if>
+		</if>
+	</select>
+	<!-- 删除 -->
+	<delete id="deleteTradeProRule">
+		delete from TRD_CALENDAR 
+		where 
+		ptid=#{tradeProCalVo.ptid} and TRCD=#{tradeProCalVo.trcd} 
+		and calendarID=#{tradeProCalVo.calendarID}
+	</delete>
+	<!-- 添加 -->
+	<insert id="saveTradeProRule">
+		insert into 
+		TRD_CALENDAR(ptid,TRCD,calendarID) 
+		values(
+		#{ptid},#{trcd},#{caleId})
+	</insert>
+	<!-- 修改 -->
+	<update id="updateTradeProRule">
+		update TRD_CALENDAR 
+		set TRCD=#{trcd},calendarID=#{calendarId} 
+		where ptid=#{keys0} and TRCD=#{keys1} and calendarID=#{keys2}
+	</update>
+	
+	<!-- 主页面,日历规则列表-->
+	<select id="selcallevel" resultType="com.ylxx.fx.service.po.calendar.CalendarVO">
+		select * from TRD_CALENDARRULES 
+		where 
+		leveltype=#{levelty} 
+		order by calendarid
+	</select>
+	
+	<!-- 添加,交易码列表 -->
+	<select id="selProTrade" resultType="com.ylxx.fx.service.po.calendar.TradeCodeVO">
+		select * from trd_trancode_${prod}
+	</select>
+	
+	<!-- 获取规则信息 -->
+	<select id="selCaleRuleList" resultType="com.ylxx.fx.service.po.calendar.CalendarVO">
+		select 
+		calendarID, calendarName, beginWeek,   
+  		endWeek, beginDate, endDate,        
+   		beginTime, endTime, flag, 
+	   	levelType, isquantian
+		from TRD_CALENDARRULES 
+		where calendarid in(#{calendarId}) 
+		order by leveltype,calendarid
+	</select>
+	
+	<!-- 获取当前规则等级 -->
+	<select id="selLevel" resultType="String">
+		select LevelType from TRD_CALENDARRULES 
+		where calendarID=#{calendarId}
+	</select>
+</mapper>

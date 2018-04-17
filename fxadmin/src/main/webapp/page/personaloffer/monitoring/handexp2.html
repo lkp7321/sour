@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+	<title>账户交易-价格监控</title>
+</head>
+<body>
+	<div class="top totalexposure">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>账户交易>价格监控</span>
+		</div>
+		<select class="prodsel">
+			<option value="P007">账户交易</option>
+		</select>
+		<div class="unus_serch pub_serch">
+			<input class="unus_seript pub_seript" type="text" />
+			<button class="unus_serbtn pub_serbtn">搜索</button>
+		</div>
+	</div>
+	<div class="thea">
+		<table class="box">
+			<thead>
+				<td>货币对名称</td>
+				<td class="buyin">买入价</td>
+				<td class="buyin">中间价</td>
+				<td class="buyin">卖出价</td>
+				<td style="text-align:center">　　　　更新时间　　　</td>
+				<td style="text-align:center">报价状态</td>
+				<td>报价来源</td>
+				<td style="text-align:center">错误码</td>
+				<td style="text-align:center">交易标志</td>
+			</thead>
+		</table>
+	</div>
+	<div class='boxtop tablepa'>
+		<table class="box">
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</body>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/personaloffer/handexp2"></script> 
+<script type='text/html' class='tem'>
+			<%for(var i=0,num=userdata.length;i<num;i++){%>
+					<%if(userdata[i].udfg==1){%>
+						<tr class="colgre">
+					<%}else if(userdata[i].udfg==2){%>
+						<tr class="colred">
+					<%}else{%>
+						<tr>
+					<%}%>
+					<td></td>
+					<td class="buyin"></td>
+					<td class="buyin"></td>
+					<td class="buyin"></td>
+					<td class="buyin"></td>
+					<td style="text-align:center"></td>
+					<td></td>
+					<td style="text-align:center"></td>
+					<td style="text-align:center"></td>
+				</tr>
+			<%}%>
+</script>
+</html>
+<!--	
+<td><%:=userdata[i].exnm%></td>
+					<td><%:=userdata[i].neby%></td>
+					<td><%:=userdata[i].nemd%></td>
+					<td><%:=userdata[i].nesl%></td>
+					<td><%:=userdata[i].mdtm%></td>
+					<td><%:=userdata[i].stfg%></td>
+					<td><%:=userdata[i].mknm%></td>
+					<td><%:=userdata[i].ercd%></td>
+					<td><%:=userdata[i].trfg%></td>
+	
+  -->

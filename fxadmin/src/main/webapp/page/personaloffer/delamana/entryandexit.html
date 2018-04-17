@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+	<title>出入金流水查询</title>
+</head>
+<body>
+	<div class="top entryandexit">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>交易管理>转账交易查询&nbsp;&nbsp;</span>
+		</div>
+		<div class='cer'>
+			<span>机构名称:</span>
+			<select class='long longone'  onmousedown="if(this.options.length>6){this.size=7}" onblur="this.size=0" onchange="this.size=0" size="0">
+			</select> 
+			<select class='long longtwo'  onmousedown="if(this.options.length>6){this.size=7}" onblur="this.size=0" onchange="this.size=0" size="0">
+				<option value="">所有</option>
+			 </select>
+			<span class="capar">卡号: <input class='strcuac' type="text" /></span>
+		</div>
+		<div class="bott">
+			<div class='dealdate'>
+				<span>交易日期:</span>
+				<p><input type='text' id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd',minDate:'%y-%M-%d'})"></i></p><span class='to'>到</span><p><input type='text' id='d2'/><i class='calander' onclick="WdatePicker({el:'d2',dateFmt:'yyyyMMdd',minDate:'%y-%M-%d'})"></i></p>
+			</div>
+			<span>交易流水号: <input type="text"  class="curLcno"/></span>
+			<button class="serch">查询</button>
+			<form action="TransferOutputexcel.do" method="post" id="fornm">
+				<button type="submit" id="logon">导出excel</button>
+			</form>
+		</div>
+		 
+	</div>
+	<div class='boxtop'><div class='box'></div></div>
+	<div id="page"></div>
+</body>
+<script src="/fx/layui/layui.js"></script>
+<script src="/fx/js/js_files/require.js" async="true" data-main="/fx/js/personaloffer/entryandexit"></script>
+</html>

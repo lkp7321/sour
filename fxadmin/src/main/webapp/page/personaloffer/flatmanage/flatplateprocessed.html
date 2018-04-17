@@ -1,0 +1,37 @@
+ <!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>平盘待处理查询</title>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top flatplateprocessed">
+			<div class='head'>
+				<span>当前位置:</span>
+				<span>平盘管理>平盘流水查询</span>
+			</div>
+			<div class='cerbot'>
+				<p><span>交易起始日期：</span><i class="Toda"></i><input type="text" id='d12' readonly="true"/><i class='calander' onclick="WdatePicker({el:'d12',isShowClear:false,isShowToday:false,isShowOthers:false,isShowOk:false,qsEnabled:false,dateFmt:'yyyyMMdd',maxDate:'#F{$dp.$D(\'d13\')||\'%y-%M-{%d+30}\'}',onpicking:function(dp){this.previousSibling.innerHTML=''}})"></i></p>
+				<p><span>交易结束日期：</span><i class="Toda1"></i><input type="text" id='d13' readonly="true"/></i><i class='calander'  onclick="WdatePicker({el:'d13',isShowClear:false,isShowToday:false,isShowOthers:false,dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d12\')}',maxDate:'%y-%M-{%d+30}',onpicking:function(dp){this.previousSibling.innerHTML=''}})"></i></p>
+			    <p class="leftp">货币对名称：<select name=""id="product" class="product"></select></p>
+			    <p class="leftp leftsel">平盘状态：<select name=""  class="product1">
+			    		<option value="">所有</option>
+			    		<option value="S">交易成功</option>
+			    		<option value="N">交易未返回</option>
+			    		<option value="F">交易失败</option>
+			    		<option value="A">预计</option>
+			    		<option value="B">超过平盘次数</option>
+			    		<option value="C">交易平盘时间</option>
+			    		<option value="D">交易已发送</option>
+			   				</select>
+			    </p>
+			    <button class="pub_button openquery">查询</button>
+			     
+			</div> 
+			
+	</div>
+	<div class='boxtop'><div class="box"></div></div>
+ 	<script  src="/fx/js/js_files/require.js" data-main="/fx/js/personaloffer/flatplateprocessed" ></script>
+</body>
+</html>

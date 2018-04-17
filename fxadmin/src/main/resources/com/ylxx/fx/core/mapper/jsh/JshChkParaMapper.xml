@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.jsh.JshChkParaMapper">
+	<select id="selJshChkPara" resultType="HashMap">
+		select * from qut_cmmchkpara
+		where 1=1
+		<if test="!''.equals(exnm) and exnm !=null">
+			and exnm=#{exnm,jdbcType=CHAR}
+		</if>
+	</select>
+	<insert id="insJshChkPara">
+		insert into qut_cmmchkpara
+		(exnm, mxmd, mdmd, mimd, point, offset, vltime)
+		values
+		(#{chkPara.exnm,jdbcType=CHAR}, #{chkPara.mxmd,jdbcType=NUMERIC},#{chkPara.mdmd,jdbcType=NUMERIC},
+		#{chkPara.mimd,jdbcType=NUMERIC},#{chkPara.point,jdbcType=NUMERIC}, #{chkPara.offset,jdbcType=NUMERIC},#{chkPara.vltime,jdbcType=NUMERIC})
+	</insert>
+	<update id="updJshChkPara">
+		update qut_cmmchkpara
+		   set
+		       mxmd = #{chkPara.mxmd,jdbcType=NUMERIC},
+		       mdmd = #{chkPara.mdmd,jdbcType=NUMERIC},
+		       mimd = #{chkPara.mimd,jdbcType=NUMERIC},
+		       point = #{chkPara.point,jdbcType=NUMERIC},
+		       offset = #{chkPara.offset,jdbcType=NUMERIC},
+		       vltime = #{chkPara.vltime,jdbcType=NUMERIC}
+		 where exnm = #{chkPara.exnm,jdbcType=CHAR}
+	</update>
+	<delete id="delJshChkPara">
+		delete qut_cmmchkpara
+		where exnm =
+		#{chkPara.exnm,jdbcType=CHAR}
+	</delete>
+	<select id="selChkParaExnmExist" resultType="int">
+		select count(*) from
+		qut_cmmchkpara where
+		exnm=#{chkPara.exnm,jdbcType=CHAR}
+	</select>
+	<select id="selChkParaExnm" resultType="HashMap">
+		select exnm from
+		qut_cmmchkpara
+	</select>
+</mapper>

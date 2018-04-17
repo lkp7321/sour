@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>外管局当前折算汇率</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top cuurcon">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>前置系统管理>外管局当前折算汇率&nbsp;&nbsp;</span>
+			<button class="refreshbtn pub_button">刷新汇率</button>
+			<form action="selcDisRateExcel.do" method="post" id="fornm">
+				<button type="submit" id="logon">导出excel</button>
+			</form>
+		</div>
+</div>
+<div class='boxtop'>
+	<div class='box'></div>
+</div>
+<div id="page"></div>
+</body>
+<script src="/fx/layui/layui.js"></script>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/settlement/cuurcon"></script>
+</html>

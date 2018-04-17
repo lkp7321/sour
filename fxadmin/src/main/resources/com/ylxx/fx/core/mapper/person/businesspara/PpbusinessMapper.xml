@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.PpbusinessMapper">
+	<!-- 平盘交易查询 -->
+	<select id="seldate" resultType="com.ylxx.fx.service.po.CK_handMxdetail">
+		select PRCD,SGNO,APDT,
+		decode(DJTY,'0','手工登记','1','手工抹账') djty,LKNO,APTM,NAME,EXNM,CKNO,BYNM,SLNM,
+		nvl(BYAM, 0) BYAM,nvl(SLAM, 0) SLAM,nvl(EXPC, 0) EXPC,nvl(CBHL, 0) CBHL,
+		nvl(CBAM, 0) CBAM,nvl(PLAM, 0) PLAM,decode(CXFG,'2','钞','1','汇')CXFG,JSDT,
+		PPDS,DSNO,STCD from ck_handmxdetail
+	    where STCD in ('S', 'M') AND PRCD = 'P074' and APDT like 
+		concat(#{apdt},'%') and JSDT like concat(#{jsdt},'%')
+		order by APDT, JSDT, APTM
+	</select>
+	
+	<select id="selectPrice" resultType="com.ylxx.fx.service.po.QutCmmPrice">
+		select trim(a.exnm) EXNM , a.neby NEBY , a.nesl NESL , c.settlementtd 
+		SETTLEMENTTD , c.fixingtd FIXINGTD , c.exnm EXCD ,c.yearcode YEARCODE from
+		qut_cmmprice_m0601 a left join  Cmm_Ptpara_P007 b on trim(a.exnm)=b.valu 
+		left join qut_translate_p007  c on trim(a.exnm) = c.code 
+		where b.paid in('WTIUSD','BRTUSD') 
+	</select>
+	
+</mapper>

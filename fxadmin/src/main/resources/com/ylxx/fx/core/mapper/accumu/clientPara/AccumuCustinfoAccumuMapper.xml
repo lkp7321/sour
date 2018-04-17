@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.clientPara.AccumuCustinfoAccumuMapper">
+	<!-- 获得全部数据 -->
+	<select id="queryRegmsgInfoList" resultType="java.util.HashMap">
+				
+				select b.ognm,nvl(a.rgog,'网银') as rgnm,a.TRAC,a.CUNO,a.CUAC,
+decode(a.CATY,'0','折','1','卡','未知') CATY,decode(a.REFG,'0','签约','1','解约','未知') REFG,
+decode(a.CUTY,'1','钻石级','2','金卡级','3','银卡级','4','普通级','') CUTY,a.OGCD,a.RGOG,a.RGTL,a.RGDT,
+ a.RGTM,a.CRDT,a.CRTM,a.CENO,a.RMNO,a.LMTA,a.LYTA,a.TYTA,a.PDJF,a.DYJF,a.JYJF,a.ZSJF,a.JLJF,a.BYJF,a.JZJF,
+a.TZJF,a.RGID from trd_regmsg_${prod} a,trd_ogcd b where a.ogcd=b.ogcd and a.refg = '0'
+				<if test="!strcuno.equals('')">
+				and a.CUNO = #{strcuno}
+				</if>
+				<if test="!strcuac.equals('')">
+				and a.CUAC = #{strcuac}
+				</if>
+				<if test="!comaogcd.equals('') and !combogcd.equals('')">
+				   <if test="comaogcd.equals('0001') and !combogcd.equals('all')">
+				   	and b.orgn = #{combogcd}
+				   </if>
+				   <if test="!comaogcd.equals('0001') and combogcd.equals('all')">
+				   and b.orgn = #{comaogcd}
+				   </if>
+				   <if test="!comaogcd.equals('0001') and !combogcd.equals('all')">
+				   and b.orgn = #{combogcd}
+				   </if>
+				</if>
+				order by a.RGDT desc,a.RGTM desc
+				
+	</select>
+	
+	<!-- 获得对应的数据 -->
+	<select id="selectTrac" resultType="java.util.HashMap">
+		select * from TRD_CUSTINFO_P003 where trac=#{trac}
+	</select>
+	
+	
+	
+	
+</mapper>

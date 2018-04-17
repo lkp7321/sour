@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accex.tradeMananger.AccexOrderInfoFromVieMapper">
+	<!--获取持仓表视图数据   -->
+	<select id="getOrderListFromVie" resultType="java.util.HashMap">
+		select * from VIEW_ORDER_${prod} where OPDT >=#{strateDate} and #{endDate}>=OPDT  
+	</select>
+</mapper>

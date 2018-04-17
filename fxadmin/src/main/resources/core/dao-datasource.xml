@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/batch"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:util="http://www.springframework.org/schema/util"
+             xmlns:aop="http://www.springframework.org/schema/aop"
+             xmlns:context="http://www.springframework.org/schema/context"
+
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+				http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd ">
+
+    <context:annotation-config/>
+    <aop:aspectj-autoproxy expose-proxy="true"  proxy-target-class="true" />
+
+	
+    <util:properties id="coreDao" location="classpath:core/dao.properties" />
+
+    <!-- 默认report -->
+    <beans:bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <beans:property name="url" value="#{coreDao['ds.adm.url']}" />
+        <beans:property name="username" value="#{coreDao['ds.adm.username']}" />
+        <beans:property name="password" value="#{coreDao['ds.adm.password']}" />
+        
+        <!-- 配置监控统计拦截的filters -->
+		<beans:property name="filters" value="#{coreDao['ds.adm.filters']}" />
+		
+		<!-- 配置初始化大小、最小、最大 -->
+		<beans:property name="initialSize" value="#{coreDao['ds.adm.initialSize']}" />
+		<beans:property name="minIdle" value="#{coreDao['ds.adm.minIdle']}" />
+		<beans:property name="maxActive" value="#{coreDao['ds.adm.maxActive']}" />
+		
+		<!-- 配置获取连接等待超时的时间 -->
+		<beans:property name="maxWait" value="#{coreDao['ds.adm.maxWait']}" />
+		
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<beans:property name="timeBetweenEvictionRunsMillis" value="#{coreDao['ds.adm.timeBetweenEvictionRunsMillis']}" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<beans:property name="minEvictableIdleTimeMillis" value="#{coreDao['ds.adm.minEvictableIdleTimeMillis']}" />
+		
+		<!-- 	用来检测连接是否有效的sql，要求是一个查询语句。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用。 -->
+		<beans:property name="validationQuery" value="#{coreDao['ds.adm.validationQuery']}" />
+		<!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 -->
+		<beans:property name="testWhileIdle" value="#{coreDao['ds.adm.testWhileIdle']}" />
+		<!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 -->
+		<beans:property name="testOnBorrow" value="#{coreDao['ds.adm.testOnBorrow']}" />
+		<!-- 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。 -->
+		<beans:property name="testOnReturn" value="#{coreDao['ds.adm.testOnReturn']}" />
+		
+		<!-- 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100 -->
+		<beans:property name="maxOpenPreparedStatements" value="#{coreDao['ds.adm.maxOpenPreparedStatements']}" />
+		
+		<!-- 超过时间限制是否回收 --> 
+		<beans:property name="removeAbandoned" value="#{coreDao['ds.adm.removeAbandoned']}" />
+		<!-- 超时时间；单位为秒。180秒=3分钟 -->
+		<beans:property name="removeAbandonedTimeout" value="#{coreDao['ds.adm.removeAbandonedTimeout']}" />
+		<!-- 关闭abanded连接时输出错误日志 -->  
+		<beans:property name="logAbandoned" value="#{coreDao['ds.adm.logAbandoned']}" />
+		
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+	    <!-- <beans:property  name="poolPreparedStatements" value="#{coreDao['ds.adm.poolPreparedStatements']}" />
+	    <beans:property  name="maxPoolPreparedStatementPerConnectionSize" value="#{coreDao['ds.adm.maxPoolPreparedStatementPerConnectionSize']}" /> -->
+    </beans:bean>
+</beans:beans>

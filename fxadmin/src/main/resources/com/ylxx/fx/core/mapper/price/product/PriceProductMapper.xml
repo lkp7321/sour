@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 产品管理 -->
+<mapper namespace="com.ylxx.fx.core.mapper.price.product.PriceProductMapper">
+	<select id="selectAllPrice" resultType="com.ylxx.fx.service.po.Pdtinfo">
+		select ptid,prnm,ptnm,qtty,b.tpnm,term,frqy, 
+		decode(cxfg,'2','钞','1','汇') cxfg,
+		decode(usfg,'0','开通','1','关闭') usfg  
+		from qut_cmmpdtinfo a,qut_tpfgt b
+		where a.qtty=b.tpfg order by ptid
+	</select>
+	<!-- 调用删除的存储过程 -->
+	<select id="dropPriceProd" parameterMap="dropMap" statementType="CALLABLE">
+		<![CDATA[ {CALL DROPPDTTABLE(?,?,?,?)}]]> 
+	</select>
+	<parameterMap type="java.util.HashMap" id="dropMap">
+		<parameter property="tableName" jdbcType="VARCHAR" javaType="String" mode="IN"/>
+		<parameter property="sequName" jdbcType="VARCHAR" javaType="String" mode="IN"/>
+		<parameter property="o_flag" jdbcType="NUMERIC" javaType="Integer" mode="OUT"/>
+		<parameter property="o_msg" jdbcType="VARCHAR" javaType="String" mode="OUT"/>
+	</parameterMap>
+	<!-- 删除 -->
+	<delete id="deletePrice">
+		delete qut_cmmpdtinfo where trim(ptid)=#{ptid}
+	</delete>
+	<!-- 查询是否已存在 -->
+	<select id="selectPrice" resultType="int">
+		select count(*) from qut_cmmpdtinfo where trim(ptid)=#{ptid}
+	</select>
+	<!-- 修改 -->
+	<update id="updatePrice">
+		update qut_cmmpdtinfo 
+		set 
+		prnm=#{pdtinfo.prnm},ptnm=#{pdtinfo.ptnm},qtty=#{pdtinfo.qtty},term=#{pdtinfo.term},
+		cxfg=#{pdtinfo.cxfg},frqy=#{pdtinfo.frqy},usfg=#{pdtinfo.usfg}
+		Where trim(ptid)=#{pdtinfo.ptid}
+	</update>
+	<!-- 调用添加的存储过程 -->
+	<select id="createPriceProd" parameterMap="dropMap" statementType="CALLABLE">
+		<![CDATA[ {CALL createpdttable(?,?,?,?)}]]> 
+	</select>
+	<!-- 添加 -->
+	<insert id="increated">
+		insert into qut_cmmpdtinfo (ptid,prnm,ptnm,qtty,term,cxfg,frqy,usfg)
+		VALUES(#{pdtinfo.ptid},#{pdtinfo.prnm},#{pdtinfo.ptnm},
+		#{pdtinfo.qtty},#{pdtinfo.term},#{pdtinfo.cxfg},#{pdtinfo.frqy},#{pdtinfo.usfg})
+	</insert>
+	
+	<!-- 货币对配置 下拉框 -->
+	<select id="selectexnmprice" resultType="java.util.HashMap">
+		select a.ptid,a.ptnm,qtty,b.tpnm,term,frqy 
+		from qut_cmmpdtinfo a,qut_tpfgt b,QUT_CMMPDTPARA c where a.qtty=b.tpfg and
+ 		a.ptid=c.ptid and a.usfg='0' and c.transactflag='1' order by ptid
+	</select>
+	<!-- 数据 -->
+	<select id="selectallExnmPrice" resultType="com.ylxx.fx.service.po.PdtRParaT">
+		select decode(a.cxfg,'1','汇','2','钞') cxfg,a.excd,decode(c.extp,'0',d.gmnm,'1',' ') gmnm,
+		a.exnm,a.term,a.exse,b.tpnm tpnm,b.tpfg tpfg 
+		from Qut_Pdtrateprar_${prod}
+		a,QUT_tpfgt b,CMM_CURRMSG c,QUT_CMMFILTRATE d 
+		where a.pmid=d.gmid and a.tpfg=b.tpfg and a.exnm=c.exnm order by c.extp,a.exnm
+	</select>
+	
+	<!-- 产品加工信息 -->
+	<select id="selectAllPmodPrice" resultType="com.ylxx.fx.service.po.PdtJGinfo">
+		select PTID,decode(BANCKFLAG,'0','停用','1','使用') BANCKFLAG,decode(CUSTFLAG,'0','停用','1','使用') CUSTFLAG,PUTFLAG,
+		decode(USFG,'0','开通','1','关闭') USFG,decode(TRANSACTFLAG,'0','非加工','1','加工') TRANSACTFLAG,PRCD,HCID,
+		decode(HISFLAG,'0','停用','1','使用') HISFLAG from qut_cmmpdtpara
+	</select>
+	<delete id="deletePmodPrice">
+		delete  qut_cmmpdtpara where trim(ptid)=#{ptid}
+	</delete>
+	<select id="selPmodPriceOn" resultType="int">
+		select count(*) from qut_cmmpdtpara where trim(ptid)=#{ptid}
+	</select>
+	
+	<update id="updatePmodPrice">
+		update qut_cmmpdtpara 
+		set 
+		BANCKFLAG=#{pdtinfo.banckflag},CUSTFLAG=#{pdtinfo.custflag},USFG=#{pdtinfo.usfg},
+		TRANSACTFLAG=#{pdtinfo.transactflag},HCID=#{pdtinfo.hcid},PRCD=#{pdtinfo.prcd},
+		HISFLAG=#{pdtinfo.hisflag}  Where trim(ptid)=#{pdtinfo.ptid}
+	</update>
+	<insert id="insPmodPrice">
+		insert into qut_cmmpdtpara(
+		ptid,BANCKFLAG,CUSTFLAG,PUTFLAG,USFG,TRANSACTFLAG,HCID,PRCD,HISFLAG)
+		VALUES(
+		#{pdtinfo.ptid},#{pdtinfo.banckflag},#{pdtinfo.custflag},#{pdtinfo.putflag},
+		#{pdtinfo.usfg},#{pdtinfo.transactflag},#{pdtinfo.hcid},#{pdtinfo.prcd},
+		#{pdtinfo.hisflag}
+		)
+	</insert>
+	
+	<!-- 开闭市控制 -->
+	<select id="selectSysctls" resultType="com.ylxx.fx.service.po.TradeOnOffBean">
+		select 
+		decode(USFG,'0','开市','1','闭市') USFG,OPNO,TRTM from trd_sysctl_${ptid}
+	</select>
+	<update id="updateUsfg">
+		update trd_sysctl_${ptidcomb} set USFG=#{usfg},
+		OPNO=#{usnm}, TRTM=#{time}
+	</update>
+</mapper>

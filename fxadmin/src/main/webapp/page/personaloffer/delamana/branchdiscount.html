@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+	<title>分行优惠设置</title>
+</head>
+<body>
+	<div class="top branchdiscount">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>交易管理>分行优惠设置 </span>
+		</div>
+		
+		<div class="bot">
+			<div class='cer'>
+				<p class="fitnmm">
+					<span>机构名称:</span>
+					<select class='long' onmousedown="if(this.options.length>6){this.size=7}" 
+					onblur="this.size=0" onchange="this.size=0">
+						<option value="">所有</option>
+					</select> 
+				</p>
+			</div>
+			<div class='buttons'>
+				<button class="inital">初始优惠规则</button>
+				<button class="enable">启用</button>
+				<button class="disable">停用</button>
+				<button class="rulemodify">规则修改</button>
+			</div>
+			<!-- <div class="info_serch pub_serch">
+			   <input class="info_seript pub_seript" type="text" />
+			   <button class="info_serbtn pub_serbtn">搜索</button>
+		    </div> -->
+		</div>
+	</div>
+	<div class='boxtop'>
+		<div class='box'></div>
+	</div>
+	<div id="page"></div>
+</body>
+<script src="/fx/layui/layui.js"></script>
+<script src="/fx/js/js_files/require.js" data-main="/fx/js/personaloffer/branchdiscount"></script>
+</html>

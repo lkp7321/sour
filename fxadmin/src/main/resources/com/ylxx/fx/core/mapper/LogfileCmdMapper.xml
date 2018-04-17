@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.LogfileCmdMapper">
+	
+	<!-- 写审计日志 -->
+	<insert id="insertLog">
+		insert into mng_log (RZDT,RZSJ,USEM,TYMO,REMK,VOLD,VNEW,PROD)
+		values(
+		#{logobj.rzdt},#{logobj.rzsj},
+		#{logobj.usem},#{logobj.tymo},
+		#{logobj.remk},#{logobj.vold},
+		#{logobj.vnew},#{logobj.prod})
+	</insert>
+	<!-- 查询数据-->
+	<select id="selectMng_logAll" resultType="com.ylxx.fx.service.po.Logfile">
+		select * from mng_log where 1=1
+		<if test='!strusnm.equals("Administrator")'>
+			and usem != 'Administrator'
+		</if>
+		<if test='usnm!=null and !usnm.equals("")'>
+			and usem like concat(concat('%',#{usnm}),'%')
+		</if>
+		<if test='trdt!=null and !trdt.equals("")'>
+			and rzdt>=#{trdt}
+		</if>
+		<if test='endt!=null and !endt.equals("")'>
+			and #{endt}>=rzdt
+		</if>
+		<if test='handle!=null and !handle.equals("")'>
+			<if test='handle.equals("all")'>
+				
+			</if>
+			<if test='!handle.equals("all")'>
+				<if test='!handle.equals("其它")'>
+					and remk like concat(concat('%',#{handle}),'%')
+				</if>
+				<if test='handle.equals("其它")'>
+					and remk not like '%添加%' and remk not like '%修改%' and remk not like '%删除%' and remk not like '%登录%'
+				</if>
+			</if>
+		</if>
+		order by rzdt desc,rzsj desc
+	</select>
+	
+	<!-- 包商银行 -->
+	<select id="selectLikeMngLog" resultType="com.ylxx.fx.service.po.Logfile">
+		select * from mng_log where 1=1
+		<if test='!"Administrator".equals(usem)'>
+			and usem != 'Administrator'
+		</if>
+		<if test='rzdt!=null and !rzdt.equals("")'>
+			and rzdt = #{rzdt}
+		</if>
+		<if test='search!=null and !search.equals("")'>
+			and usem like concat(concat('%',#{search}),'%')
+		</if>
+		order by rzdt desc,rzsj desc
+	</select>
+</mapper>

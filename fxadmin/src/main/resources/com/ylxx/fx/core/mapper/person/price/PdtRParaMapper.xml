@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.PdtRParaMapper">
+	<!-- 查询报价参数 非P999，非P007-->
+	<select id="selectPriceNew" resultType="com.ylxx.fx.service.po.PdtRParaTBean">
+		select decode(a.cxfg,'1','汇','2','钞') cxfg,a.excd,decode(c.extp,'0',d.gmnm,'1',' ') gmnm,
+		a.exnm,a.term,a.exse,b.tpnm,b.tpfg from Qut_Pdtrateprar_${prod} a,QUT_tpfgt b,
+		CMM_CURRMSG_${prod} c,QUT_CMMFILTRATE d where a.pmid=d.gmid and a.tpfg=b.tpfg and 
+		a.exnm=c.exnm order by c.extp,a.exnm
+	</select>
+	<!-- 查询报价参数:账户交易 >>报价管理-->
+	<select id="selAccExPrice" resultType="com.ylxx.fx.service.po.PdtRParaTBean">
+		select decode(a.cxfg,'1','汇','2','钞') cxfg,a.excd,decode(c.extp,'0',d.gmnm,'1',' ') gmnm,
+		a.exnm,a.term,a.exse,b.tpnm tpnm,b.tpfg tpfg 
+		from (select * from Qut_Pdtrateprar where prcd =#{prod})
+		a,QUT_tpfgt b,CMM_CURRMSG_${prod} c,QUT_CMMFILTRATE d
+		where a.pmid=d.gmid and a.tpfg=b.tpfg and a.exnm=c.exnm order by c.extp,a.exnm
+	</select>
+	<!-- P999查询产品列表 -->
+	<select id="pdtCom" resultType="java.util.HashMap">
+		select a.ptid,a.ptnm,qtty,b.tpnm,term,frqy from qut_cmmpdtinfo a,
+		qut_tpfgt b,QUT_CMMPDTPARA c where a.qtty=b.tpfg and
+		a.ptid=c.ptid and a.usfg='0' and c.transactflag='1' order by ptid
+	</select>
+	<!-- 根据货币对名称（主键）查询记录（以获得货币对类型） -->
+	<select id="selectObjPrice" resultType="com.ylxx.fx.service.po.CurrmsgBean">
+		select * from CMM_CURRMSG_${prod} where trim(exnm)=#{exnm}
+	</select>
+	<!-- 查询货币对(exnm货币对名称为主键) -->
+	<select id="selectObjPri" resultType="com.ylxx.fx.service.po.CurrmsgBean">
+		select * from CMM_CURRMSG where trim(exnm)=#{exnm}
+	</select>
+	<!-- 查询产品信息 -->
+	<select id="selectObjP" resultType="com.ylxx.fx.service.po.PdtinfoBean">
+		select * from qut_cmmpdtinfo where trim(ptid)=#{prod}
+	</select>
+	<!-- 【校验】页面数据的查询 -->
+	<select id="selectPrice" resultType="com.ylxx.fx.service.po.PdtChkParaBean">
+		select * from QUT_PDTCHKPARA_${ptid} where tpfg=#{pdtChkParaBean.tpfg} 
+		and trim(term)=#{pdtChkParaBean.term} and exnm=#{pdtChkParaBean.exnm} 
+		and cxfg=#{pdtChkParaBean.cxfg}
+	</select>
+	<!-- 更新【校验】数据 -->	
+	<update id="updatePrice">
+		update QUT_PDTCHKPARA_${ptid} set mdmd=#{pdtChkParaBean.mdmd},mimd=#{pdtChkParaBean.ximd},
+		mxmd=#{pdtChkParaBean.xxmd},mxbp=#{pdtChkParaBean.mxbp},mxdp=#{pdtChkParaBean.mxdp},
+		mxct=#{pdtChkParaBean.mxct},mxud=#{pdtChkParaBean.mxud},usfg=#{pdtChkParaBean.usfg}
+	    where tpfg=#{pdtChkParaBean.tpfg} and trim(term)=#{pdtChkParaBean.term} 
+		and exnm=#{pdtChkParaBean.exnm} and cxfg=#{pdtChkParaBean.cxfg}
+	</update>
+	<!-- 插入【校验】数据 -->
+	<insert id="insertPrice">
+		insert into QUT_PDTCHKPARA_${ptid} (tpfg,term,excd,cxfg,exnm,mxmd,mdmd,mimd,mxbp,mxdp,
+		mxct,mxud,ctnu,udnu,mxft,mdft,mift,qjft,blft,usfg)values(#{pdtChkParaBean.tpfg},
+		#{pdtChkParaBean.term},#{pdtChkParaBean.excd},#{pdtChkParaBean.cxfg},#{pdtChkParaBean.exnm},
+		#{pdtChkParaBean.mxmd},#{pdtChkParaBean.mdmd},#{pdtChkParaBean.mimd},#{pdtChkParaBean.mxbp},
+		#{pdtChkParaBean.mxdp},#{pdtChkParaBean.mxct},#{pdtChkParaBean.mxud},#{pdtChkParaBean.ctnu},
+		#{pdtChkParaBean.udnu},#{pdtChkParaBean.mxft},#{pdtChkParaBean.mdft},#{pdtChkParaBean.mift},
+		#{pdtChkParaBean.qjft},#{pdtChkParaBean.blft},#{pdtChkParaBean.usfg})
+	</insert>
+	<!-- 【停牌】页面数据的查询 -->
+	<select id="selectStopPrice" resultType="com.ylxx.fx.service.po.PdtStoperBean">
+		select * from QUT_PDTSTOPER_${ptid} where stid=#{pdtStoperBean.stid} 
+		and tpfg=#{pdtStoperBean.tpfg} and trim(term)=#{pdtStoperBean.term} 
+		and exnm=#{pdtStoperBean.exnm} 
+		<!-- and cxfg=#{pdtStoperBean.cxfg} -->
+	</select>
+	<!-- 更新【停牌】页面 -->
+	<update id="updateStopPrice">
+		update QUT_PDTSTOPER_${ptid} set <!-- stnm=#{pdtStoperBean.stnm}, -->
+		stfg=#{pdtStoperBean.stfg},usfg=#{pdtStoperBean.usfg} 
+		where stid=#{pdtStoperBean.stid} and tpfg=#{pdtStoperBean.tpfg}
+		and trim(term)=#{pdtStoperBean.term} and exnm=#{pdtStoperBean.exnm} 
+		<!-- and cxfg=#{pdtStoperBean.cxfg} -->
+	</update>
+	<!-- 插入【停牌】页面  -->
+	<insert id="insertStopPrice">
+		insert into QUT_PDTSTOPER_${ptid}(stid,tpfg,term,excd,cxfg,stnm,exnm,stfg,usfg) 
+		values(#{pdtStoperBean.stid},#{pdtStoperBean.tpfg},#{pdtStoperBean.term},#{pdtStoperBean.excd},
+		#{pdtStoperBean.cxfg},#{pdtStoperBean.stnm},#{pdtStoperBean.exnm},#{pdtStoperBean.stfg},
+		#{pdtStoperBean.usfg})
+	</insert>
+	<!--【点差】页面数据查询 -->
+	<select id="selectPointPrice" resultType="com.ylxx.fx.service.po.PdtPointBean">
+		select * from QUT_PDTPOINT_${ptid} where ptid=#{pdtPointBean.ptid} 
+		and tpfg=#{pdtPointBean.tpfg} and trim(term)=#{pdtPointBean.term} 
+		and exnm=#{pdtPointBean.exnm} 
+		and cxfg=#{pdtPointBean.cxfg}
+	</select>
+	<!-- 更新【点差】数据 -->
+	<update id="updatePointPrice">
+		update QUT_PDTPOINT_${ptid} set prtp=#{pdtPointBean.prtp},bhbd=#{pdtPointBean.bhbd},
+		bhsd=#{pdtPointBean.bhsd},cubd=#{pdtPointBean.cubd},cusd=#{pdtPointBean.cusd},
+		qtcy=#{pdtPointBean.qtcy} where ptid=#{pdtPointBean.ptid} and tpfg=#{pdtPointBean.tpfg} 
+		and trim(term)=#{pdtPointBean.term} and exnm=#{pdtPointBean.exnm} 
+		and cxfg=#{pdtPointBean.cxfg}
+		<!-- and cxfg=#{pdtPointBean.cxfg} -->
+	</update>
+	<!-- 添加【点差】数据 -->
+	<insert id="insertPointPrice">
+		insert into QUT_PDTPOINT_${ptid}(ptid,tpfg,term,excd,cxfg,prtp,exnm,bhbd,bhsd,cubd,cusd,qtcy)
+		values(#{pdtPointBean.ptid},#{pdtPointBean.tpfg},#{pdtPointBean.term},#{pdtPointBean.excd},
+		#{pdtPointBean.cxfg},#{pdtPointBean.prtp},#{pdtPointBean.exnm},#{pdtPointBean.bhbd},
+		#{pdtPointBean.bhsd},#{pdtPointBean.cubd},#{pdtPointBean.cusd},#{pdtPointBean.qtcy})
+	</insert>
+	<!-- 最大优惠点差表查询 -->
+	<select id="selectMaxpavpoint" resultType="com.ylxx.fx.service.po.MaxFavPointBean">
+		select a.ogcd as ogcd,b.ognm as ognm,a.exnm as exnm,a.excd as excd,a.mxfv as mxfv 
+		from TRD_MAXFAVPOINT_${prod} a,trd_ogcd b  where a.ogcd=b.ogcd 
+		<!-- 何时需要加？？？
+		<if test="prod!='all'">
+			and a.ogcd=#{prod}
+		</if> -->
+		order by a.ogcd
+	</select>
+	<!-- 更新总行客户点差、总行分行点差时更新分行最大优惠点差 -->
+	<update id="upMaxpavpointByExnm">
+		update TRD_MAXFAVPOINT_${prod} set mxfv=#{mxfv} where trim(exnm)=#{exnm}
+	</update>
+	
+	<!-- 条件查询币别对的数据 -->
+	<select id="selectPrice1" resultType="com.ylxx.fx.service.po.PdtRParaTBean">
+		select * from QUT_PDTRATEPRAR_${ptid} where trim(tpfg)=#{pdtrPara.tpfg} 
+		and trim(term)=#{pdtrPara.term} and trim(exnm)=#{pdtrPara.exnm} 
+		and trim(cxfg)=#{pdtrPara.cxfg}
+	</select>
+	<!-- 条件查询币别对的数据:账户交易>>报价管理 -->
+	<select id="selectAccExPrice" resultType="com.ylxx.fx.service.po.PdtRParaTBean">
+		select * from (select * from QUT_PDTRATEPRAR where prcd=#{ptid})
+		where trim(tpfg)=#{pdtrPara.tpfg} and trim(term)=#{pdtrPara.term} 
+		and trim(exnm)=#{pdtrPara.exnm} and trim(cxfg)=#{pdtrPara.cxfg}
+	</select>
+	<!-- 根据市场编号(报价源)查询市场信息表 -->
+	<select id="selectObjPrice1" resultType="com.ylxx.fx.service.po.MktinfoBean">
+		select * from cmm_mktinfo where trim(mkid)=#{mkid}
+	</select>
+	<!-- 查询所有价格源公告板表表名 -->
+	<select id="getMarkTab" resultType="String">
+		select Table_Name from USER_TABLES where TABLE_NAME like 'QUT_CMMPRICE_M%'
+	</select>
+	<!-- 查询产品市场源头MKNM（、市场名称MKID） -->
+	<select id="selMark" resultType="com.ylxx.fx.service.po.MktinfoBean">
+		select a.mkid mkid,a.mknm mknm from CMM_MKTINFO a,${mktab} b where b.tpfg=#{tpfg} 
+		and b.cxfg=#{cxfg} and b.exnm=#{exnm} and b.mkid=a.mkid and a.usfg='0'
+	</select>
+	<!-- 查询币别对序号 -->
+	<select id="selectExse" resultType="String">
+		select a.*,b.tpnm tpnm from QUT_PDTRATEPRAR_${prod} a,QUT_tpfgt b 
+		where a.tpfg=b.tpfg and a.exnm=#{exnm}
+	</select>
+	<!-- 修改币别对的数据 -->
+	<update id="updateMarkPrice">
+		update QUT_PDTRATEPRAR_${ptid} set mkst=#{pdtrPara.mkst},mksl=#{pdtrPara.mksl},
+		mklv=#{pdtrPara.mklv},pmid=#{pdtrPara.pmid} where trim(tpfg)=#{pdtrPara.tpfg} 
+		and trim(term)=#{pdtrPara.term} and trim(exnm)=#{pdtrPara.exnm} 
+		and trim(cxfg)=#{pdtrPara.cxfg}
+	</update>
+	<!-- 修改币别对的数据 : 账户交易>>报价管理-->
+	<update id="updateAccExPrice">
+		Update QUT_PDTRATEPRAR set mkst=#{pdtrPara.mkst},mksl=#{pdtrPara.mksl},
+		mklv=#{pdtrPara.mklv},pmid=#{pdtrPara.pmid} where prcd=#{ptid} 
+		and trim(tpfg)=#{pdtrPara.tpfg} and trim(term)=#{pdtrPara.term} 
+		and trim(exnm)=#{pdtrPara.exnm} and trim(cxfg)=#{pdtrPara.cxfg}
+	</update>
+	<!-- 添加产品币别对的数据 -->
+	<insert id="insertMarkPrice">
+		insert into QUT_PDTRATEPRAR_${ptid} (tpfg,term,excd,cxfg,exnm,mkst,mksl,mklv,pmid,exse)
+		values(#{pdtrPara.tpfg},#{pdtrPara.term},#{pdtrPara.excd},#{pdtrPara.cxfg},#{pdtrPara.exnm},
+		#{pdtrPara.mkst},#{pdtrPara.mksl},#{pdtrPara.mklv},#{pdtrPara.pmid},#{pdtrPara.exse}) 
+	</insert>
+	<!-- 写审计日志 -->
+	<insert id="insertMarkLogger">
+		insert into mng_log (RZDT,RZSJ,USEM,TYMO,REMK,VOLD,VNEW,PROD) 
+		values(#{logfileBean.rzdt},#{logfileBean.rzsj},#{logfileBean.usem},#{logfileBean.tymo},#{logfileBean.remk},
+		#{logfileBean.vold},#{logfileBean.vnew},#{logfileBean.prod})
+	</insert>
+	<!-- 查询当前策略 -->
+	<select id="selectGMNM" resultType="com.ylxx.fx.service.po.PdtRParaTBean">
+		select a.*,b.gmnm gmnm from QUT_PDTRATEPRAR_${ptid} a,QUT_CMMFILTRATE b 
+		where a.pmid=b.gmid and trim(a.exnm)=#{exnm}
+	</select>
+	<!-- 查询所有策略信息 -->
+	<select id="selectPriceUs" resultType="com.ylxx.fx.service.po.FiltrateBean">
+		select * from qut_cmmfiltrate where usfg='0'
+	</select>
+	<!-- 查询实盘产品价格干预器 -->
+	<select id="selectCtrlPrice" resultType="com.ylxx.fx.service.po.PdtCtrlPriTBean">
+		select * from QUT_PDTCTRLPRI_${ptid} where ctid=#{pcpri.ctid} and tpfg=#{pcpri.tpfg} 
+		and trim(term)=#{pcpri.term} and exnm=#{pcpri.exnm} and cxfg=#{pcpri.cxfg}
+	</select>
+	<!-- 更新【干预】数据 -->
+	<update id="updateCtrlPrice">
+		update QUT_PDTCTRLPRI_${ptid} set 
+		<!-- ctnm=#{pcpri.ctnm},fabp=#{pcpri.fabp},fasp=#{pcpri.fasp}, -->
+		nebp=#{pcpri.nebp},nesp=#{pcpri.nesp},bgtm=#{pcpri.bgtm},
+		edtm=#{pcpri.edtm},stfg=#{pcpri.stfg},usfg=#{pcpri.usfg} 
+		where ctid=#{pcpri.ctid} and tpfg=#{pcpri.tpfg} and trim(term)=#{pcpri.term} 
+		and exnm=#{pcpri.exnm} and cxfg=#{pcpri.cxfg}
+	</update>
+	<!-- 添加【干预】数据 -->
+	<insert id="insertCtrlPrice">
+		insert into QUT_PDTCTRLPRI_${ptid}(ctid,tpfg,term,excd,cxfg,ctnm,exnm,nebp,nesp,fabp,fasp,
+		bgtm,edtm,stfg,usfg) values(#{pcpri.ctid},#{pcpri.tpfg},#{pcpri.term},#{pcpri.excd},
+		#{pcpri.cxfg},#{pcpri.ctnm},#{pcpri.exnm},#{pcpri.nebp},#{pcpri.nesp},#{pcpri.fabp},
+		#{pcpri.fasp},#{pcpri.bgtm},#{pcpri.edtm},#{pcpri.stfg},#{pcpri.usfg})
+	</insert>
+	<!-- 根据价格类型名称获取价格类型 -->
+	<select id="getTpfgByTpnm" resultType="String">
+		select tpfg from QUT_TPFGT where tpnm=#{tpnm}
+	</select>
+	<!-- 根据策略名称查询策略编号 -->
+	<select id="getGmidByGmnm" resultType="String">
+		select gmid from qut_cmmfiltrate where gmnm=#{gmnm}
+	</select>
+</mapper>

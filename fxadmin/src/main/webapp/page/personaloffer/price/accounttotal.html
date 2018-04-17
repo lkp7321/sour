@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>账户信息统计</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top accunttotal">
+	<div class='head'>
+		<span>当前位置:</span>
+		<span>监控管理>账户信息统计</span>
+	</div>
+	<div class='cerbot'>
+		<p><span>机构名称&nbsp;</span>
+			<select class="fitnma">
+			</select>
+		</p>
+		<p><span>日期&nbsp;</span><input type="text" id='d1' /><i onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd'})" class='calander'></i></p>
+	    <button class="pub_button quoquery">查询</button>
+	    <!-- <button class="toexcel">导出</button> -->
+	</div>			
+</div>
+<div class='boxtop'>
+	<div class="box"></div>
+</div>
+<div id="page"></div>
+	</body>
+	<script src="/fx/layui/layui.js"></script>
+<script src="/fx/js/js_files/require.js" async="true" data-main="/fx/js/personaloffer/accounttotal"></script>
+</html>

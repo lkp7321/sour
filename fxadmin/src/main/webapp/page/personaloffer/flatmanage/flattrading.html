@@ -1,0 +1,25 @@
+ <!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>平盘交易查询</title>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top flattrading">
+			<div class='head'>
+				<span>当前位置:</span>
+				<span>贵金属平盘>平盘交易查询</span>
+			</div>
+			<div class='cerbot'>
+			    <p class="condition">查询条件：<select name=""id="product"><option value="">登记日期</option><option value="">结算日期</option></select></p>
+				<p><input type="text" id='d1' /><i onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd'})" class='calander'></i></p>
+			    <button class="pub_button openquery">查询</button>
+			</div>
+	</div>
+	<div class='boxtop'>
+	    <div class="box"></div>
+	</div>
+ 	<script  src="/fx/js/js_files/require.js"  data-main="/fx/js/personaloffer/flattradin" ></script>
+</body>
+</html>

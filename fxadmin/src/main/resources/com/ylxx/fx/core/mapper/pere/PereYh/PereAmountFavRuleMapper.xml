@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.pere.PereYh.PereAmountFavRuleMapper">
+	<insert id="addAmountRuleByAmount">
+		insert into trd_favruleAmount_p004 (OGCD,MIN,MAX,BYDS,SLDS,STDT,EDDT ) values(#{bean.ogcd,jdbcType=VARCHAR},#{bean.min,jdbcType=VARCHAR},#{bean.max,jdbcType=VARCHAR},#{bean.byds,jdbcType=VARCHAR},#{bean.slds,jdbcType=VARCHAR},#{bean.stdt,jdbcType=VARCHAR},#{bean.eddt,jdbcType=VARCHAR})
+	</insert>
+	<delete id="deleteFavrRuleByAmount">
+		delete from trd_favruleAmount_p004 where ogcd = #{bean.ogcd,jdbcType=VARCHAR} and min = #{bean.min,jdbcType=VARCHAR} and max = #{bean.max,jdbcType=VARCHAR}
+	</delete>
+	<update id="updateAmountFavRuleByAmount">
+		update trd_favruleAmount_p004 set BYDS = #{bean.byds,jdbcType=VARCHAR} ,SLDS = #{bean.slds,jdbcType=VARCHAR},STDT = #{bean.stdt,jdbcType=VARCHAR},EDDT = #{bean.eddt,jdbcType=VARCHAR} where ogcd = #{bean.ogcd,jdbcType=VARCHAR} and min = #{bean.min,jdbcType=VARCHAR} and max = #{bean.max,jdbcType=VARCHAR}
+	</update>
+	<select id="getAmountFavRuleByOgcd" resultType="java.util.HashMap">
+		
+		select OGCD,MIN,MAX,BYDS,SLDS,STDT,EDDT from trd_favruleAmount_p004 where ogcd = #{ogcd} order by MIN
+	</select>
+	<select id="exist" resultType="String">
+		select OGCD  from trd_favruleAmount_p004 where ogcd = #{ogcd,jdbcType=VARCHAR} and min = #{min,jdbcType=VARCHAR} and max = #{max,jdbcType=VARCHAR}
+	</select>
+</mapper>

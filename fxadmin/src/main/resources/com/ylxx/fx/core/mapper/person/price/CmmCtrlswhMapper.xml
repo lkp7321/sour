@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.CmmCtrlswhMapper">
+	<!-- 查询页面数据 -->
+	<select id="selectCmmPrice" resultType="com.ylxx.fx.service.po.CmmCtrlswh">
+		select a.tpfg, c.tpnm,a.term,a.excd,decode(a.cxfg,'2','钞','1','汇',a.cxfg) cxfg,
+		a.exnm,decode(a.usfg,'0','开启','1','停止',a.usfg) usfg,a.nbup,a.nblw,
+		a.nsup,a.nslw,a.fbup,a.fblw,a.fsup,a.fslw  from QUT_CMMCTRLSWH a,qut_tpfgt c
+		where a.tpfg=c.tpfg order by usfg
+	</select>
+	<!-- 查询直盘币别对 -->
+	<select id="selectPriceUSD" resultType="java.util.HashMap">
+		select * from CMM_CURRMSG where exnm like '%USD%'
+	</select>
+	<!-- 查询价格类型 -->
+	<select id="selectPrice" resultType="java.util.HashMap">
+		select tpnm,tpfg from qut_tpfgt
+	</select>
+	<!-- 查询记录是否存在 -->
+	<select id="checkExsit" resultType="com.ylxx.fx.service.po.CmmCtrlswh">
+		select * from QUT_CMMCTRLSWH where trim(TPFG)=#{cmmbean.tpfg} 
+		and trim(TERM)=#{cmmbean.term} and trim(EXNM)=#{cmmbean.exnm}
+	</select>
+	<!-- 添加点差干预上限 -->
+	<insert id="insertPrice">
+		insert into QUT_CMMCTRLSWH (TPFG,TERM,EXCD,CXFG,EXNM,USFG,
+		NBUP,NBLW,NSUP,NSLW,FBUP,FBLW,FSUP,FSLW)values(#{cmmbean.tpfg},
+		#{cmmbean.term},#{cmmbean.excd},#{cmmbean.cxfg},#{cmmbean.exnm},
+		#{cmmbean.usfg},#{cmmbean.nbup},#{cmmbean.nblw},#{cmmbean.nsup},
+		#{cmmbean.nslw},#{cmmbean.fbup},#{cmmbean.fblw},#{cmmbean.fsup},
+		#{cmmbean.fslw})
+	</insert>
+	<!-- 修改点差干预上限 -->
+	<update id="updatePrice">
+		Update QUT_CMMCTRLSWH set USFG=#{cmmbean.usfg},NBUP=#{cmmbean.nbup},
+		NSUP=#{cmmbean.nsup} Where trim(TPFG)=#{cmmbean.tpfg} and 
+		trim(TERM)=#{cmmbean.term} and trim(EXNM)=#{cmmbean.exnm}
+		and trim(cxfg)=#{cmmbean.cxfg}
+	</update>
+	<!-- 删除 -->
+	<delete id="deletePrice">
+		delete  QUT_CMMCTRLSWH where  trim(TPFG)=#{cmmbean.tpfg} and 
+		trim(TERM)=#{cmmbean.term} and trim(EXNM)=#{cmmbean.exnm} 
+		and trim(CXFG)=#{cmmbean.cxfg}
+	</delete>
+	<!-- 启用/停用 -->
+	<update id="updateCtrlusfg">
+		update QUT_CMMCTRLSWH set USFG=#{cmmbean.usfg} where  
+		trim(TPFG)=#{cmmbean.tpfg} and trim(TERM)=#{cmmbean.term} 
+		and trim(EXNM)=#{cmmbean.exnm} and trim(CXFG)=#{cmmbean.cxfg}
+	</update>
+</mapper>

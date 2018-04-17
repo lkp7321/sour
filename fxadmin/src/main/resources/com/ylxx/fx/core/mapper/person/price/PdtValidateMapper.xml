@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.PdtValidateMapper">
+	<!-- 查询产品均价校验器列表 -->
+	<select id="selectProductVaList" resultType="com.ylxx.fx.service.po.PdtValidateBean">
+		select a.tpfg,a.term,a.exnm,a.excd,
+		decode(a.cxfg,'1','汇','2','钞',a.cxfg) cxfg,a.mxdt,
+		decode(a.usfg,'0','启用','1','停用',a.usfg) usfg,
+		b.tpnm from qut_pdtchkavgdot_${ptid} a,qut_tpfgt b 
+		where a.tpfg=b.tpfg order by tpfg,exnm,cxfg
+	</select>
+	<!-- 获取价格类型列表 -->
+	<select id="getTpfg" resultType="com.ylxx.fx.core.domain.TpfgtBean">
+		select * from qut_tpfgt order by tpfg
+	</select>
+	<!-- 根据价格类型名称获取价格类型 -->
+	<select id="getTpfgByTpnm" resultType="String">
+		select tpfg from QUT_TPFGT where tpnm=#{tpnm}
+	</select>
+	<!-- 查询货币对列表 -->
+	<select id="selectExnm" resultType="com.ylxx.fx.service.po.CurrmsgBean">
+		select * from cmm_currmsg_${ptid} where extp='0' and exnm not in 
+		(select exnm from qut_pdtchkavgdot_${ptid} where tpfg=#{tpfg} 
+		and term =#{term} and cxfg=#{cxfg})
+	</select>
+	<!-- 添加校验器 -->
+	<insert id="addProductVa">
+		insert into qut_pdtchkavgdot_${ptid} (Tpfg,Term,Exnm,Excd,Cxfg,Mxdt,Usfg) 
+		values (#{pdtVa.tpfg},#{pdtVa.term},#{pdtVa.exnm},#{pdtVa.excd},#{pdtVa.cxfg},
+		#{pdtVa.mxdt},#{pdtVa.usfg})
+	</insert>
+	<!-- 修改校验器 -->
+	<update id="updateProductVa">
+		update qut_pdtchkavgdot_${ptid} set Mxdt=#{pdtVa.mxdt},usfg=#{pdtVa.usfg} 
+		where trim(Tpfg)=#{pdtVa.tpfg} and trim(Term)=#{pdtVa.term} 
+		and trim(Exnm)=#{pdtVa.exnm} and trim(Cxfg)=#{pdtVa.cxfg}
+	</update>
+	<!-- 删除校验器 -->
+	<delete id="deleteProductVa">
+		delete qut_pdtchkavgdot_${ptid} where trim(tpfg)=#{pdtVa.tpfg} and trim(term)=#{pdtVa.term} 
+		and trim(exnm)=#{pdtVa.exnm} and trim(cxfg)=#{pdtVa.cxfg}
+	</delete>
+	<!-- 启用/停用 -->
+	<update id="updateUsfg">
+		update qut_pdtchkavgdot_${ptid} set USFG=#{pdtVa.usfg} where trim(TPFG)=#{pdtVa.tpfg} and 
+		trim(TERM)=#{pdtVa.term} and trim(EXNM)=#{pdtVa.exnm} and trim(CXFG)=#{pdtVa.cxfg}
+	</update>
+</mapper>

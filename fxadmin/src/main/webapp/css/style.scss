@@ -1,0 +1,3393 @@
+@charset "UTF-8";
+$blue:#5B8CFF;
+$sidebarblue:#4876E7;
+$maincolor:#eff3f9;
+$nameblue:#6e96e5;
+$h6blue:#5a8bff;
+$size:13px;
+$rel:relative;
+$cursor:pointer;
+$borderradiu:10px 10px 0 0;
+.abs{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom:0;
+    margin:auto;
+    background:#fff;
+    border-radius:10px;
+}
+.non{
+	display:none;
+}
+.bot{
+      //  margin-top: 22px;
+        text-align:center;
+    }
+.cenr input[type="text"]{
+   height: 25px;
+   border:1px solid #5a8bff;
+   padding-left:5px;
+}
+.cen input[type="text"]{
+   height: 25px;
+   border:1px solid #5a8bff;
+   padding-left:5px;
+}
+select {
+  height: auto;
+  border: solid 1px rgba(0,0,0,.3);
+  appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  background: url(../img/lower.png) no-repeat scroll;
+  padding-right: 32px;
+  padding-left: 3px;
+}
+.centbox{
+    margin:10px;
+}
+.centbot{
+    text-align:center;
+}
+button{
+    border:none;
+    background:none;
+    background:$h6blue;
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#5A8BFF',endColorStr='#5986EE',gradientType='1');
+    color:#fff;
+    border-radius:5px;
+    cursor:$cursor;
+    line-height:29px\0;//ie8-ie11;
+    height:25px;
+}
+.lower{
+   background:url(../img/lower.png) no-repeat; 
+}
+input[type='text'],input[type="password"]{
+    height:25px;
+    padding-left:5px;
+    border:1px solid #5a8bff;
+}
+/* gonggong dialog header*/
+.pubhead{
+        height: 28px;
+         line-height: 28px;
+         color: #fff;
+         background: #5a8bff;
+         border-radius: 10px 10px 0 0;
+         span{
+             float: left;
+             margin-left: 13px;
+             font-size: 13px;
+         }
+}    
+.close{
+    font-size: 16px;
+    float:right;
+    margin-right: 8px;
+    cursor:$cursor;
+    font-weight: 700;
+}
+/*pubhead end*/
+body,html{
+    width: 100%;
+    height:100%;
+    overflow: hidden;
+    font:$size 'PingFangSC-Regular,SimHei,Arial';
+    //font-size: $size;
+	color: #3B3E47;
+	letter-spacing: 0;
+}
+.topright{
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    font-size: 1.1rem;
+    background: -ms-linear-gradient( top,#5A8BFF,#5986EE);
+    background: -webkit-linear-gradient( top,#5A8BFF,#5986EE);
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#5A8BFF',endColorStr='#5986EE',gradientType='1'); 
+    color:#fff;
+    margin-left:calc(21.43rem*0.85);
+    margin-left:230px\9;
+}
+.topright h6{   
+    margin-left: 25px;
+    font-weight: 500;
+    font-size: 17px;
+    font-family: SimHei;
+}
+.topright .lockbtn{
+    position: absolute;
+    right: 5px;
+    top: 17px;
+    top: 17px\0;
+    font-size: .8rem;
+    cursor:pointer;
+    background:none;
+}
+
+.username{
+    color:$nameblue;
+}
+.list-group-ul,.list-group-thrul{
+    display:none;
+}
+.list-group-ul li{
+    padding-left: 33px;
+    line-height: 40px;
+    width: 90%;
+}
+.list-group-ul li.liHov{
+    background:$sidebarblue;
+    border-radius:50px;
+}
+.list-group-ul li.list-group-thr.liHov{
+    background:none;
+    border-radius:0;
+}
+.siderbars li.liHov a{
+    color:#fff;
+}
+.liHov a{
+    color:#000;
+}
+.list-group-ul li.list_thr{
+    padding-left: 0;
+    width: 120px;
+    /*margin-left: 80px;*/
+    text-align:center;
+    margin-left: 40px;
+}
+r,re{
+    color:red;
+}
+.ico {
+  width: 16px;
+  height: 19px;
+  display: inline-block;
+  margin-right: 16px;
+  position: relative;
+  top: 4px; }
+.icol {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-left: 16px;
+  position: relative;
+  top: 4px; }
+.ico-carset {
+  background: url(../img/lower.png) no-repeat; }
+
+.ico-carsetup {
+  background: url(../img/up.png) no-repeat; }
+
+.ico-users {
+  background: url(../img/usermanagement.png) no-repeat; }
+
+.ico0,.ico2,.ico3{
+  background: url(../img/usermanagement.png) no-repeat; }
+.ico1{
+    background:url(../img/Price.png) no-repeat;}
+.ico-msg {
+  background: url(../img/Userinformation.png) no-repeat left top; 
+ }
+ .icon01{
+     background: url(../img/Userreview.png) no-repeat; 
+ }
+.icon00{
+    background: url(../img/Userinformation.png) no-repeat left top;
+    background-color:#ccc;
+}
+.ico-review {
+  background: url(../img/Userreview.png) no-repeat; }
+
+.ico-lock {
+  background: url(../img/Passwordsettings.png) no-repeat; }
+.userm {
+  background: url(../img/Userinformation.png) no-repeat; }
+  
+.loginwrap{
+    width:300px;
+    height: 300px;
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -150px;
+    margin-top: -150px;
+}
+.botright{
+    background:$maincolor;
+    width:100%;
+    float: left;
+    height: 100%;
+    margin-left:calc(21.43rem*0.85);
+    margin-left:230px\9;
+}
+.showbtn{
+    width: 16px;
+    height: 16px;
+    display:inline-block;
+    margin:12px;
+    position: absolute;
+    right: 5px;
+    color: #666;
+    top: 69px;
+}
+
+/*@media screen and (min-width:768px){
+   .showbtn{
+     display:none;
+   }
+   .head{
+        display:inlilne-block;
+   }
+   .cen{
+        margin-left: 100px;
+    }
+}*/
+
+.botleft{
+  width: 20%;
+  float:left;
+  height: 100%;
+}
+/*@media screen and (max-width:750px){
+    .showbtn{
+        display:inline-block;
+    }   
+    .topleft{
+        width: 40%;
+        float: left;
+    }
+    .topright{
+        width: 60%;
+        float: left;
+        
+    }
+    .topright .lockbtn{
+        right: -20px;
+    }
+    .topright h6{
+        margin-left: 10px;
+    }
+    .botright{
+        width: 100%;
+    }
+    .head{
+        display:none;
+    }
+    .cen{
+        margin-left: 10px;
+    }
+}*/
+/*  gong gong xiugaihetianjia dialog*/
+.cent{
+    width: 612px;
+    height:428px;
+    .cer{
+        margin-top: 22px;
+        padding:0 25px;
+        font-size: 12px;
+    }
+    .cer>div{
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        margin-top: 10px;
+        position: relative;
+    }
+    .cer p{
+        display:inline-block;
+        position: relative;
+    }
+    .cer p+p{
+        float:right;
+    }
+    .cer p input,.cer .sel_mo1{
+        width: 180px;
+        height: 26px;
+    }
+    .cer p span{
+        width: 64px;
+        display:inline-block;
+    }
+    .cer>div.six{
+        height:auto;
+    }
+    .cen .six{
+        margin-top: 30px;
+        position: relative;
+    }
+    .cer .six p{
+        margin-top:8px;
+    }
+    .cer .six p input,.cer .six .sel_mo{
+        width: 495px;
+        float: right;
+        height: 26px;
+    }
+    .six p input.rmrk{
+    	width:486px;
+    }
+    .sel_mo{
+        position: relative;
+        top:6px;
+    }
+    .bot button{
+        width: 110px;
+        height: 30px;
+        line-height: 30px;
+    }
+    .bot button+button{
+        margin-left: 40px;
+    }
+    input{
+        border:none;
+        border:1px solid rgba(90,139,255,0.6);
+    }
+    .sel_mo select{
+        border:1px solid rgba(90,139,255,0.6);
+        background-position: 476px;
+        padding-left: 5px;
+        width: 495px;
+        padding:4px; 
+    }
+    input{
+        padding-left: 8px;
+    }
+    r{
+        margin:0 5px;
+    }
+    re{
+        position: absolute;
+        left: 64px;
+        top: 21px;
+        font-size: 10px;
+    }
+}
+.userinfoadd{
+    .cer p{
+        float:left;
+        font-size:12px;
+    }
+    .juese select{
+        width: 180px;
+        height: 26px;
+        border:1px solid rgba(90, 139, 255, 0.6);
+        background-position: 162px;
+    }
+    .five p:first-child{
+        letter-spacing:3.5px;
+    }
+    .bot{
+        margin-top: 136px;
+    }
+}
+/*qing xuan ze yi tiao shuju*/
+.zhezhao{
+	z-index:15;
+    div.choicecent{
+        width: 210px;
+        height: 110px;
+    }
+    .choicecent  r{
+        color:#fff;
+        margin-left: 0;
+    }
+    r{
+        margin-left:5px;
+    }
+    .choicecent p{
+        line-height: 52px;
+        width: 100%;
+        text-align:center;
+        height: 50px;
+    }
+    .choicecent button{
+        display:block;
+        margin:0 auto;
+        padding:0px 10px;
+    }
+}
+/*user change */
+.changesent{
+        height:440px;
+       .cer>div>p{
+            display: inline-block;
+        }
+        .cer>p{
+            display:block;
+            height: 30px;
+            width: 100%;
+            line-height: 30px;
+        }
+        .cer p{
+            font-size:12px;
+        }
+        .one p:first-child{
+            letter-spacing:3.5px;
+        }
+        .juese{
+            position: absolute;
+            right: 182px;
+            top: 0;
+        }
+        .sel_mo1{
+            position: relative;
+            left: 380px;
+            top: -27px;
+        }
+        .bot{
+            margin-top: 56px;
+        }
+}
+/* rolenama */
+.roledialog{
+    width: 336px;
+    height: 230px;
+    re{
+        position: absolute;
+        left: 76px;
+        top: 21px;
+        font-size: 9px;
+    }
+    .roletop{
+        line-height: 28px;
+        background:#5a8bff;
+        color:#fff;
+        border-radius: $borderradiu;
+    }
+    .cer{
+        padding:10px 42px;
+        font-size: 12px;
+        p{
+            position: relative;
+            margin-bottom: 13px;
+            span{
+                width: 70px;
+                display:inline-block;
+                text-align: right;
+                margin-right: 5px;
+            }
+            input[type="text"]{
+                width: 170px;
+                height: 22px;
+                display:inline-block;
+                border:none;
+                border:1px solid #5a8bff;
+                padding-left: 5px;
+            }
+            input[type="radio"]{
+                position: relative;
+                top: 2px;
+            }
+        }
+    }
+    .bot button{
+        margin-left: 20px;
+        /*line-height: 28px;*/
+        width: 88px;
+    }
+}
+/*cancel dialog style*/
+.dia{
+       width: 340px;
+       height: 200px;
+       text-align: center;   
+       overflow: hidden;
+       .top_icon{ 
+           width: 50px;
+           height: 50px;
+           line-height: 50px;
+           color: #FFFFFF;
+           font-size: 30px;
+           text-align: center;
+           margin: auto;
+           margin-top: 22px;
+           border-radius: 50%;
+            background-color: #F76260 ;
+        }
+        .dia_text{
+           height: 22px;
+           margin-top: 20px;
+           font-size: 14px;
+           font-family: PingFangSC-Regular;
+       
+         }
+         .bot_btn button{
+            width: 100px;
+            height: 30px;
+        }
+         .bot_btn{
+           height: 30px;
+           margin-top: 28px;
+             .confirm{
+                margin-right: 20px;
+             }
+        }
+}
+/*check dialog style*/
+.dia_check{
+     width: 340px;
+     height: 200px;
+     overflow: hidden;
+     .checkcont{
+          height: 100px;
+          line-height: 50px;
+          text-align: center;
+         p{
+              height: 20px;
+              margin-top: 5px;
+              font-size: 14px;
+              input{
+                  border: none;
+              }
+         }
+          .state{
+             margin-left: -62px;
+             .chenopass{
+                 margin-left: 10px;
+             }
+          }
+     }
+     .checkbot{
+         text-align: center;
+         margin-top: 10px;
+         button{
+             width: 100px;
+             height: 30px;
+         }
+         .che_save{
+             margin-right: 20px;
+         }
+     }
+}
+/*cancel dialog style*/
+.dia{
+       width: 340px;
+       height: 200px;
+       text-align: center;
+       overflow: hidden;
+       .top_icon{ 
+           width: 50px;
+           height: 50px;
+           line-height: 50px;
+           color: #FFFFFF;
+           font-size: 30px;
+           text-align: center;
+           margin: auto;
+           margin-top: 22px;
+           border-radius: 50%;
+            background-color: #F76260 ;
+        }
+        .dia_text{
+           height: 22px;
+           margin-top: 20px;
+           font-size: 14px;
+         }
+         .bot_btn button{
+            width: 100px;
+            height: 30px;
+        }
+         .bot_btn{
+           height: 30px;
+           margin-top: 28px;
+             .confirm{
+                margin-right: 20px;
+             }
+        }
+  }
+  
+
+/*check dialog style*/
+.dia_check{
+     width: 340px;
+     height: 200px;
+     overflow: hidden;
+    
+     .checkcont{
+          height: 100px;
+          line-height: 50px;
+          text-align: center;
+         p{
+              height: 20px;
+              margin-top: 5px;
+              font-size: 14px;
+              input{
+                  border: none;
+              }
+         }
+          .state{
+             margin-left: -62px;
+             .chenopass{
+                 margin-left: 10px;
+             }
+          }
+     }
+     .checkbot{
+         text-align: center;
+         margin-top: 10px;
+         button{
+             width: 100px;
+             height: 30px;
+         }
+         .che_save{
+             margin-right: 20px;
+         }
+     }
+     
+}
+.systemstate .box{
+    width: 300px;
+    height: 180px;
+    .cen{
+     margin:25px;
+     p{
+         margin-top: 17px;
+         position: relative;
+         re{
+             position: absolute;
+             left: 70px;
+   			 top: 26px;
+             font-size: 8px;
+         }
+     }
+    }
+    .bot{
+        margin-top: 16px;
+    }
+    .bot button{
+        padding:0px 28px;
+        margin-left:15px;
+    }
+}
+/*--outfit--*/
+.outfit .box{
+    background:#fff;
+    width: 421px;
+    height: 290px;
+    .cenr{
+        margin:17px 10px;
+    }
+    .cenr p{
+        line-height: 26px;
+        position: relative;
+        margin-top:5px;
+        re{
+          left:auto;
+          top:0;
+          right: -2px;
+        }
+    }
+    .cenr p span{
+        display:inline-block;
+        width: 130px;
+        text-align:right;
+        margin-right: 5px;
+    }
+    .bot{
+        text-align:center;
+        button{
+            padding:0px 36px;
+            margin-left: 20px;
+        }
+    }
+}
+.outfit .outfitmerge{
+  .cenr p{
+        line-height: 35px;
+    }
+}
+.customer .box{
+    width: 340px;
+    height: 210px;
+    text-align: center;
+    .cenr{
+        margin:10px;
+        p{
+            line-height: 50px;
+            position: relative;
+        }
+        input{
+            height: 25px;
+            padding-left:5px;
+            border: 1px solid #5a8bff;
+            margin-left: 10px;
+        }
+        re{
+            position:absolute;
+            left: 111px;
+            font-size: 8px;
+        }
+    }
+    .bot{  
+        margin-top: 20px;
+        button{
+          padding:0px 10px;
+          margin-right: 5px;
+          display:inline-block;
+       }
+       .cancel{
+          margin-left:20px;
+       }
+       
+       
+    }
+}
+/*openrule*/
+.openrule .box{
+    width: 520px;
+    height: 408px;
+    .cenr{
+        margin: 15px 25px;
+        input[type="text"],input[type="number"]{
+            height:25px;
+            width:150px;
+            border:1px solid #5a8bff;
+            display:inline-block;
+        }
+        .equalto{
+        	text-align:center;
+        }
+        span{
+        	width: 60px;
+		    display: inline-block;
+		    margin-right: 5px;
+        }
+        p{
+        	display:inline-block;
+        	margin-left:5px;
+        	position:relative;
+        }
+        .up,.lower{
+    	    position: absolute;
+		    right: 3px;
+        }
+        .lower{
+        	 top: 12px;
+        }
+        .up{
+        	top:4px;
+        }
+        re{
+        	position:absolute;
+        	left:62px;
+        	top:25px;
+        }
+        
+    }
+    .cenr>div{
+       margin-top: 16px;
+    }
+    .twolist{
+		overflow-y:hidden;
+		width:350px;
+		border:1px solid #5a8bff;
+		box-sizing: content-box;
+	}
+	.twop p{
+		width:50%;
+		text-align:center;
+		display:inline-block;
+		line-height:24px;
+		margin-left:0;
+	}
+    .bot{
+        margin-top: 10px;
+        text-align:center;
+    }
+    .bot button{
+        margin-left: 30px;
+        padding:0px 40px;
+    }
+    .bot .cancel{
+       background: #B4B4B4;
+    }
+     #val{
+    	 width: 60px;
+		 height: 24px;
+		 display:none;
+		 border: 1px solid #5a8bff;
+    }
+   .likesel{
+        position:relative;
+        //width: 148px;
+        line-height: 22px;
+        display:inline-block;
+        .firstsel,.lastsel{
+    	    background-position: 120px;
+		    width: 143px;
+		    padding: 4px;
+		    border: 1px solid #5a8bff;
+        }
+        /*i.carset{
+            background:url(../img/lower.png) no-repeat;
+            width: 11px;
+            height: 11px;
+            display:inline-block;
+            position:absolute;
+            right: 5px;
+            top: 6px;
+        }
+        ul{
+            position: absolute;
+            top: 19px;
+            z-index: 999;
+            background:#fff;
+            border:1px solid #ccc;
+            width: 100%;
+            left: -1px;
+            box-sizing:content-box;
+            display: none;
+        }*/
+        div.four{
+            line-height: 30px;
+        }
+    }
+    .equal{
+        width: 125px;
+        text-align:center;
+        display:none;
+        background-position: 104px;
+        margin: 0 12px;
+        padding:4px;
+        border:1px solid #5a8bff;
+    }
+    .increate,.remove{
+        border:none;
+        background:none;
+        color:#fff;
+        background:$h6blue;
+        padding: 0px 10px;
+        border-radius:5px;
+        margin-left: 15px;
+    }
+    .four{
+        margin-left: 6px;
+    }
+    .five{
+        margin-left: 6px;
+        position:relative;
+        .twop{
+        	 border-bottom: 1px solid #5a8bff;
+        }
+        .lrlist{
+        	overflow-y:scroll;
+        	height: 115px;
+        	width: 100%;
+        }
+        .llist,.rlist{
+            display:inline-block;
+            width: 172px;
+            height:109px;
+            text-align:center;
+        }
+        .llist li,.rlist li{
+            line-height:26px;
+            overflow:hidden;
+			white-space:nowrap;
+            text-overflow:ellipsis;
+        }
+        button{
+            vertical-align:top;
+           	right: 19px;
+  			top: 0;
+  			position:absolute;
+  			background: #FF6B6B;
+        }
+    }
+    
+}
+/*-------------------price manage modify-------------------------------*/
+   .pripubdivs{
+        width: 50%;
+        height: 160px;
+        float: left;
+        /*padding-left: 30px;*/
+          div{
+             height: 40px; 
+             line-height: 40px;
+             position:relative;
+            .priceradio{
+               position: relative;
+               top: 8px;
+             } 
+          }
+          #simg,#eimg{
+          	position:absolute;
+    		top: 12px;
+    		right:31px;
+    		z-index: 0;
+          }
+          span{
+			    display: inline-block;
+			    text-align: right;
+			    margin-right: 5px;
+          }
+         input{
+               height: 25px;
+               border: none;
+               padding-left: 5px;
+               border: 1px solid #5a8bff;
+    		   position: relative;
+    		   background: transparent;
+         }
+         input.suspenid,input.suspenname{
+         	border:0;
+         }
+         input[type="radio"]{
+         	position: relative;
+   			top: 8px;
+         }       
+    }
+    .pricleft span{
+     	width:140px;
+     	display:inline-block;
+     	text-align:right;
+     }
+     .pricright span{
+     	width:85px;
+     	display:inline-block;
+     	text-align:right;
+     }
+     .six .pripubdivs  span{
+		width:140px;
+	}
+	.three .pripubdivs  span{
+		width:106px;
+	}
+	.three .pripubdivs input{
+		z-index:10;
+	}
+	.three .formtip{
+		left:111px;
+	}
+    .tabpbgc{
+        background-color: #5A8BFF; 
+    }
+	.quoteentry .pripubdivs span{
+		width:60px;
+	}
+/*baojiacanshushezhi */
+.dia_price{
+    width: 760px;
+    height: 390px;
+    overflow: hidden;
+    .pricecont{
+        width: 670px;
+        margin: auto;
+        margin-top: 15px;
+        .priceconttop{
+            height: 40px;
+            line-height: 40px;
+            
+            
+            div{
+                float: left;
+                margin-left: 10px;
+                color: #696969;
+                font-size: 13px;
+                span{
+                    margin-left: 10px;
+                    color: #5A8BFF;
+                }
+            }
+        }
+        .pricecontmain{
+            height: 300px;
+            overflow: hidden;
+            ul{
+//            width: 344px; 
+              height: 32px;
+              border: 2px solid #9CB9FF;
+              border-right: none;
+              border-bottom: none;
+              border-top:none;
+              line-height: 32px;
+                li{
+                    float: left;
+                    color: #696969 ;
+                    padding:0 8px 0 8px;
+                    background-color: #9CBAFF;
+                    font-size: 13px;
+                    border-right: 2px solid #9CB9FF;
+                    border-top: 2px solid #9CB9FF;
+                }
+            .li{
+                 background-color: #fff; 
+                 
+                 
+             }
+            } 
+            .pricemainon{
+                display: block;
+            }
+ .marketsource{
+    width: 160px;
+    float: left;
+    border: 1px solid #9CB9FF;
+    .markettop{
+        height: 25px;
+        line-height: 25px;
+        color: #323232;
+        font-size: 13px;
+        padding-left: 5px;
+        border-bottom: 1px solid #9CB9FF;
+    }
+      .marketcont{
+        height: 140px;
+        overflow: hidden;
+        p{
+            height: 28px;
+            line-height: 28px;
+            padding-left: 5px; 
+            overflow: hidden;           
+        }
+        p:hover{
+            background-color: #5A8BFF; 
+        }
+        
+      }
+}
+
+   .prisoright{
+       .marktset{
+          width: 310px;
+          position: relative;
+         .marketline{
+             width: 1px;
+             height: 165px;
+             background-color: #9CB9FF;
+             position: absolute;
+             top: 0;
+             left: 140px;
+         }
+         .markettop{
+             .span1{
+                 display: inline-block;
+                 width: 145px;
+             }
+              
+         }
+         .marketcont{
+             
+            overflow-y: auto;
+         span{
+            width: 140px; 
+            display: inline-block;
+            float: left;
+             
+         }
+         input{
+             height: 100%;
+             width: 156px;
+             border: none;
+             float: right;
+             background-color: transparent;
+         }
+       }
+    } 
+}
+.sourcebtns{
+     
+    height: 100%;
+    float: left;
+    padding-left: 10px;
+    div{
+        width: 40px;
+        height: 20px;
+        line-height: 20px;
+        margin-top: 10px;
+        font-size: 13px;
+        text-align: center;
+        background-color: #5A8BFF;
+        color: #fff;
+        border-radius: 5px;
+        cursor:pointer;
+    }  
+}
+        .pribottom{
+                    text-align: center;
+                    margin-left: 180px;
+               .pintbtn{
+                    width: 100px;
+                    height: 30px;
+                    float: left;
+                    border: none;
+                    color: #fff;
+                    margin-top: 20px;
+                    margin-left: 50px;
+                    background-color: #5A8BFF;
+                    border-radius: 5px;
+                }
+                .price_cancel{
+                    background-color: #B4B4B4 ;
+                }
+        }
+        
+        /*chanpinshichangyuantouyuanze*/ 
+            .prisource{
+                 height: 245px;
+                 padding-top: 10px;
+                 border: 2px solid #9CB9FF ;
+                .prisoleft{
+                    width: 35%;
+                    float: left;
+                    margin-left: 30px;
+                .marketsource{
+                   .marketcont{
+                        overflow-y:scroll;
+                    }
+                  } 
+                .sourcebtns{
+                     .pricedelete{
+                            color: #fff;
+                            background-color: #FF6B6B ;
+                           }
+                }  
+                }
+                .prisoright{
+                    width: 60%;
+                    float: left;
+ 
+                }
+                .prisobot{
+                    margin-left: 180px;
+                }
+                
+            }
+        
+        /*celue*/
+        .pristrategy{
+             height: 245px;
+           padding-top: 10px;
+             border: 2px solid #9CB9FF ;
+            .pristrleft{
+                width: 60%;
+                float: left;
+                .currentstra{
+                    width: 140px;
+                    float: left;
+                    span{
+                        display: block;
+                        font-weight: 700px;
+                    }
+                    div{
+                        margin-top: 10px;
+                        text-align: center;
+                    }
+                }
+            }
+            .pristrright{
+                width: 40%;
+                float: left;
+                .marketsource{
+                    width: 240px;
+                    .marketcont{
+                        width: 240px;
+                    }
+                }
+            }
+            .prisobot{
+                 margin-left: 180px;
+            }
+        }
+        /*ganyu*/
+        .priintervene{
+             height: 245px; 
+             padding-top: 10px;
+             border: 2px solid #9CB9FF ;
+            .pintright{
+               width: 50%; 
+               height: 160px;
+               float: left; 
+               div{
+                  height: 40px;
+                   line-height: 40px; 
+               }
+              
+            }
+            .pintbot{
+                 text-align: center;
+                 margin-left: 200px;
+            }
+        }
+        /*jiaoyan*/
+       .pricheck{
+            height: 245px; 
+           padding-top: 10px;
+            border: 2px solid #9CB9FF ;
+           .pricleft{
+               width: 54%;
+               padding-left: 20px;
+               
+           }
+           .pricright{
+               width: 46%;
+               padding-left: 0px;
+               
+           }
+           .pintbot{
+                 text-align: center;
+                 margin-left: 200px;
+            }
+           
+       }
+       /*停牌*/
+       .prisuspension{
+            height: 245px; 
+            border: 2px solid #9CB9FF ;
+          padding-top: 10px;
+           .prisleft{
+               width: 100%;
+               padding-left: 230px;
+           }
+           .pintbot{
+                 text-align: center;
+                 margin-left: 200px;
+            }
+       }
+       /*点差*/
+      .prispread{
+           height: 245px; 
+           border: 2px solid #9CB9FF ;
+          padding-top: 10px;
+          /*.pripubdivs{
+              padding-left: 5px;
+          }*/
+          .pintbot{
+                 text-align: center;
+                 margin-left: 200px;
+            }
+      }
+   }
+  }
+}
+.validator .dia_price .pricecont{
+	.prisuspension .prisleft{
+		padding-left:0;
+		span{
+			width:150px;
+			text-align:right;
+			display:inline-block;
+		}
+	}
+	.pripubdivs div {
+	    text-align: center;
+	}
+}
+/*baojiapinlvshezhi*/
+  .dia_freq{
+     width: 340px;
+     height: 270px;
+     overflow: hidden;
+     .freqtop{
+         height: 28px;
+         line-height: 28px;
+         color: #fff;
+         background: #5a8bff;
+         border-radius: $borderradiu;
+         span{
+             float: left;
+             margin-left: 20px;
+             font-size: 13px;
+         }
+     }
+     .freqcont{
+          height: 180px;
+          margin-left: 46px;
+          margin-top: 15px;
+          p{
+              height: 35px;
+              input{
+                 height:24px;
+                 border: none;
+                 padding-left: 5px;
+                 border:1px solid #5a8bff;
+              }
+              .freqstop{
+                  margin-left: 10px;
+              }
+          }
+          .freq_quote{
+          	position:relative;
+          	.formtip{
+	          	 left: 63px;
+	   			 top: 25px;
+	          }
+          }
+         .freq_use{
+             input{
+                 position: relative;
+                 top: 2px;
+             }
+         }
+     }
+     .freqbot{
+         text-align: center;
+          button{
+             width: 100px;
+             height: 30px;
+         }
+         .freq_save{
+             margin-right: 20px;
+         }
+     }
+     
+}
+/*chanpinjunjiajiaoyan*/
+.dia_proprice{
+     width: 340px;
+     height: 326px;
+     overflow: hidden;
+    .proptop{
+        height: 28px;
+         line-height: 28px;
+         color: #fff;
+         background: #5a8bff;
+         border-radius: $borderradiu;
+         span{
+             float: left;
+             margin-left: 20px;
+             font-size: 13px;
+         }
+    }
+    .propcont{
+        margin-top: 10px;
+    }
+    .pripubdivs {
+        width: 100%;
+        height: 240px;
+    }
+    .pripubdivs span{
+	   	width: 70px;
+	    display: inline-block;
+	    text-align: right;
+	    margin-right: 5px;
+    }
+    .pripubdivs select{
+           width: 176px;
+    background-position: 155px;
+    padding: 4px;
+    border: 1px solid #5a8bff;
+    }
+    .propbot{
+        text-align: center;
+          button{
+             width: 80px;
+             height: 30px;
+         }
+         .prop_cancel{
+             margin-left: 20px;
+         }
+    }
+}
+/*shougongbaojialuru*/
+.dia_quoteentry{
+     width: 340px;
+     height: 440px;
+     overflow: hidden;
+    .quoteencont{
+        margin-top: 10px;
+    }
+    .pripubdivs {
+        width: 100%;
+        height: 320px;
+    }
+    .quoteenbot{
+        text-align: center;
+          button{
+             width: 80px;
+             height: 30px;
+             margin-top: 20px;
+         }
+         .quoteen_cancel{
+             margin-left: 20px;
+         }
+    }
+}
+/*ganyushangxianshezhi*/
+.dia_intermax{
+     width: 340px;
+     height: 320px;
+     overflow: hidden;
+    .intermaxcont{
+        margin-top: 10px;
+    }
+    .pripubdivs {
+        width: 100%;
+        height: 220px;
+        .maxname select{
+           height:27px;
+           width: 176px;
+           border: 1px solid #5a8bff;
+           background-position:155px;      
+        }
+        .buymax,.sallmax{
+           position:relative;
+           re{
+                height:1px;
+                left: 103px;
+                top: 21px;
+           }
+        }
+    }
+    .intermaxbot{
+        text-align: center;
+          button{
+             width: 80px;
+             height: 30px;
+         }
+         .intermax_cancel{
+             margin-left: 20px;
+         }
+    }
+}
+.intermax{
+    .dia_intermax{
+       height: 380px;
+    }
+    .pripubdivs {
+        width: 100%;
+        height: 300px;
+        select{
+           height:27px;
+           width: 176px;
+           border: 1px solid #5a8bff;
+           background-position:155px;      
+       
+        }
+         div{
+            span{
+             width: 100px;
+           }
+        } 
+    }
+}
+/*-----------------------------------------------------------*/
+re{
+    font-size:8px;
+    position: absolute;
+    left: 58px;
+    top: 25px;
+}
+.accountcollect .box,.accountclass .box{
+    width:300px;
+    height: 200px;
+    font-size: 12px;
+    .cenr{
+        margin:20px;
+    }
+    .accountclass{
+        position: relative;
+        height: 30px;
+        margin-top: 8px;
+        span{
+           width: 55px;
+           text-align:right;
+           margin-right: 5px;
+           display:inline-block;
+        }
+        select{
+            background-position: 144px;
+		    width: 163px;
+		    border: 1px solid #5a8bff;
+		    height: 26px;
+        }
+    }
+    .typename{
+        height: 24px;
+    }
+    p{
+        margin-top: 8px;
+        position: relative;
+    }
+    p.accountstate{
+        margin-top:12px;
+    }
+    p>span{
+        width: 55px;
+        text-align:right;
+        margin-right: 5px;
+        display:inline-block;   
+    }
+
+    
+    p>input[type="text"]{
+        height: 24px;
+    }
+    p>input[type="radio"]{
+        margin-left: 5px;
+    }
+    .bot{
+        margin-top: 15px;
+    }
+    .bot button{
+        padding:0px 20px;
+        margin-left: 15px;
+    }
+}
+i{
+    font-style:normal;
+}
+/*---platrule set */
+.platrule .box{
+    width: 500px;
+    height: 282px;
+    background:#fff;
+    font-size:12px;
+    .cenr{
+        margin:15px 15px 0 15px;
+        img.up,img.lower{
+        	position:absolute;
+        }
+        img.up{
+        	top:5px;
+        	right:50px;
+        }
+        img.lower{
+        	top:13px;
+        	right:50px;
+        }
+    }
+    .cenr div{
+      margin-top: 8px;  
+    }
+    .cenr div>p{
+        display:inline-block;
+        width: 235px;
+        position:relative;
+        >span{
+            width: 60px;
+            margin-right: 5px;
+            text-align: right;
+            display:inline-block;
+        }
+        input[type="text"],input[type="number"]{
+            height: 24px;
+            width: 125px;
+            border:1px solid #5a8bff;
+        }
+    }
+    .two{
+        position: relative;
+        h6{
+            border: 1px solid rgba(0,0,0,.3);
+            height: 24px;
+            position: absolute;
+            right: 45px;
+            width: 125px;
+            top: 0;
+            span{
+                position:absolute;
+                top: 5px;
+                left: 4px;
+            }
+        }
+        ul{
+            display: inline-block;
+            position: absolute;
+            top: 22px;
+            border: 1px solid #ccc;
+            width: 100px;
+            right: 70px;
+            top: 23px;
+            background: #fff;
+            z-index: 99;
+            display:none;
+        }
+    }
+    .bot{
+        margin-top: 15px;
+    }
+    .bot button{
+        margin-left: 20px;
+        padding: 0px 37px;
+    }
+}
+.dealparamters{
+    width: 288px;
+    height: 220px;
+}
+.dealparamters .cer{
+    margin:10px;
+    font-size: 12px;
+}
+.dealparamters .cer p{
+    margin-top:13px;
+    position:relative;
+}
+.dealparamters .cer p span{
+    display:inline-block;
+    width: 69px;
+    text-align:right;
+    margin-right:5px;
+}
+.dealparamters .cer p input{
+  border:1px solid #5a8bff;
+}
+.dealparamters .bot button{ 
+    padding:0px 20px;
+    margin-left: 15px;
+}
+.calendarrules .box{
+    width: 320px;
+    height: 442px;
+    background:#fff; 
+}
+.calendarrules .bot button{
+    padding:0px 20px;
+    margin-left: 15px;
+}
+.calendarrules .bot{
+    text-align:center;
+}
+.calendarrules .cenr{
+    margin:15px;
+}
+.calendarrules p{
+    margin-top: 10px;
+    position: relative;
+    
+}
+.calendarrules p .wdate{
+    background: url(../img/calander.png)  no-repeat 150px;
+}
+.calendarrules p .short {
+     background-position: 148px;
+    width: 174px;
+    padding: 4px;
+    border: 1px solid #5a8bff;
+}
+.cenr r{
+    font-size: 14px;
+    margin-right: 5px;
+}
+.calendarrules .cenr span{
+    width: 65px;
+    display: inline-block;
+    text-align:right;
+}
+.sel_mo1 select{
+    width: 180px;
+    height: 26px;
+    background-position: 163px;
+    border: 1px solid rgba(90, 139, 255, 0.6);
+}
+select::-ms-expand { display: none; }
+.long{
+    background-position: 139px;
+}
+.short{
+    background-position: 67px;  
+}
+.tsmall{
+    background-position:155px;
+    border-color:#5a8bff;
+    width: 176px;
+    padding:4px;
+}
+.mergeagent{
+    background-position:160px;
+    border-color:#5a8bff;
+    width: 176px;
+    
+}
+
+.grademark{
+    background-position: 155px;
+    border-color: #5a8bff;
+    padding: 4px 5px;
+    width: 176px;
+	
+}
+.small{
+    background-position:40px;   
+}
+.cenr input[type="radio"]{
+    margin-left: 17px;
+}
+.cenr input[type="text"]{
+   height: 24px;
+   width:176px;
+}
+/* pagegolder system*/
+.productsmana .box{
+    width: 350px;
+    height: 300px;
+    .cer{
+        margin:15px;
+        p{
+            margin-top: 5px;
+            line-height: 24px;
+            position: relative;
+            margin-bottom: 18px;
+            re{
+               top:23px;
+               left:108px;
+            }
+        }
+        span{
+            width: 105px;
+            text-align:right;
+            display:inline-block;
+        }
+        input[type="text"]{
+            padding-left: 3px;
+            margin-left: 5px;
+            padding-left: 5px;
+            border: 1px solid #5B8CFF;
+        }
+        input[type="radio"]{
+            margin-left: 5px;
+        }
+    }
+    .centbot button{
+        padding:0px 30px;
+        margin-left: 20px;
+    }
+}
+.dealproduct .box{
+   	width: 356px;
+    height: 220px;
+    .centbox{
+        span{
+            width: 73px;
+            display:inline-block;
+            text-align: right;
+            margin-right: 5px;
+        }
+        p{
+            line-height: 28px;
+            margin-top: 5px;
+            select{
+              width:214px;
+              border:1px solid #5a8bff;
+            }
+        }
+       rr{
+           color:red;
+       }
+    }
+      #product_sel1{
+           background-position: 193px;
+           height: 26px;
+       }
+       #product_sel2{
+           background-position: 193px;
+   		   height: 26px;
+       }
+       #product_sel3{
+          // background-position:80px;
+           background-position: 193px;
+           height: 26px;
+       }
+    .centbot button{
+        padding:0px 20px;
+		margin-left: 15px;
+    }
+    
+}
+.varietymana .box2{
+    width: 300px;
+    height: 240px;
+    font-size: 12px;
+    .cer{
+         margin: 8px 0;
+    }
+    p{
+        margin-top: 8px;
+        span{
+            width: 90px;
+            display:inline-block;
+            margin-right: 3px;
+            text-align: right;
+        }
+    }
+    select{
+        background-position: 47px;
+    }
+    .two{
+        margin-left: 8px;
+    }
+    .centbot button{
+        padding:0px 10px;
+        display: inline-block;
+        margin-right: 5px;
+    }
+}
+.rolemana table,.roleauditing table{
+    width: 100%;
+}
+.pageTest{
+	height:30px;
+	text-align:center;
+}
+.pageTest span{
+	margin:0 5px;
+	display:inline-block;
+}
+.pageTest{
+	span.first,span.prevbtn,span.nextbtn,span.last{
+		cursor:pointer;
+	}
+}
+.rolemana .box,.roleauditing .box{
+    width: 561px;
+    height: 445px;
+}
+.rolemana table tr,.roleauditing table tr{
+    line-height: 30px;
+}
+.rolemana table tr td,.rolemana table tr th,.roleauditing tr th,.roleauditing table tr td{
+    text-align: center;
+    width: 135px;
+}
+.lockhead{
+    transparent:0;
+    opacity:0;
+}
+.rolemana .cer table,.roleauditing .cer table{
+    position: relative;
+}
+.rolemana thead,.roleauditing thead{
+    position: fixed;
+    background:#fff;
+    height: 30px;
+} 
+/*.rolemana thead th,.roleauditing thead th{  rolemana.html 
+    padding:0 20px;
+}*/
+.rolemana .cer,.roleauditing .cer{
+    height: 325px;
+    margin:8px;
+}
+.rolemana .centbot,.roleauditing .centbot{
+    margin-top: 8px;
+}
+/*.rolemana button,.roleauditing button{
+    padding:5px 10px;
+    margin-right: 5px;
+}*/
+// productpar
+.productpar .box{
+    width:300px;
+    height:220px;
+    .cer{
+        margin:8px;
+    }
+    .cer p{
+        margin-bottom:15px;
+        position:relative;
+        span{
+            width:80px;
+            display:inline-block;
+            text-align:right;
+            margin-right: 10px;
+        }
+        re{
+            left:90px;
+        }
+        input[type="radio"]{
+            margin:0 5px;
+        }
+    }
+    .centbot button{
+        padding:0px 10px;
+        display: inline-block;
+        margin-right: 5px;
+    }
+}
+.bigdiscount .box{
+    width:300px;
+    height:205px;
+     .cer{
+        margin:8px;
+    }
+    .cer p{
+        position:relative;
+        margin-bottom:8px;
+        span{
+            width:90px;
+            display:inline-block;
+            text-align:right;
+            margin-right: 10px;
+        }
+        select{
+            background-position:70px;
+        }
+        
+        re{
+            left:100px;
+        }
+    }
+    .centbot{
+        margin-top:20px;
+    }
+    .centbot button{
+        padding:0px 10px;
+        display: inline-block;
+        margin-right: 5px;
+    }
+}
+.endlimit{
+	background-position: 103px;
+	border-color:#5a8bff;
+} 
+
+.rlist li.bg,.llist li.bg{
+	background-color:#ccc;
+}
+.openrule .box1{
+	width: 320px;
+    height: 296px;
+    .cer{
+    	margin:22px;
+    	position:relative;
+    }
+    .before,.after{
+    	width:100px;
+    	display:inline-block;
+        border: 1px solid #5a8bff;
+        margin-left: 10px;
+        .adjust{
+            border-bottom: 1px solid #5a8bff;
+            line-height: 24px;
+        }
+    	ul{
+    		width:98px;
+    		 height:150px;
+    		overflow-y:scroll;
+    	}
+    	li{
+    	  line-height:30px;
+    	}
+    	li.bg{
+    		background:#ccc;
+    	}
+    }
+    .btns{
+	    display: inline-block;
+	    width: 50px;
+	    position:absolute;
+	    right: -14px;
+	    top: 17px;
+    	button{
+    		padding:0px 10px;
+    		margin-top:5px;
+    	}
+    }
+    .centbot button{
+        padding:0px 28px;
+        display: inline-block;
+        margin-right: 15px;
+    }
+}
+.interestr .box1{
+	width:300px;
+	height: 412px;
+	.cer{
+		margin: 19px 8px;
+		div span{
+			width:85px;
+			display:inline-block;
+			margin-right:5px;
+			text-align:right;
+			
+		}
+	      
+		select{
+		    background-position: 150px;
+		    padding: 4px;
+		    width: 176px;
+		    border: 1px solid #5a8bff;
+		}
+	}
+	p{
+		margin-top:8px;	
+		margin-bottom: 14px;
+		position: relative;
+		span{
+			display:inline-block;
+			margin-right:5px;
+			text-align:right;
+			width: 85px;
+		}
+		input{
+			padding-left:5px;
+			border: 1px solid #5a8bff;
+		}
+		re{
+			 left: 92px;
+   			 top: 25px;
+		}
+	}
+	.centbot button{
+		padding:0px 20px;
+        margin-left: 15px;
+	}
+}
+.activeacunt .box1{
+	width: 363px;
+    height: 200px;
+}
+.activeacunt .cer{
+	margin:13px;
+}
+.activeacunt .cer>div{
+	position:relative;
+}
+.activeacunt .cer p,.activeacunt .cer span{
+	margin-top:12px;
+}
+.activeacunt .cer span{
+	width:60px;
+	display:inline-block;
+	margin-right:5px;
+}
+.activeacunt .cer input{
+  border:1px solid #5a8bff;
+}
+.activeacunt select.outfitname{
+	width:280px;
+	background-position: 262px 11px;
+	position: absolute;
+    z-index: 11;
+    top: 3px;
+    padding: 5px 0;
+    background-color: #fff;
+    border:1px solid #5a8bff;
+}
+.activeacunt .centbot button{
+		padding:0px 20px;
+       margin-left: 15px;
+	}
+.pricetype select{
+	 background-position: 67px;
+}
+.pcurrency select{
+	width:100px;
+	background-position: 71px;
+}
+.formtip{
+	position: absolute;
+    top: 22px;
+    font-size: 10px;
+    color: red;
+}
+.pricleft .formtip,.prispleft .formtip,.prispright .formtip{
+	left: 145px;
+}
+.pricright .formtip{
+	left: 89px;
+}
+.nesl .formtip,.neby .formtip{
+	left:65px;
+}
+.priceterm .formtip,.pricepoint .formtip{
+	left:74px;
+}
+.maxmodify .pripubdivs span,.maxadd .pripubdivs span{
+	 width: 100px;
+}
+.intervenema .abs,.quoteparamete .abs,.productsto .abs,.productcalibrat .abs{
+	width:410px;
+}
+.dealparamters .formtip{
+	top:26px;
+	left:72px;
+}
+.branchdiscount .box3{
+	width:500px;
+	height:350px;
+}
+.branchdiscount .box2{
+	width:500px;
+	height:380px;
+}
+.branchdiscount .datalist{
+	width:90%;
+	margin:0 auto;
+	border:1px solid #ccc;
+}
+.branchdiscount thead{
+	border-bottom:1px solid #ccc;
+}
+.branchdiscount .page,.branchdiscount .centbot{
+	text-align:center;
+	position: absolute;
+    bottom: 10px;
+    left: 100px;
+}
+.branchdiscount .page span,.branchdiscount .centbot span{
+	margin:0 5px;
+}
+.branchdiscount .page .first,.branchdiscount .page .prev,.branchdiscount .page .last,.branchdiscount .page .next{
+	margin:0 5px;
+	cursor:pointer;
+}
+.branchdiscount table{
+	width:100%;
+}
+.branchdiscount tr{
+	line-height:30px;
+}
+.branchdiscount tr td,.branchdiscount tr th{
+	text-align:center;
+}
+.dealproduct .box3{
+	width: 500px;
+    height: 496px;
+	.cer{
+		margin:5px 10px 30px 30px;
+	 	overflow: hidden;
+	}
+	.dbleft,.dbright{
+		width: 188px;
+	    float: left;
+	    overflow:hidden;
+	    height:100px;
+	    
+	}
+	.dtleft,.dtright{
+		  border: 1px solid #5a8bff;
+		  height: 163px;
+		  list-style:none;
+		  width: 188px;
+		  float: left;
+		 overflow:hidden;
+	}
+	.dtleft li,.dtright li,.dbright li{
+		 font-size: 12px;
+   		 line-height: 22px;
+   		 padding-left:5px;
+	}
+	.dtleft p,.dtright p,.dbright p{
+		border-bottom: 1px solid #5a8bff;
+    	font-size: 12px;
+    	height: 24px;
+    	line-height: 24px;
+    	padding-left:5px;
+	}
+	.calfam{
+		font-size: 13px;
+   		line-height: 30px;
+	}
+	.dbright{
+		 border: 1px solid #5a8bff;
+	}
+	.btns,.bbns{
+		 width: 60px;
+   		 float:left;
+   		 margin-left: 10px;
+	}
+	.dbleft p{
+		font-size:12px;
+		line-height:22px;
+	}
+	.btns button,.bbns button{
+		margin:5px 0;
+		border-radius:0;
+		padding:0px 10px;
+	}
+	.btns .dtbot{
+	   color:#fff;
+	   background: #FF6B6B;
+	}
+	.btns .allrem{
+	   color:#fff;
+	   background: #FE811B;
+	}
+	.bbns .dbrem{
+	   color:#fff;
+	   background: #FF6B6B;
+	}
+	.calfam,.centbot{
+		clear:both;	
+		margin-top:5px;
+	}
+	.dtleft ul,.dtright ul{
+		height:130px;
+		overflow-x:hidden;
+		overflow-y:scroll;
+	}
+	.centbot{
+		button{
+			padding: 0px 33px;
+            border-radius: 0;
+             
+		}
+	}
+	.rulelevel,.calanderule{
+		background-position: 161px;
+	    width: 188px;
+	    padding: 4px;
+	    border: 1px solid #5a8bff;
+	} 
+	.dealcance{
+	   background: #B4B4B4;
+	   color:#fff;
+	   margin-left: 30px;
+	}   
+	 
+}
+.reconcili .box2{
+    width: 580px;
+	height: 300px;
+	.cer{
+		margin:15px;
+		div{
+			height:30px;
+		}
+		span{
+			width:90px;
+			text-align:center;
+			display:inline-block;
+		}
+	}
+	.centbot button{
+		padding:0px 10px;
+		margin-right:5px;
+	}
+}
+.branchdiscount .box3{
+	width: 550px;
+    height: 430px;
+	.cer{
+		margin:15px;
+	}
+	.cer div{
+		margin:5px 0;
+		
+	}
+	.cer .btns{
+		 margin: 15px 0 5px 0;
+	}
+	.cer tr{
+		line-height:22px;
+	}
+	.condition{
+		background-position: 65px;
+	}
+	.cer p{
+	   display:inline-block;
+	   position:relative;
+	   width:260px;
+	   input{
+	   	  width:130px;
+	   	  display:inline-block;
+	   }
+	   .tiaojian1,.tiaojian2{
+	   	   width:60px;
+	   }
+	   span{
+	  	 	width:70px;
+	  	 	display:inline-block;
+	  	 	text-align: right;
+   			margin-right: 5px;
+	   }
+	}
+	.cer table tr.bgcd{
+		background:#ccc;
+	}
+	.cer table tr.bgc{
+		background:#5a8bff;
+	}
+	.cer div.btns{
+		p{
+			text-align:center;
+		}
+		button{
+			margin-right:5px;
+		}
+		button.dissab{
+			background:#ccc;
+		}
+	}
+	r{
+		position:absolute;
+		top: 24px;
+   		left: 65px;
+   		font-size:12px;
+   	}
+	.add,.remove,.succss,.cance{
+		padding:0px 10px;
+	}
+}
+.goverrpc .box2,.currpair .box2,.maxprefer .box2{
+	width:350px;
+	height:300px;
+	.cer{
+		margin:15px;
+	}
+	.cer div{
+		margin-top:10px;
+	}
+	.cer div span{
+		width:80px;
+		display:inline-block;
+		text-align:right;
+		margin-right:5px;
+	}
+	.cer div input{
+	    border:1px solid #5a8bff;
+	}
+	.centbot button{
+		padding: 0px 30px;
+        margin-left: 15px;
+	}
+}
+.currpair .box2{
+    height: 265px;
+	.cer div span{
+		width:100px;
+	}
+	div.cuutype{
+		margin-top:15px;
+	}
+	re{
+	 left: 103px;
+	}
+}
+.maxprefer .box2{
+	height:240px;
+	.cer div span{
+		width:86px;
+	}
+	.centbot{
+		margin-top: 20px;
+	}
+	re{
+		 left: 91px;
+	}
+}
+.maxprefer .box2,.currpair .box2{
+	.cer div{
+		position:relative;
+	}
+}
+.fir,.seco{
+	width: 84px;
+    margin-right: 5px;
+    background-position: 65px;
+    border: 1px solid #5a8bff;
+    padding: 4px;
+}
+.add .kagkau{
+    height: 27px;
+    background-position: 150px;
+    width: 176px;
+    border: 1px solid #5a8bff;
+}
+.maxprefer .box2 .cer div .kagkau{
+    width: 176px;
+    border: 1px solid #5a8bff;
+    height: 27px;
+    line-height: 27px;
+    text-align: left;
+    padding-left: 5px;
+ }
+.alarm .box2{
+	width: 303px;
+    height: 367px;
+	.cer{
+		margin:15px;
+	}
+	.cer div{
+		margin-top:15px;
+		position:relative;
+	}
+	.polilevel{
+	    width: 194px;
+	    background-position: 176px;
+	    height: 24px;
+	    border:1px solid #5a8bff;
+	}
+	.cer div span{
+		width:80px;
+		display:inline-block;
+		text-align:right;
+		margin-right:5px;
+	}
+	.centbot button{
+		padding:6px 24px;
+		margin-left:15px;
+	}
+	re{
+		left:84px;
+	}
+}
+.alarm2  .box2{
+	width: 350px;
+	.cer div span{
+		width:120px;
+	}
+	re{
+	    left: 125px;
+	}
+}
+.alarm3 .box2{
+    height: 167px;
+	.cer{
+		margin:15px;
+	}
+	.cer div{
+		margin-top:15px;
+		position:relative;
+	}
+	.cer div span{
+		width:80px;
+		display:inline-block;
+		text-align:right;
+		margin-right:5px;
+	}
+	.centbot button{
+		padding:5px 10px;
+		margin-right:5px;
+	}
+	re{
+		left:84px;
+	}
+}
+.alarm4 .box2{
+	width: 353px;
+    height: 257px;
+    .errcode select{
+    	position: absolute;
+	    z-index: 20;
+	    background-color: #fff;
+	     padding: 4px;
+	    width: 176px;
+	    background-position: 152px;
+	    border: 1px solid #5a8bff;
+    }
+    .usernm select{
+    	width: 176px;
+    	background-position:152px;
+    	padding: 4px 0;
+    	border: 1px solid #5a8bff;
+    }
+}
+.priceuse .box2{
+    height: 410px;
+    width: 312px;
+	.cer{
+		margin:15px;
+	}
+	.cer div{
+		margin-top:15px;
+		position:relative;
+	}
+	.cer div span{
+		width:80px;
+		display:inline-block;
+		text-align:right;
+		margin-right:5px;
+	}
+	.centbot button{
+		padding:6px 20px;
+		margin-left:15px;
+	}
+	re{
+		left:84px;
+	}
+	.intspan{
+		position:relative;
+		top:-10px;
+	}
+	.intrmrk{
+		resize:none;
+		width: 176px;
+        border: 1px solid #5a8bff;
+	}
+	.up{
+		background:url(../img/up.png) no-repeat;
+		left: 237px;
+	    z-index: 10;
+	    position: absolute;
+	    top: 4px;
+	    width: 15px;
+	    height: 15px;
+	}
+	.lower{
+		left: 237px;
+	    z-index: 10;
+	    position: absolute;
+	    top: 14px;
+	    width: 15px;
+	    height: 15px;
+	}
+}
+.priceuses .box2{
+    width: 390px;
+    height: 410px;
+	.topp p{
+		display:inline-block;
+		margin-top:5px;
+	}
+	.lrbox{
+		height:186px;
+	}
+	.lft{
+	    width: 130px;
+	    float: left;
+	    height:180px;
+	    border: 1px solid #5a8bff;
+	}
+	.lft p{
+		padding-left: 5px;
+	    font-size: 13px;
+	    border-bottom: 1px solid #5a8bff;
+	    width: 100%;
+	    display:inline-block;
+		font-size:12px;
+		line-height: 24px; 
+	}
+	.rightt p{
+		padding-left: 5px;
+	    font-size: 13px;
+	    border-bottom: 1px solid #5a8bff;
+	    width: 50%;
+	    font-size:12px;
+		line-height: 24px;
+		display: inline-block;
+	}
+	.rightt{
+		width: 220px;
+	    border: 1px solid #5a8bff;
+	    float: left;
+	    margin-left:8px;
+	    height:180px;
+	}
+	.choic{
+		 background-position: 121px 5px;
+	     border: 1px solid #5a8bff;
+	     position: absolute;
+	     z-index: 11;
+	     background-color: #fff;
+	     width: 139px;
+	}
+	.productname li.blu,.cuurname li.blu{
+		background:#5a8bff;
+	}
+	/*.productname li:hover,.cuurname li:hover{
+		background:#5a8bff;
+	}*/
+	.productname,.cuurname{
+		height:150px;
+		overflow-y:scroll;
+		overflow-x:hidden;
+		font-size: 12px;
+	    line-height: 24px;
+	}
+	.productname li,.cuurname li{
+		 padding-left: 3px;
+	}
+	.cer{
+		margin:15px;
+	}
+	.cer div{
+		margin-top:15px;
+		position:relative;
+	}
+	.cer div span{
+		width:58px;
+		display:inline-block;
+		text-align:right;
+		margin-right:5px;
+	}
+	.centbot button{
+		padding:5px 10px;
+		margin-right:5px;
+	}
+	re{
+		left:84px;
+	}
+	button.add{
+		margin-left:150px;
+	}
+	button.rel{
+		margin-left:10px;
+	}
+}
+.priceuse3 .box2{
+	width: 289px;
+    height: 410px;
+}
+.priceuse2 .box2{
+	input{
+		width:80px;
+	}
+}
+.electrict .box2{
+	width: 680px;
+	height:300px;
+	.cer{
+		margin:15px;
+	}
+	.topp p{
+		display:inline-block;
+   		margin-right: 13px;
+	}
+	.topp button{
+		padding:3px 6px;
+		margin-left:5px;
+	}
+	.lrbox{
+		border: 1px solid #ccc;
+	    height: 190px;
+	    margin-top: 10px;
+	}
+	.lft{
+		float: left;
+    	width: 150px;
+	}
+	.lft p{
+		border-bottom:1px solid #ccc;
+		line-height: 24px;
+	}
+	.rightt{
+		float: left;
+        width: 498px;
+	}
+	.rightt p{
+		 border-bottom: 1px solid #ccc;
+   		 border-left: 1px solid #ccc;
+   		 line-height: 24px;
+	}
+}
+.electricter .box2{
+	width: 335px;
+    height: 300px;
+	.cer{
+		margin:15px;
+	}
+	.cer>div{
+		margin-top:18px;
+		position:relative;
+	    input{
+	      border:1px solid #5a8bff;
+	    }
+	}
+	.cer>div span{
+		width:80px;
+		display:inline-block;
+		text-align: right;
+        margin-right: 5px;
+	}
+	.centbot button{
+		padding:5px 8px;
+		margin-right: 5px;
+	}
+	.choice{
+		padding: 3px 5px;
+    	margin-left: 5px;
+	}
+	re{
+		 left: 79px;
+   		 top: 25px;
+	}
+}
+.addsav,.passrole,.nopassrole,.addrole,.addrolecance{
+	 padding: 0px 20px;
+    margin-left: 15px;
+}
+.dispubbot{
+  text-align:center;
+  button{
+    padding:0px 20px;
+    margin-left: 15px;
+  }
+}
+.discountpub{
+    .pripubdivs{
+          width:100%;
+          font-size: 0.9rem;
+          float: none; 
+           div{
+             #d1,#d2{
+               background: url(../img/calander.png) no-repeat right;
+             }
+             select{
+               height: 24px;
+               width: 176px;
+               background-position: 155px;
+               border: 1px solid #5a8bff;
+             }
+             span{
+               width: 133px;
+             }
+             i{
+               color: red;
+               margin-right: 5px;
+             }
+             re{
+              height:0px;
+              top: 20px;
+              left: 148px;
+             }
+          }
+       }
+}
+.agentdiscount{
+    .box{
+       width: 400px;
+       height: 310px;
+       .pripubdivs{
+          height: 245px;
+       }
+    }
+ }
+ .userlevaldiscount{
+    .box{
+       width: 400px;
+       height: 355px;
+       .pripubdivs{
+          height: 288px;
+       }
+    }
+ }
+ .channeldiscount{
+    .box{
+       width: 400px;
+       height: 355px;
+       .pripubdivs{
+          height: 288px;
+       }
+    }
+ }
+ .cardbin{
+    .box{
+       width: 400px;
+       height: 310px;
+       .pripubdivs{
+          height: 245px;
+       }
+    }
+ }
+ .dollardiscount{
+    .box{
+       width: 400px;
+       height: 355px;
+       .pripubdivs{
+          height: 288px;
+       }
+    }
+ }
+ .agentchoose{
+    .box{
+       width: 600px;
+       height: 400px;
+       .pripubdivs{
+            padding-left:23px;
+            height: 40px;
+            div{
+              display: inline-block;
+              margin-left:5px;
+              .agentnum{
+                width:70px;
+              }
+              span{
+                width: 57px;
+                
+              }
+              button{
+                padding:5px 10px;
+                 
+              }
+            }
+       }
+       .agentmain{
+           margin-top: 10px;
+           border: 2px solid #9CBAFF;
+           width: 510px;
+           height: 268px;
+           margin-left: 48px;
+          table{
+             width:100%;
+             tr{
+               height: 24px;
+               text-align: left;
+               line-height: 24px;
+               .one{
+                  width:105px;
+                  padding-left: 10px;
+               }
+            }
+            tr:hover{
+               background-color: #9CBAFF;
+                
+            }
+            .ogcd,.ognm{
+              font-weight: 700;
+            }
+            .agentbgc{
+               background-color: #9CBAFF;
+            }
+          }
+       }
+       .agentbot{
+          text-align: center;
+          margin-top: 15px;
+          span{
+             margin-right:15px;
+             padding: 5px;
+             cursor: pointer;
+          }
+          i{
+              //width: 16px;
+              width: 25px;
+              height: 15px;
+              display: inline-block;
+              color: red;
+          }
+       }
+    }
+ }
+ .bonusda{
+     .box{
+       width: 300px;
+       height: 200px;
+       .pripubdivs{
+          margin-top: 25px;
+          height: 89px;
+          span{
+            width: 55px;
+          }
+       }
+    }
+ }
+ .hi{
+ 	color:transparent;
+ }
+ .exectric{
+ 	position:absolute;
+ 	width:100%;
+ 	height:100%;
+ 	left:0;
+ 	top:0;
+ 	z-index:16;
+ }
+ .choicedialog{
+	z-index:17;
+ }
+  .modifyuserleval{
+    .box{
+       width: 364px;
+       height: 230px;
+       .pripubdivs{
+         padding-left:0px;
+         margin-top:10px;
+         height:140px;
+       }
+    }
+ }
+ .adduserleval{
+    .box{
+       width: 364px;
+       height: 200px;
+       .pripubdivs{
+         padding-left:0px;
+         margin-top:10px;
+         height:120px;
+       }
+    }
+ }
+ .electrictell .abs{
+ 	width: 345px;
+    height: 375px;
+    .prip{
+    	margin:15px;
+    }
+    .prip div{
+		margin-top:18px;   
+		position:relative;
+		input{
+		  border:1px solid #5a8bff;
+		}
+	}
+	.prip div span{
+		width:80px;
+		display:inline-block;
+	   text-align: right;
+       margin-right: 5px;
+	}
+	.prip re{
+		left: 79px;
+    	top: 25px;
+	}
+ }
+ .dist{
+	text-align:center;
+}
+.dist button{
+	padding:0px 28px;
+	margin-left:15px;
+}
+.priceget .box{
+ 	width:300px;
+ 	height:300px;
+ 	.prip{
+ 		margin:15px;
+ 	}
+ 	.prip span{
+ 		width:80px;
+ 		display:inline-block;
+ 	}
+ 	.prip select{
+ 		width: 155px;
+ 		height:26px;
+ 		background-position: 137px 8px;
+ 	}
+ 	.prip div{
+ 		margin-top:15px;
+ 	}
+ }
+ .priceget .calfam .markna{
+    padding: 4px;
+    border: 1px solid #5a8bff;
+    width: 100px;
+    background-position: 80px;
+ }
+ .countchannel{
+ 	height:28px;
+ 	background-position: 96px;
+ }
+ .electrictell .choice{
+ 	margin-left:5px;
+ }
+ .primachiset .box{
+ 	width:300px;
+    height: 215px;
+ 	.prip{
+ 		margin:15px;
+ 	}
+ 	.prip span{
+ 		width:80px;
+ 		display:inline-block;
+ 	}
+ 	.prip select{
+ 		width: 155px;
+ 		height:26px;
+ 		background-position: 137px 8px;
+ 	    border: 1px solid #5a8bff;
+ 	}
+ 	.prip div{
+ 		margin-top:15px;
+ 	}
+ }
+ .adddiscountrules{
+     .box{
+       width: 300px;
+       height: 180px;
+       .pripubdivs{
+          margin-top: 25px;
+          height: 75px;
+          span{
+            width: 55px;
+          }
+       }
+    }
+ }
+ .discountRuleEditAdd{
+   .box{
+       width: 300px;
+       height: 180px;
+       .pripubdivs{
+          margin-top: 15px;
+          height: 95px;
+          span{
+            width: 60px;
+          }
+       }
+       .between{
+           margin-top: 5px;
+           height: 114px;
+           div{
+              height: 38px;
+              line-height: 38px;
+              re{
+                 left: 66px;
+                 top: 18px;
+              }
+           }
+       }
+    }
+ }
+ .editdiscountrules{
+    .box{
+       width:930px;
+       height:455px;
+       .editbox{
+          margin: 10px 0 0 15px;
+          div{
+            margin-bottom: 10px;
+          }
+          p{
+             display:inline-block;
+   		     margin-right: 13px;
+   		     input{
+   		       width:80px;
+   		       border: 1px solid #5a8bff;
+   		     }
+   		     .maxnum{
+   		       color:red;
+   		     }
+   		     .disname,.condition{
+   		          width:150px;
+   		      }
+   		     select{
+   		       height: 25px;
+               border: 1px solid #5a8bff;
+               background-position: 130px;
+   		     }
+          }
+       }
+       .pripubdivs{
+          border: 2px solid #5a8bff;
+          width: 95%;
+          height: 255px;
+          margin-left: 20px;
+          padding-left: 0;
+         position: absolute;
+          p{
+              
+             height: 30px;
+             line-height: 30px;
+             border-bottom: 2px solid #5a8bff;
+             background-color: #9CBAFF;
+            span{
+               text-align: left;
+               margin-right: 0;
+               width: 33%;
+            }
+          }
+          .divsmain{
+             width:100%;
+             height: 220px;
+             overflow: auto;
+              position: absolute;
+             p{
+                border-bottom:none;
+                background-color: #FFF;
+                .pointnum{
+                   border: none;
+                   width: 33%;
+                   background:#FFF;
+                }
+                
+             }
+             .tabpbgc{
+               background-color: #9CBAFF;
+             }
+             p:hover{
+                background-color: #9CBAFF;
+             }
+          }
+          .kline1,.kline2{
+	            width:1px;
+	            height:100%;
+	            position: relative;
+	            left: 32%;
+	            top: -30px;
+	            background-color: #5a8bff;
+	            float: left;
+          }
+          .kline2{
+             left: 65%;
+          }
+          
+       }
+       textarea{
+          margin-top: 270px;
+          border: 2px solid #5a8bff;
+          margin-left: 20px;
+       }
+    }
+ }
+ 
+ .cuurencypair .box{
+ 	width: 346px;
+    height: 400px;
+    .prip{
+    	margin:15px;
+    }
+    .prip div{
+    	margin-top:16px;
+    	position:relative;
+    }
+    .prip re{
+    	left: 103px;
+    }
+    .dist buttton{
+    	padding:3px 5px;
+    }
+    .prip span{
+    	width: 105px;
+    	display:inline-block;
+    }
+    .prip .cuur1,.prip .cuur2{
+    	 background-position: 50px;
+    	 background-color:#ccc;
+    	 padding: 4px;
+         width: 84px;
+         background-position: 60px;
+         border: 1px solid #5a8bff;
+    }
+    .prip .cuur2{
+    	margin-left:5px;
+    }
+ }
+ .productset .box{
+ 	width: 300px;
+    height: 300px;
+    .prip{
+    	margin:23px;
+    }
+    .prip div{
+    	margin-top:16px;
+    	position:relative;
+    	input{
+    	      border: 1px solid #5a8bff;
+    	}
+    }
+    .dist button{
+    	padding:6px 28px;
+    }
+ }
+ .promach .box{
+    width: 320px;
+    height: 380px;
+    .prip{
+    	margin:18px;
+    }
+    .prip div{
+    	margin-top:16px;
+    	position:relative;
+    	input{
+    	      border: 1px solid #5a8bff;
+    	}
+    }
+    re{
+    	left: 99px;
+    }
+    .prip span{
+    	width: 98px;
+    	display: inline-block;
+    	text-align:right;
+    }
+    .dist button{
+    	padding:6px 28px;
+    }
+ }
+.mt4 .box,.sysparset1 .box{
+	width: 300px;
+    height: 234px;
+    .prip{
+    	margin:15px;
+    }
+    .prip div{
+    	margin-top:16px;
+    	position:relative;
+    }
+    re{
+    	left: 71px;
+    }
+    .prip span{
+    	display: inline-block;
+    	text-align:right;
+    }
+    .dist button{
+    	padding:3px 5px;
+    }
+}
+.mt4 .box .prip span{
+   width: 70px;
+}
+.sysparset1 .box .prip span{
+   width: 75px;
+}
+.classionset{
+   .box{
+      width: 700px;
+      height: 340px;
+    .pripubdivs{
+       padding-left:0;
+       height: 250px;
+       margin-top: 10px;
+       #simg{
+          top: 10px;
+          right: 3px;
+       }
+       div{
+          div{
+            float:left;
+            .tip{
+               color:red;
+               margin-left: 90px;
+            }
+            
+          }
+       }
+    }
+    .dispubbot button{
+        padding: 7px 20px;
+    }
+   } 
+}   
+/*调整日配置信息查询*/
+.adjustmentday .box{
+	width: 600px;
+    height: 440px;
+	.prip{
+		 margin: 15px;
+		div{
+			margin-bottom: 15px;
+		}
+	}
+	re{
+		left: 127px;
+	}
+	.nextjspri re,.ljpri re{
+		left: 79px;
+	}
+	.adjustday{
+		background:trasparent;
+	}
+	.adjustda re{
+		 left: 39px;
+	}
+	div p{
+		display:inline-block;
+    	position: relative;
+    	width: 262px;
+        margin-left: 22px;
+		input{
+			    display: inline-block;
+			    width: 100px;
+			    outline:none;
+			    border:1px solid #ccc;
+		}
+		#simg{
+			    position: absolute;
+			    left: 115px;
+			    top: 3px;
+		}
+		.dealcuur{
+		    background-position: 77px;
+    	    height: 27px;
+		}
+		
+	}
+	div p.hid{
+		display:none;
+	}
+}
+/*youyi*/
+/*public dialog*/
+.dtparpublic{
+	width: 320px;
+    height: 300px;
+	.prip{
+		 margin: 15px;
+		div{
+			margin-bottom: 15px;
+		}
+		span{
+			display: inline-block;
+		    width: 84px;
+		    margin-right: 2px;
+		    text-align: right;
+		}
+		input{
+		    border:1px solid #5a8bff;
+		}
+	}
+	re{
+		left: 87px;
+	}
+	div{
+		position:relative;
+	}
+	div p{
+		display:inline-block;
+    	position: relative;
+    	width: 262px;
+        margin-left: 22px;
+		input{
+			    display: inline-block;
+			    width: 100px;
+			    outline:none;
+			    border:1px solid #5a8bff;
+		}
+		#simg{
+			    position: absolute;
+			    left: 115px;
+			    top: 3px;
+		}
+		.dealcuur{
+		    background-position: 77px;
+    	    height: 27px;
+		}
+		
+	}
+}
+.errorchange .dtparpublic{
+	height:210px;
+}
+.custome .dtparpublic{
+	width: 300px;
+    height: 161px;
+}
+.cymsg .dtparpublic{
+	height: 274px;
+}
+.ratemana .dtparpublic{
+	height:161px;
+}
+.differentCountries .dtparpublic{
+	height:246px;
+	width: 320px;
+}
+.tellerManage .dtparpublic{
+   width: 340px;
+   height: 335px;
+}
+.tellerManage .dtparpublic .prip span{
+    width: 100px;
+}
+.tellerManage .dtparpublic re {
+    left: 102px;
+}
+.blacklist .dtparpublic{
+	width: 555px;
+    height: 435px;
+}
+.blacklist .dtparpublic .prip{
+	z-index:1;
+	margin: 10px 15px 0 15px;
+}
+.blacklist .dtparpublic .prip div{
+	width:50%;
+	display: inline-block;
+	position:relative;
+}
+.blacklist .dtparpublic #simg{
+	position: absolute;
+    right: 13px;
+    top: 2px;
+}
+.errorcode .dtparpublic{
+   height: 210px;
+}
+.blacklist .idty{
+   background-position: right;
+}
+.battran div.choicecent{
+	width:315px;
+}
+.userIfo div.choicecent{
+	width:315px;
+}

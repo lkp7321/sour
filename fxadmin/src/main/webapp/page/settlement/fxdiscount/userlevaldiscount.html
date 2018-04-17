@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>客户等级优惠</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+      <div class="top userlevaldiscount">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>交易管理>客户等级优惠设置</span>
+		</div>
+		<ul class="cen fourtul">
+			<li class='add pub_add'><span>添加</span></li>
+			<li class='modify pub_modify'><span>修改</span></li>
+			<li class='del pub_delete'><span>删除</span></li>
+			<li class='qurey'><button>查询</button></li>
+		</ul>
+	    <div class='bott'>
+	        <p><span>机构名称:</span><input type='text' disabled='disabled' class='agentname'></input></p>
+		    <p><span>机构号:</span><input type='text' disabled='disabled' class='agentnum'></input></p>
+			<p><button class="choose">选择</button></p>
+			<p><span>客户等级：</span> 
+			    <select class='long' onmousedown="if(this.options.length>6){this.size=7}" 
+				onblur="this.size=0" onchange="this.size=0">
+					<option value="R1">R1-钻石级</option>
+					<option value="R2">R2-金卡级</option>
+					<option value="R3">R3-银卡级</option>
+					<option value="R4">R4-普通级</option>
+					<option value="C1">C1-高端</option>
+					<option value="C2">C2-中端</option>
+					<option value="C3">C3-普通</option>
+				</select>
+			</p>
+	   </div>
+	</div>
+	<div class='boxtop'><div class='box'></div></div>
+	<div id="page"></div>
+	<script src="/fx/layui/layui.js"></script>
+	<script src="/fx/js/js_files/require.js"  data-main="/fx/js/settlement/userlevaldiscount"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.AccumuAddFavruleMapper">
+	<!-- 添加优惠规则，获取下拉列表 -->
+	<select id="getBoxList" resultType="java.util.HashMap">
+		select b.ogcd,ornm from trd_organ a, trd_favrule_p003 b where a.ogcd=b.ogcd  group by b.ogcd,ornm order by b.ogcd 
+	</select>
+	<!-- 添加优惠规则，查询 -->
+	<select id="getValueList" resultType="java.util.HashMap">
+		select b.ogcd,ornm,fvnm,rule,decode(stat,'0','启用','1','停用') stat ,b.fvid from trd_organ a, trd_favrule_p003 b where a.ogcd=b.ogcd 
+		<if test="ornm!=null and !ornm.equals('')">
+			and ornm=#{ornm}
+		</if>
+		order by b.ogcd
+	</select>
+	
+	<!-- 添加最大优惠 -->
+	<insert id="insetMaxyh" >
+		insert into trd_favrule_p003 values(#{idog,jdbcType=VARCHAR},'F00','最大优惠','setmax(#{maxyh ,jdbcType=VARCHAR});','0')
+		
+	</insert>
+	<!--更新最大优惠  -->
+	<update id="updateMaxyh">
+		update trd_favrule_p003 set rule='setmax(${maxyh});' where ogcd=#{idog} and fvid='F00'
+	</update>
+	<insert id="insertFavrule1">
+		insert into trd_favrule_p003 values(#{idog},#{bm},#{yhmc},#{rule},'0')
+	</insert>
+	<!-- 规则修改保存按钮 -->
+	<update id="updatefavrule">
+		update trd_favrule_p003 set fvnm=#{yhmc},rule=#{rule}  where  ogcd=#{idog} and fvid=#{yhbm}
+	</update>
+	<!-- 删除优惠规则 -->
+	<delete id="getDeleteList">
+		delete trd_favrule_p003 where ogcd=#{ogcd} and fvid=#{fvid}
+	</delete>
+	
+	<!-- 查询电商商户号 -->
+	<select id="queryShnoInfo" resultType="java.util.HashMap">
+		select cunm,shno from trd_merchantsinfo_P003
+	</select>
+	<!-- 电商积存金查询 -->
+	<select id="getTransferTotal" resultType="int">
+		select count(1) as COUNT from trd_capitaltransfer_p003 a where 1=1 
+		<if test="!trdtbegin.equals('') and !trdtend.equals('')">
+		<![CDATA[and a.fldt>=#{trdtbegin} and a.fldt<=#{trdtend}]]>
+		</if>
+		<if test="!shno.equals('all')">
+			and a.shno = #{shno}
+		</if>
+		<if test="sqlBuffer1.toString()">
+			and a.dirc = #{dirc}
+		</if>
+	</select>
+	<select id="selectTranfer" resultType="com.ylxx.fx.service.po.Trd_CapitalTransfer">
+		select * from trd_capitaltransfer_p003 a where 1=1
+		<if test="!trdtbegin.equals('') and !trdtend.equals('')">
+			<![CDATA[and a.fldt>=#{trdtbegin} and a.fldt<=#{trdtend}]]>
+		</if>
+		<if test="!shno.equals('all')">
+			 and a.shno = #{shno}
+		</if>
+		<if test="dirc.equals('1')">
+			and a.dirc = '1' 
+		</if>
+		<if test="dirc.equals('0')">
+			and a.dirc = '0' 
+		</if>
+		order by a.fldt desc 
+	</select>
+	<!-- 金生金数据查询 -->
+	<select id="selectGold" resultType="java.util.HashMap">
+		select a.cuno as CUNO,b.cuac as CUAC,b.ogcd as OGCD,c.ognm as OGNM,a.cblv as CBLV , qydt as QYDT,qytm as QYTM 
+		from trd_fixedaccount_p003 a left join trd_regmsg_p003 b on a.trac = b.trac left join trd_ogcd c on 
+		b.ogcd = c.ogcd where pdtp=#{pdtp} order by qydt desc, qytm desc
+	</select>
+	<!-- 金生金交易总额查询 -->
+	<select id="selectSumcblv" resultType="String">
+		SELECT COALESCE(SUM(cblv), 0) FROM trd_fixedaccount_p003 where pdtp=#{pdtp}
+	</select>
+	<!-- 电商积存金手动中止 -->
+	<update id="stopOrStrat">
+		update trd_capitaltransfer_p003 set mafl=#{mafl},madt=#{day},matm=#{time} where shno=#{shno} and fldt=#{fldt}
+	</update>
+	<!-- 初始化页面后获取该机构的目前的优惠 -->
+	<select id="getSearchList" resultType="java.util.HashMap">
+		select ornm,fvnm,fvid,stat,rule from trd_favrule_p003 a,trd_organ b where a.ogcd=b.ogcd and a.ogcd=#{ogcd}and fvid = (select max(fvid)from  trd_favrule_p003 where ogcd=#{ogcd}) 
+	</select>
+	<select id="getMax" resultType="String">
+		select rule from trd_favrule_p003 where fvid='F00' and ogcd=#{ogcd}
+	</select>
+	<!-- 获取条件列表 -->
+	<select id="getinitList" resultType="String">
+		select rule from trd_favrule_p003 where fvid=(select max(fvid)from  trd_favrule_p003 where ogcd=#{ogcd})and ogcd=#{ogcd}
+	</select>
+	
+	<select id="FavruleList" resultType="java.util.HashMap">
+		select a.ogcd,fvid,fvnm,rule,stat,ornm  from trd_favrule_p003 a,trd_organ b where a.ogcd=b.ogcd and a.ogcd=#{ogcd} and a.fvid=#{fvid}
+	</select>
+	
+	<select id="LableList" resultType="String">
+		select rule  from trd_favrule_p003 a,trd_organ b where a.ogcd=b.ogcd and a.ogcd=#{ogcd} and a.fvid=#{fvid}
+	</select>
+</mapper>

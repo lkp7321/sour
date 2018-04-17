@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accex.tradeMananger.RegMsgMapper">
+	<!--查询列表  -->
+	<select id="searchRegmsgList" resultType="com.ylxx.fx.service.po.AccRegmsgBean">
+		SELECT
+			A.*, 
+			b.ognm ognm,
+			c.ogcd upcd,
+			c.ognm upnm
+		FROM
+			VIEW_REGMSG_${prcd} A
+			LEFT JOIN trd_ogcd b ON A .ogcd = b.ogcd
+			LEFT JOIN trd_ogcd c ON b.ogup = c.ogcd
+		<where>
+			1 = 1
+			<![CDATA[and rgdt >= #{startDate} and rgdt <= #{endDate}]]>
+		</where>
+	</select>
+</mapper>

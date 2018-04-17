@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.fxipmonitor.FcustMonitorMapper">
+	<!-- 客户交易监控 -->
+	<select id="selectAllPdt" resultType="com.ylxx.fx.core.domain.FxipMonitorVo">
+	select 
+	a.udfg udfg, a.exnm exnm, a.nemd nemd,
+	a.neby neby, a.nesl nesl, a.mdtm mdtm,
+	decode(a.stfg,'0','开盘','1','停盘') stfg, 
+	decode(a.trfg,'0','可交易'，'1','不可交易') trfg, 
+	decode(a.cxfg,'1','汇','2','钞') cxfg,
+	decode(a.ercd,'00000','正常','00001','手工停盘','00002','自动停盘',
+	'00003','买卖价倒置','00004','超过合法值范围','00005','价格源不可交易',
+	'00006','中间价波动异常','00007','未浮动次数超过范围') ercd,
+	b.mknm mknm
+	from 
+	QUT_PDTCUST_${prcd} a,CMM_MKTINFO b,CMM_CURRMSG c 
+	where 
+	a.prsc=b.mkid and a.exnm=c.exnm order by c.extp,a.exnm,a.cxfg
+	</select>
+	<select id="selectAllPdtP004" resultType="com.ylxx.fx.service.po.PereCustMonitorB">
+		select a.*,decode(a.ercd,'00000','正常','00001','手工停盘','00002',
+		'自动停盘','00003','买卖价倒置','00004','超过合法值范围','00005','价格源不可交易',
+		'00006','中间价波动异常','00007','未浮动次数超过范围') ercn,decode(a.cxfg,'1','汇','2','钞') cxfgp,
+		decode(a.stfg,'0','开盘','1','停盘') stfgp,decode(a.trfg,'0','可交易','1','不可交易') trfgp,
+		b.mknm from Qut_Pdtcust_P004 a,(select * from CMM_MKTINFO) b,CMM_CURRMSG c 
+		where a.prsc=b.mkid and a.exnm=c.exnm order by c.extp,a.exnm
+	</select>
+</mapper>

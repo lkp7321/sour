@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.pere.presysmanager.DfzfWaterMapper">
+	<select id="selcDfzfWater" resultType="com.ylxx.fx.service.po.DfzfWater">
+			select TRSN,a.trtp as jstp,decode(a.TRTP,'0','结汇','1','售汇',a.TRTP) as TRTP,decode(a.cont,'CHN','中国',a.cont) as CONT ,decode(a.IDTP,'ZR01','身份证','ZR07','护照',a.IDTP) as IDTP ,IDNO,CUNM,CUAC,EXTP,
+				EXTR,BYTP,FONM,FOAM,CYAM,AKPC,decode(a.CXFG ,'1','汇','2','钞',a.cxfg) as CXFG ,TRDT,STCD
+				 from trd_tranlist_dfzf a where 1=1
+				 <if test="!comStcd.equals('') and comStcd != null">
+				 <if test="comStcd.equals('all')"></if>
+				 <if test="!comStcd.equals('all')">
+				 	and a.STCD =#{comStcd}
+				 </if>
+				 </if>
+				 <if test="!dgfieldbegin.equals('') and !dgfieldend.equals('')">
+				 <![CDATA[and a.TRDT >=#{dgfieldbegin} and a.TRDT <=#{dgfieldend}]]>
+				 </if>
+	</select>
+</mapper>

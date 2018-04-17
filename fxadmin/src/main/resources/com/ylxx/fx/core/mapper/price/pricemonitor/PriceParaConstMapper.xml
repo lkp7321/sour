@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 外汇点差查询-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.pricemonitor.PriceParaConstMapper">
+	<select id="selectItems" resultType="java.util.HashMap">
+		select distinct(ptid),
+		decode(ptid,'P071','P071','P072','P072')ptnm 
+		from QUT_PDTPOINT_${ptid} order by ptid
+	</select>
+	<select id="selectAllPdtPoint" resultType="com.ylxx.fx.service.po.PdtPointForAcc">
+		select a.*,b.tpnm tpnm,
+		decode(c.exnm||c.pion,'USDRMB2','分','USDRMB3','厘','USDRMB4','毫','KAURMB2','分','KAGRMB3','厘','OAGUSD2','美分','OAGUSD3','厘','OAUUSD2','美分','OAUUSD3','厘','未知单位') 
+		unit
+		from QUT_PDTPOINT_${ptid} a,QUT_tpfgt b,Cmm_Currmsg_P007 c  where a.tpfg=b.tpfg and a.exnm=c.exnm and a.ptid=#{ptid1}
+	</select>
+	<update id="updatePoint">
+		update QUT_PDTPOINT_${ptid}
+		set qtcy=#{pdtPoint.qtcy},bhbd=#{pdtPoint.bhbd},cubd=#{pdtPoint.cubd},prtp=#{pdtPoint.prtp},
+		bhsd=#{pdtPoint.bhsd},cusd=#{pdtPoint.cusd},uphz=#{pdtPoint.uphz} where ptid=#{pdtPoint.ptid} and exnm=#{pdtPoint.exnm}
+	</update>
+	<!-- 所有校验参数 -->
+	<select id="selectAllPdtChkpara" resultType="com.ylxx.fx.service.po.PdtChkparaForAcc">
+		select a.*,b.tpnm tpnm from QUT_PDTCHKPARA_${pdtinfoid} a,
+		QUT_tpfgt b where a.tpfg=b.tpfg
+	</select>
+	<!-- 校验全部启用 -->
+	<update id="openAll">
+		update  QUT_PDTCHKPARA_${pdtinfoid}
+		set usfg='0' where usfg='1'
+	</update>
+	<update id="stopAll">
+		update  QUT_PDTCHKPARA_${pdtinfoid}
+		set usfg='1' where usfg='0'
+	</update>
+</mapper>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 敞口 -->
+<mapper namespace="com.ylxx.fx.core.mapper.person.changk.ChangkMapper">
+	<!-- 敞口流水查询-->
+	<select id="selCondition" resultType="com.ylxx.fx.service.po.PpsyBean">
+		select lkno,lcno,seqn,trdt,trtm,
+		decode(trty,'01','客户交易','02','平盘交易','03','直通式平盘交易','04','抹账交易','05','其他') 
+		trty,ckno,exnm,total_lamt,total_ramt,cbpc,cusy,
+		decode(cksn,'0001','客户记账','0002','手工平盘记账','0003','自动平盘扣账','0004','自动平盘补账','9998','直通式平盘记账') 
+		cksn,nvl(opno,' ') opno,
+		decode(stcd,'S','成功','F','失败') 
+		stcd 
+		from ck_mxdetail 
+		where trdt>=#{sartDate} 
+		and #{endDate}>=trdt 
+		and exnm like concat(concat('%',#{strExnm}),'%') 
+		and lkno like concat(concat('%',#{lkno}),'%') 
+		and prcd='P001' union select lkno,lcno,seqn,trdt,trtm,
+		decode(trty,'01','客户交易','02','平盘交易','03','直通式平盘交易','04','抹账交易','05','其他') 
+		trty,ckno,exnm,total_lamt,total_ramt,cbpc,cusy,
+		decode(cksn,'0001','客户记账','0002','手工平盘记账','0003','自动平盘扣账','0004','自动平盘补账','9998','直通式平盘记账') 
+		cksn,opno,
+		decode(stcd,'S','成功','F','失败') 
+		stcd 
+		from ck_mxdetailhis 
+		where trdt>=#{sartDate} 
+		and #{endDate}>=trdt
+		and exnm like concat(concat('%',#{strExnm}),'%') 
+		and lkno like concat(concat('%',#{lkno}),'%') 
+		and prcd='P001'
+	</select>
+	
+	<!-- 货币对信息 -->
+	<select id="selUSDExnm" resultType="String">
+		select EXNM from ck_total where prcd=#{prcd}
+	</select>
+	
+	<!-- =====================平盘损益查询========================= -->
+	<!-- 查流水记录 -->
+	<select id="selPpsy" resultType="com.ylxx.fx.core.domain.PpsyBeanDomain">
+		select TRDT,EXNM,
+		sum(decode(trty,'01',lamt,0)) total_lamt,
+		sum(decode(trty,'01',ramt,0)) total_ramt,
+		sum(decode(trty,'02',CUSY,0)) ausy,
+		sum(decode(trty,'03',CUSY,0)) sgsy from ck_mxdetail 
+		where 
+		prcd='P001' 
+		and trdt >=#{sartDate}
+		and #{endDate}>=trdt
+		group by TRDT,EXNM 
+		union select TRDT,EXNM,
+		sum(decode(trty,'01',lamt,0)) total_lamt,
+		sum(decode(trty,'01',ramt,0)) total_ramt,
+		sum(decode(trty,'02',CUSY,0)) ausy,
+		sum(decode(trty,'03',CUSY,0)) sgsy from ck_mxdetailhis
+		where 
+		prcd='P001' 
+		and trdt >=#{sartDate}
+		and #{endDate}>=trdt
+		group by TRDT,EXNM
+	</select>
+	<!-- 查统计值 -->
+	<select id="selPptosy" resultType="com.ylxx.fx.service.po.PpsyBean">
+		select sum(a.ausy) autoppsy,sum(a.sgsy) handppsy,(sum(a.ausy)+sum(a.sgsy)) totapp
+		from 
+		(select TRDT,EXNM,
+		sum(decode(trty,'01',lamt,0)) total_lamt,
+		sum(decode(trty,'01',ramt,0)) total_ramt,
+		sum(decode(trty,'02',CUSY,0)) AUSY ,
+		sum(decode(trty,'03',CUSY,0)) SGSY 
+		from ck_mxdetail 
+		where prcd='P001' 
+		and trdt >= #{sartDate}
+		and #{endDate} >= trdt
+		group by TRDT,EXNM) a
+	</select>
+	<!-- ==============敞口规则设置=============== -->
+	<!-- 查询敞口规则 -->
+	<select id="selck_rulet" resultType="com.ylxx.fx.service.po.TbCk_rulet">
+		SELECT CKNM,CKNO,LEVE,RCNT,RULE,RUHY,
+		decode(USFG,'0','开启','1','停用','2','禁用') USFG 
+		FROM CK_RULET 
+		WHERE PRCD=#{prcd} ORDER BY LEVE
+	</select>
+	
+	<!-- 添加敞口规则的左下拉框/账户，币别，损益，折美元 -->
+	<select id="selCkDictionary" resultType="com.ylxx.fx.service.po.Ck_Dictionary">
+		SELECT * FROM ck_dictionary where usfg='0' and prcd=#{prcd}
+	</select>
+	<!-- 账户类型 -->
+	<select id="sleTrdCustType" resultType="com.ylxx.fx.service.po.TrdTynm">
+		select APFG,TYNM from trd_tynm_${prcd} where stat='0'
+	</select>
+	
+	<!-- 级别设置 -->
+	<select id="selLeveCknm" resultType="com.ylxx.fx.service.po.TbCk_rulet">
+		select CKNM,CKNO,LEVE from ck_rulet 
+		where prcd=#{prcd} order by leve
+	</select>
+	
+	<update id="upLevelCknm" parameterType="java.util.List">
+    	begin  
+        <foreach collection="list" item="item" index="index" separator=";" > 
+            update CK_RULET 
+            <set>
+                LEVE = #{item.leve,jdbcType=INTEGER}
+            </set>
+           		WHERE PRCD=#{item.prcd,jdbcType=VARCHAR} AND CKNO=#{item.ckno,jdbcType=VARCHAR}
+		</foreach>
+        ;end;
+    </update>
+		
+	<!--查询弹窗的等级 ， prcd=P001,P002,P003-->
+	<select id="selRuleRecord" resultType="com.ylxx.fx.service.po.TbCk_rulet">
+		select a.ptnm ruhy,lpad((ckno${prcc}.nextval),4,'0') ckno,0 leve
+		from 
+		(select ptnm from QUT_CMMPDTINFO where ptid=#{prcd}) a
+	</select>
+	
+	<!-- 添加验证 -->
+	<select id="inSelRulet" resultType="int">
+		select count(*) from CK_RULET 
+		where prcd=#{ckrulet.prcd} and (ckno=#{ckrulet.ckno} or cknm=#{ckrulet.cknm})
+	</select>
+	<!-- 添加客户分类敞口 -->
+	<insert id="insClassTotal">
+		INSERT INTO CK_CLASSTOTAL
+		SELECT PRCD,#{ckrulet.ckno} CKNO,EXNM,EXCD,0 LAMT,0 RAMT,0 TOTAL_LAMT ,0 TOTAL_RAMT ,
+		0 CBHL,0 FDSY,0 TOYK,0 PPYK,0 SGYK,0 TRYK,0 ZCYK,0 TODAY_PPYK ,0 TODAY_SGYK ,
+		0 TODAY_TRYK ,0 TODAY_ZCYK ,#{data} UPDT,#{time} UPTM 
+		from ck_total where prcd=#{ckrulet.prcd}
+	</insert>
+	<!-- 添加自动平盘规则 -->
+	<insert id="insppControl">
+		INSERT INTO CK_PPCONTROL 
+		SELECT PRCD,#{ckrulet.ckno} CKNO,
+		EXNM,'01' PPFS,'01' CKTY,'01' DXFS,
+		0 DXJE,0 PPYE,0 ZYBL,0 ZSBL,0 ZYAM,0 ZSAM,
+		0 RRDT,0 YCSJ,5 CONT,0 CKFG from ck_total 
+		where prcd=#{ckrulet.prcd}
+	</insert>
+	<!-- 添加敞口搜集规则 -->
+	<insert id="insCkRule">
+		insert into CK_RULET(PRCD,CKNO,CKNM,LEVE,RCNT,RULE,RUHY,USFG)
+		values(#{ckrulet.prcd},
+		#{ckrulet.ckno},#{ckrulet.cknm},
+		#{ckrulet.leve},#{ckrulet.rcnt},
+		#{ckrulet.rule},#{ckrulet.ruhy},
+		#{ckrulet.usfg})
+	</insert>
+	
+	<!-- 修改验证 -->
+	<select id="upSel" resultType="int">
+		select count(*) 
+		from CK_RULET 
+		where prcd=#{ckrulet.prcd} 
+		and cknm=#{ckrulet.cknm} and ckno not in(#{ckrulet.ckno}) 
+	</select>
+	<!-- 修改 -->
+	<update id="upCkRule">
+		UPDATE CK_RULET 
+		SET 
+		CKNM=#{ckrulet.cknm},LEVE=#{ckrulet.leve},
+		RCNT=#{ckrulet.rcnt},RULE=#{ckrulet.rule},
+		RUHY=#{ckrulet.ruhy},USFG=#{ckrulet.usfg}
+		WHERE PRCD=#{ckrulet.prcd} AND CKNO=#{ckrulet.ckno}
+	</update>
+	
+	<!-- ==========平盘规则设置============== -->
+	<!-- 查询 -->
+	<select id="selPpcontrolList" resultType="com.ylxx.fx.service.po.TbCk_ppcontrol">
+		SELECT 
+		nvl(A.CKNO,' ') AS CKNO,
+		nvl(B.CKNM,' ') AS prcd,
+		nvl(A.EXNM,' ') AS EXNM,
+		nvl(A.CKTY,' ') AS CKTY,
+		decode(A.DXFS,'01','金额达限','02','止盈点数','03','止损点数','04','止盈/止损点数',
+		'05','止盈金额','06','止损金额','07','止盈/止损金额','08','所有组合') AS DXFS,
+		decode(A.PPFS,'01','手工','02','自动') AS PPFS, 
+		nvl(A.DXJE,0) AS DXJE,
+		nvl(A.PPYE,0) AS PPYE,
+		nvl(A.ZYBL,0) AS ZYBL,
+		nvl(A.ZSBL,0) AS ZSBL,
+		nvl(A.ZYAM,0) AS ZYAM,
+		nvl(A.ZSAM,0) AS ZSAM,
+		nvl(A.RRDT,0) AS RRDT,
+		nvl(A.YCSJ,0) AS YCSJ,
+		nvl(A.CONT,0) AS CONT,
+		decode(nvl(trim(A.CKFG),1),'0','启用','1','停用','2','注销') AS CKFG
+		FROM ck_ppcontrol A,CK_RULET B 
+		WHERE A.CKNO=B.CKNO AND A.PRCD=B.PRCD AND A.PRCD = #{prcd}
+		<if test='ckno!=null and !ckno.equals("")'>
+			and A.CKNO=#{ckno} 
+		</if>
+		ORDER BY A.CKNO,A.EXNM
+	</select>
+	
+	<!-- 规则下拉框 -->
+	<select id="selGroupCkno" resultType="com.ylxx.fx.service.po.TbCk_ppcontrol">
+		SELECT distinct A.CKNO AS ckno,B.CKNM AS prcd
+		FROM ck_ppcontrol A,CK_RULET B 
+		WHERE A.CKNO=B.CKNO AND A.PRCD=B.PRCD 
+		AND A.PRCD = #{prcd} ORDER BY A.CKNO
+	</select>
+	
+	<!-- 平盘规则修改 -->
+	<update id="upPpControl">
+		UPDATE ck_ppcontrol 
+		SET 
+		PPFS=#{ppcon.ppfs},DXFS=#{ppcon.dxfs},
+		DXJE=#{ppcon.dxje},PPYE=#{ppcon.ppye},
+		ZYBL=#{ppcon.zybl},ZSBL=#{ppcon.zsbl},
+		ZYAM=#{ppcon.zyam},ZSAM=#{ppcon.zsam},
+		CKFG=#{ppcon.ckfg},CONT=#{ppcon.cont} 
+		WHERE PRCD=#{ppcon.prcd} AND CKNO=#{ppcon.ckno} AND EXNM=#{ppcon.exnm}
+	</update>
+	<!-- 平盘方式修改,手工平盘 -->
+	<update id="upPpconlist" parameterType="java.util.List">
+    	begin  
+        <foreach collection="list" item="item" index="index" separator=";" > 
+            UPDATE ck_ppcontrol  
+            <set>
+                PPFS = #{item.ppfs,jdbcType=VARCHAR}
+            </set>
+            WHERE 
+            PRCD=#{item.prcd,jdbcType=VARCHAR} AND 
+			CKNO=#{item.ckno,jdbcType=VARCHAR} AND 
+			EXNM=#{item.exnm,jdbcType=VARCHAR} 
+		</foreach>
+        ;end;
+    </update>
+	
+	<!-- ========特殊账户分类========== -->
+	<!-- 条件查询  -->
+	<select id="selectTRD_TYNM" resultType="com.ylxx.fx.service.po.TrdTynm">
+		select 
+		tynm,apfg,
+		decode(stat,'0','启用','1','停用')stat 
+		from 
+		TRD_TYNM_${prcd} 
+		where 1=1
+		<if test='""!=apfg'>
+			and apfg like concat(concat('%',#{apfg}),'%')
+		</if>
+	</select>
+	<!-- 特殊账户分类 P001,P002,P003 删除 -->
+	<delete id="deleteTRD_TYNM">
+		delete trd_tynm_${prcd}  
+		where trim(TYNM)=#{trdtynm.tynm} and trim(APFG)=#{trdtynm.apfg}
+	</delete>
+	<!-- 特殊账户分类  P001 添加前的验证 -->
+	<select id="insel" resultType="int">
+		select count(*) from trd_tynm_${prcd} 
+		where 
+		TYNM=#{trdtynm.tynm} or APFG=#{trdtynm.apfg} 
+	</select>
+	<!-- 特殊账户分类 P002,P003 添加前的验证 -->
+	<select id="insel1" resultType="int">
+		select count(*) from trd_tynm_${prcd} 
+		where 
+		TYNM=#{trdtynm.tynm}
+	</select>
+	<!--特殊账户分类 添加 P001 -->
+	<insert id="insertTRD_TYNM">
+		insert into trd_tynm_${prcd}(TYNM,APFG,STAT) 
+		values(#{trdtynm.tynm},#{trdtynm.apfg},#{trdtynm.stat})
+	</insert>
+	<!--特殊账户分类 添加P002 AND P003 -->
+	<insert id="insertTRD_TYNM2">
+		insert into trd_tynm_${prcd}(TYNM,APFG,STAT) 
+		values(#{trdtynm.tynm},emp_xulie2.nextval,#{trdtynm.stat})
+	</insert>
+	<!-- P001,P002,P003 特殊账户分类  修改 -->
+	<update id="updateTRD_TYNM">
+		update trd_tynm_${prcd} set STAT=#{trdtynm.stat} 
+		where trim(TYNM)=#{trdtynm.tynm} and trim(APFG)=#{trdtynm.apfg}
+	</update>
+	
+	<!-- =========查询特殊账户收集=========== -->
+	<!-- 特殊账号收集  查询 -->
+	<select id="selectTRD_SPCUT" resultType="com.ylxx.fx.service.po.TrdSpcut">
+		select 
+        b.TYNM,
+		a.CUNO,
+		decode(a.STAT,'0','启用','1','停用')STAT
+        from 
+		TRD_SPCUT_${prcd} a,TRD_TYNM_${prcd} b
+		where 
+		b.APFG=a.APFG 
+		<if test='""!=cuno'>
+			and a.CUNO LIKE concat(concat('%',#{cuno}),'%')
+		</if>
+	</select>
+	<!-- 特殊账号收集  删除 -->
+	<delete id="deleteTRD_SPCUT">
+		delete TRD_SPCUT_${prcd} where trim(cuno)=#{cuno}
+	</delete>
+	<!-- 特殊账号收集 添加  下拉框 -->
+	<select id="selectTYNM" resultType="com.ylxx.fx.service.po.TrdTynm">
+		select TYNM,APFG from TRD_TYNM_${prcd} 
+	</select>
+	<!-- 特殊账号收集 添加  ,添加前的验证 -->
+	<select id="selIns" resultType="int">
+		select count(*) from TRD_SPCUT_${prcd} 
+		where trim(cuno) = #{cuno} 
+	</select>
+	<!-- 特殊账号收集 添加 -->
+	<insert id="insertTRD_SPCUT">
+		insert into TRD_SPCUT_${prcd}(APFG,CUNO,STAT) 
+		values(#{trdspcut.apfg},#{trdspcut.cuno},#{trdspcut.stat})
+	</insert>
+	<!-- 特殊账号收集 修改 -->
+	<update id="updateTRD_SPCUT">
+		update TRD_SPCUT_${prcd} 
+		set 
+		STAT=#{trdspcut.stat},
+		APFG=#{trdspcut.apfg}
+		where 
+		trim(CUNO)=#{trdspcut.cuno}
+	</update>
+</mapper>

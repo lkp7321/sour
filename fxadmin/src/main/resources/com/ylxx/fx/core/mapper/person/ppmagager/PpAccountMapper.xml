@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.ppmagager.PpAccountMapper">
+	<!-- 查询所有不明交易 -->
+	<select id="selectallaccount" resultType="com.ylxx.fx.service.po.Ck_ppresultdetail">
+		select PPNO,SEQN, PRCD,EXNM, CKNO,decode(TRFL,'01','普通平盘','02','直通式平盘') TRFL,
+		decode(bsfx,'0','买入','1','卖出')bsfx, TRDT, TRTM,SLCY,BYCY,nvl(CBSL,0)CBSL,
+		nvl(CBBY,0)CBBY,nvl(SAMT,0)SAMT,nvl(BAMT,0)BAMT,nvl(YKAM,0)YKAM,JYCL,MKNO,
+		decode(TRTY,'1','即时交易成交','2','指定交易成交','3','委托交易成交')TRTY,DSNO,YDTM,nvl(CBHL,0)CBHL,
+		nvl(EXPC,0)EXPC,REFE, JGDT,QXDT,decode(STAT,'A','预计','N','交易未返回','D','交易已提交')STAT,
+		STMP,ERCD,LKNO,DZNO from ck_ppresultdetail
+		where (STAT in('N','D','A') or LKNO is null )  
+		and stat!='F' AND PRCD='P001'
+		<if test="lcno!=null and lcno!=''">
+			and seqn like '%${lcno}%'
+		</if>
+		order by trdt,trtm
+	</select>
+	<!-- 查询UBS联系方式 -->
+	<select id="queryPtpara" resultType="String">
+		select valu from CMM_PTPARA_p001 where paid=#{paid} and stat='0'
+	</select>
+	<!-- 更新 -->
+	<update id="update">
+		update trd_exptran_${prod} set prcn=0,prfg='N',prdt='',
+		prtm='' where ppno=#{ppno}
+	</update>
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.PereFavruleMapper">
+	<!-- P004  分行优惠数据 -->
+	<select id="selPereFenfavrule" resultType="com.ylxx.fx.service.po.Favrule">
+		select a.ogcd as ogcd,b.ognm as ognm,a.fvid as fvid, a.fvnm as fvnm,a.rule as rule,
+		decode (a.stat,'0','启用','1','停用','未知') stat
+		from TRD_FAVRULE_P004 a,trd_ogcd b where a.ogcd=b.ogcd
+		<if test='ogcd != "all"'>
+			and a.ogcd=#{ogcd} 
+		</if>
+		order by a.ogcd
+	</select>
+	<!-- 启用 P004 -->
+	<update id="Begin">
+		update TRD_FAVRULE_P004 set stat = 0 
+		where trim(ogcd) = #{ppch.ogcd} and trim(fvid) = #{ppch.fvid}
+	</update>
+	<!-- 停用 P004-->
+	<update id="End">
+		update TRD_FAVRULE_P004 set stat = 1 
+		where trim(ogcd) = #{ppch.ogcd} and trim(fvid) = #{ppch.fvid}
+	</update>
+	<select id="selectExnm" resultType="java.util.HashMap">
+		select * from CMM_CURRMSG_p004 order by exnm
+	</select>
+	<select id="SelClient" resultType="String">
+		select tynm from FX_CUTYT_p004 where  trim(cuty)=#{id}
+	</select>
+	<select id="SelClient1" resultType="java.util.HashMap">
+		select * from FX_CUTYT_p001 order by cuty
+	</select>
+	
+	<update id="onsave">
+		update trd_favrule_p004 set rule = #{rule} 
+		where trim(ogcd) = #{ogcd} and trim(fvid) = #{fvid}
+	</update>
+	
+	<!-- 个人结售汇 撤销流水与查询 -->
+	<select id="selectTranlist" resultType="com.ylxx.fx.service.po.Tranlist">
+		select trdt,trtm,mddt,ognm,trtl,cuno,cunm,extr,csof,soac,ctof,toac,bynm,byam,
+				slnm,slam,expc,cxfg,fvda,trtp,idtp,idno,cont,trsn,oprt 
+				from (select distinct b.trsn,b.trdt,b.trtm,a.trdt mddt,c.ognm,
+				b.trtl,b.cuno,b.cunm,f.description extr,
+				decode(b.csof,'0','现金','1','借记卡','2','活期一本通') csof,b.soac,
+				decode(b.ctof,'0','现金','1','借记卡','2','活期一本通','3','挂账','8','信用卡') ctof,
+				b.toac,b.bynm,b.byam,b.slnm,b.slam,b.expc,
+				decode(b.cxfg,'1','汇','2','钞') cxfg,b.fvda,
+				decode(b.trtp,'0','结汇','1','购汇','2','结汇','3','购汇') trtp,
+				b.idtp,b.idno,b.cont,'修改' as oprt from 
+				(select  olno,trdt from trd_tranlist_p004  where trcd='P3317' and stcd='S'
+		<if test='""!=start and ""!=end'>
+			and trdt>=#{start} and #{end}>=trdt
+		</if>
+		) a  left join (select trsn,trdt,trtm,ogcd,trtl,cuno,cunm,extr,csof,soac,
+		ctof,toac,bynm,byam,slnm,slam,expc,cxfg,fvda,trtp,idtp,idno,cont from trd_tranlist_p004
+		where  stcd='S') b on  a.olno=b.trsn inner join trd_ogcd c on b.ogcd = c.ogcd
+		<if test='"0001"==ogcd'>
+	
+		</if>
+		<if test='"0002"==ogcd'>
+			and c.ogcd=#{ogcd}
+		</if>
+		<if test='"0001"!=ogcd and "0002"!=ogcd '>
+			and (c.ogup=#{ogcd} or c.ogcd=#{ogcd})
+		</if>
+		left join  cmm_dictionary f on b.extr=f.fxipfieldvalue 
+		union all 
+		select e.trsn,e.trdt,e.trtm,d.trdt mddt,f.ognm,e.trtl,e.cuno,e.cunm,g.description extr,
+		decode(e.csof,'0','现金','1','借记卡','2','活期一本通') csof,e.soac,
+		decode(e.ctof,'0','现金','1','借记卡','2','活期一本通','3','挂账','8','信用卡') ctof,
+		e.toac,e.bynm,e.byam,e.slnm,e.slam,e.expc,
+		decode(e.cxfg,'1','汇','2','钞') cxfg,e.fvda,
+		decode(e.trtp,'0','结汇','1','购汇','2','结汇','3','购汇') trtp,e.idtp,e.idno,e.cont,'撤销' as oprt 
+		from(select  olno,trdt from trd_tranlist_p004  
+		where trcd in('P3116','P3316') and stcd='S'
+		<if test='""!=start and ""!=end'>
+			and trdt>=#{start} and #{end}>=trdt
+		</if>
+		) d left join 
+		(select trsn,trdt,trtm,ogcd,trtl,cuno,cunm,extr,csof,soac,ctof,toac,bynm,byam,
+		slnm,slam,expc,cxfg,fvda,trtp,idtp,idno,cont 
+		from trd_tranlist_p004  where  stcd='S') e 
+		on d.olno=e.trsn inner join trd_ogcd f on e.ogcd = f.ogcd
+		<if test='"0001"==ogcd'>
+	
+		</if>
+		<if test='"0002"==ogcd'>
+			and f.ogcd=#{ogcd}
+		</if>
+		<if test='"0001"!=ogcd and "0002"!=ogcd '>
+			and ( f.ogup=#{ogcd} or f.ogcd= #{ogcd})
+		</if>
+		left join  cmm_dictionary g on e.extr=g.fxipfieldvalue ) h order by trdt,trtm
+		</select>
+</mapper>

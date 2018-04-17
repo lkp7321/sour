@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.custom.CustLevelMapper">
+	<!-- 添加客户等级信息 -->
+	<!-- 获取所有客户等级信息 -->
+	<select id="SelectCustLevelList" resultType="com.ylxx.fx.service.po.CustLevelBean">
+		select * from FX_CUTYT_${prod} order by cuty
+	</select>	
+	<!-- 检查添加数据是否重复 -->
+	<select id="checkRepeat" resultType="com.ylxx.fx.service.po.CustLevelBean">
+		select * from FX_CUTYT_${prod} where cuty=#{id} or tynm=#{lvnm}
+	</select>	
+	<!-- 添加客户等级信息 -->
+	<insert id="InsertCustLevel">
+		insert into FX_CUTYT_${prod} (cuty,tynm) values(#{custLevelBean.cuty},#{custLevelBean.tynm})
+	</insert>	
+	<!-- 写审计日志 -->
+	<insert id="InsertCustLevelLogger">
+		insert into mng_log (RZDT,RZSJ,USEM,TYMO,REMK,VOLD,VNEW,PROD) 
+		values(#{logfileBean.rzdt},#{logfileBean.rzsj},#{logfileBean.usem},#{logfileBean.tymo},#{logfileBean.remk},
+		#{logfileBean.vold},#{logfileBean.vnew},#{logfileBean.prod})
+	</insert>
+	<!-- 修改客户级别信息 -->
+	<update id="updateCustLevel">
+		update FX_CUTYT_${prod} set tynm =#{custLevelBean.tynm} where trim(cuty)=#{custLevelBean.cuty}
+	</update>
+	<!-- 检查修改后的数据是否存在重复 -->
+	<select id="cheUpRepeat" resultType="com.ylxx.fx.service.po.CustLevelBean">
+		select * from FX_CUTYT_${prod} where cuty!=#{id} and tynm=#{lvnm}
+	</select>
+	<!-- 删除客户级别信息 -->
+	<delete id="deleteCustLevel">
+		delete  FX_CUTYT_${prod}  where trim(cuty) = #{cuty}
+	</delete>	
+</mapper>

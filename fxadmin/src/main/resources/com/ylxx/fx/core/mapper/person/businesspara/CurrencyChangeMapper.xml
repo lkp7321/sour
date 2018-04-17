@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.CurrencyChangeMapper">
+	<!-- 查询所有fxip P001 -->
+	<select id="selectTranlistP001" resultType="com.ylxx.fx.service.po.TRD_EXCHTRANLIST">
+		select 
+		b.ognm,a.LCNO,a.TRDT,a.TRTM,a.TRCD,a.CUNO,a.FXID,a.CUTP,a.VLFG,a.FRAM,
+		decode(a.CSOF,'1','卡','0','现金')CSOF,a.SOAC,
+		decode(a.CTOF,'1','卡','0','现金')CTOF,a.TOAC,
+		a.CASH,a.SLNM,a.BYNM,a.SLAM,a.EXPC,a.BYAM,
+		decode(a.CXFG,'1','汇','2','钞') cxfg,a.FVDA,a.BRSY,
+		decode (a.TRFG ,'1','外币兑换') trfg,
+		decode(a.STCD,'S','成功','F','失败','失败')STCD,a.ERCD 
+		from 
+		view_querytranlist_p006 a,trd_ogcd b 
+		where 
+		a.trfg in ('1') and a.ogcd=b.ogcd 
+		<if test='curLcno != null and curLcno != ""'>
+			and a.lcno = #{curLcno}
+		</if>
+		<if test='strcuno != null and curLcno !=""'>
+			and a.cuno = #{strcuno}
+		</if>
+		<if test='strsoac != null and strsoac != ""'>
+			and a.soac = #{strsoac}
+		</if>
+		<if test='vurData != null and vurData != ""'>
+			and a.trdt = #{vurData}
+		</if>
+		<if test='comaogcd != "" and combogcd != ""'>
+			<if test='comaogcd == "0001" and combogcd == "all"'>
+			</if>
+			<if test='comaogcd == "0001" and combogcd != "all"'>
+				and b.ogup = #{combogcd}
+			</if>
+			<if test='comaogcd != "0001" and combogcd == "all"'>
+				and a.soac = #{strsoac}
+			</if>
+			<if test='comaogcd != "0001" and combogcd != "all"'>
+				and b.ogcd = #{combogcd} 
+			</if>
+		</if>
+	</select>
+	
+</mapper>

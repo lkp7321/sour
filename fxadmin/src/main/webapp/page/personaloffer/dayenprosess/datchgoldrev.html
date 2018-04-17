@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>批量出金复核</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+      <div class="top datchgoldche">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>日终处理>批量出金复核&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		</div>
+		<div class='bott'>
+		   <p><span>核对日期:</span><input type="text" id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd'})"></i></p>
+		   <p><span>&nbsp;到&nbsp;</span><input type="text" id='d2'/><i class='calander'  onclick="WdatePicker({el:'d2',dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d1\')}',maxDate:'%y-%M-%d'})"></i></p>
+		   <p><span>&nbsp;状态:</span> 
+		       <select class="chestate">
+		        <option value="">请选择</option> 
+		        <option value="2">已核对</option>
+		        <option value="3">已复核</option>
+		        <option value="S">出金成功</option> 
+		       </select>
+		   </p>
+		   <p><button class="query">查询</button></p>
+		   <p><button class="check" disabled="disabled" style="background: rgba(0, 0, 0, 0.498039);">复核</button></p>
+		</div>
+	</div>
+	<div class='boxtop'><div class='box'></div></div>
+	<script src="/fx/js/js_files/require.js"  data-main="/fx/js/bond/datchgoldche"></script>
+</body>
+</html>

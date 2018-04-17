@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.jsh.JshAttentionUserMapper">
+	<!--插入关注名单  -->
+	<insert id="insertAttentionUser">
+		INSERT INTO ATTENTION_USER 
+	(USER_SEQN, TRDT,TRTM,MDDT,MDTM,CUNM,CUEN,IDTY,IDNO,TLNO,MBNO,FXNO,ADDR,MLNO,MAIL,TRTL,IDST,NTST) 
+	VALUES 
+	(
+	 attentionuser.nextval,
+	 #{attentionUser.trdt},#{attentionUser.trtm},#{attentionUser.mddt},#{attentionUser.mdtm},
+	 #{attentionUser.cunm},#{attentionUser.cuen},#{attentionUser.idty},#{attentionUser.idno},
+	 #{attentionUser.tlno},#{attentionUser.mbno},#{attentionUser.fxno},#{attentionUser.addr},
+	 #{attentionUser.mlno},#{attentionUser.mail},#{attentionUser.trtl},#{attentionUser.idst},#{attentionUser.ntst})
+	</insert>
+	<!-- 修改关注名单 -->
+	<update id="updateAttentionUser">
+		UPDATE ATTENTION_USER SET 
+		 trdt = #{attentionUser.trdt},
+		 trtm = #{attentionUser.trtm},
+		 mddt = #{attentionUser.mddt},
+		 mdtm = #{attentionUser.mdtm},
+		 cunm = #{attentionUser.cunm},
+		 cuen = #{attentionUser.cuen},
+		 idty = #{attentionUser.idty},
+		 idno = #{attentionUser.idno},
+		 tlno = #{attentionUser.tlno},
+		 mbno = #{attentionUser.mbno},
+		 fxno = #{attentionUser.fxno},
+		 addr = #{attentionUser.addr},
+		 mlno = #{attentionUser.mlno},
+		 mail = #{attentionUser.mail},
+		 trtl = #{attentionUser.trtl},
+		 idst = #{attentionUser.idst},
+		 ntst = #{attentionUser.ntst}
+		 where 
+		 USER_SEQN=#{attentionUser.user_Seqn}
+	</update>
+	<!-- 查询关注名单 -->
+	<select id="selectAttentionUser" resultType="com.ylxx.fx.core.domain.AttentionUser">
+		select * from ATTENTION_USER
+		<where>
+		<if test='cunm != null and !cunm.equals("")'>
+			cunm  LIKE CONCAT(CONCAT('%',#{cunm}),'%')
+		</if>
+		<if test='idno != null and !idno.equals("")'>
+			and idno  LIKE CONCAT(CONCAT('%',#{idno}),'%')
+		</if>
+		</where>
+	</select>
+	<!--删除关注名单  -->
+	<delete id="deleteAttentionUser">
+		DELETE FROM ATTENTION_USER WHERE USER_SEQN=#{userSeqn}
+	</delete>
+</mapper>

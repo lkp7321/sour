@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.system.CytpMapper">
+	<!-- 币种管理,P001,P002 -->
+	<select id="selTab" resultType="com.ylxx.fx.service.po.Cytp">
+		select * from CMM_CYMSG_${prod}
+	</select>
+	<select id="selTabPrice" resultType="com.ylxx.fx.service.po.Cytp">
+		select * from CMM_CYMSG
+	</select>
+	
+	<select id="selins" resultType="int">
+		select count(*) from CMM_CYMSG_${prod} where cytp=#{cytp}
+	</select>
+	<!-- 添加币种管理 -->
+	<insert id="insertCytp">
+		insert into CMM_CYMSG_${prod}
+		(cytp,cyen,cycn,usfg,remk) 
+		values(
+		#{cytpObj.cytp},#{cytpObj.cyen},#{cytpObj.cycn},
+		#{cytpObj.usfg},#{cytpObj.remk})
+	</insert>
+	<!-- 修改 -->
+	<update id="updateCytp">
+		update CMM_CYMSG_${prod}
+		set 
+		cyen=#{cytpObj.cyen},cycn=#{cytpObj.cycn},
+		usfg=#{cytpObj.usfg},remk=#{cytpObj.remk} 
+		where trim(cytp)=#{cytpObj.cytp}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteCytp">
+		delete  CMM_CYMSG_${prod}
+		where trim(cytp)=#{cytp}
+	</delete>
+</mapper>

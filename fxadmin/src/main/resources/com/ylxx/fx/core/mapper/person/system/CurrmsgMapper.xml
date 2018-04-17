@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 货币对管理 -->
+<mapper namespace="com.ylxx.fx.core.mapper.person.system.CurrmsgMapper">
+	<!-- 查询所有 P001,P002-->
+	<select id="selectPrice" resultType="com.ylxx.fx.service.po.Currmsg">
+		select * from CMM_CURRMSG_${prod} 
+		<if test='prod=="P001"'>
+		</if>
+		<if test='prod=="P002"'>
+			where extp='1' 
+		</if>
+		order by extp
+	</select>
+	<!--查询所有，货币对 P999报价管理 -->
+	<select id="selectPriceP009" resultType="com.ylxx.fx.service.po.Currmsg">
+		select * from CMM_CURRMSG order by extp,exnm
+	</select>
+	
+	<!-- 查询所有 ,货币对 p999交易管理和p007 报价管理 查询和修改 -->
+	<select id="selectPriceP7" resultType="com.ylxx.fx.core.domain.price.CurrmsgForAcc">
+		select * from CMM_CURRMSG_P007 order by extp,exnm
+	</select>
+	<select id="selectPriceP7init" resultType="java.util.HashMap">
+		select * from CMM_CYMSG where usfg='0'
+	</select>
+	<!-- 修改 -->
+	<update id="updatePriceP7">
+		Update CMM_CURRMSG_P007 set MULT=#{mult},DIVD=#{divd} Where exnm=#{exnm}
+	</update>
+	
+	<!-- 获取货币对 -->
+	<select id="selExnmList" resultType="com.ylxx.fx.service.po.Cytp">
+		select cyen,cytp,cycn,remk,decode(USFG,'0','启用','1','停用') usfg 
+		from CMM_CYMSG_${prod}
+	</select>
+	<!-- 添加 -->
+	<select id="selCurrPrice" resultType="int">
+		select count(*) from CMM_CURRMSG_${prod} where exnm=#{exnm}
+	</select>
+	<insert id="insertCurrPrice">
+		insert into CMM_CURRMSG_${prod}
+		(exnm,excd,excn,extp,pion)values(
+		#{currmsg.exnm},#{currmsg.excd},#{currmsg.excn},
+		#{currmsg.extp},#{currmsg.pion})
+	</insert>
+	
+	<!-- 修改 -->
+	<update id="updateCurrPrice">
+		Update CMM_CURRMSG_${prod}
+		set 
+		EXCN=#{currmsg.excn},
+		PION=#{currmsg.pion},EXTP=#{currmsg.extp} 
+		Where 
+		exnm=#{currmsg.exnm}
+	</update>
+	
+	<delete id="deleteCurrPrice">
+		delete CMM_CURRMSG_${prod} 
+		where exnm=#{exnm}
+	</delete>
+</mapper>

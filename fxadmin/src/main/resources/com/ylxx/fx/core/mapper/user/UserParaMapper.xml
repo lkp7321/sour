@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.user.UserParaMapper">
+	<!-- 查询所有用户信息 和 uspt=="A004"-->
+	<select id="selectAllUser" resultType="com.ylxx.fx.core.domain.UserDoms">
+		select a.usnm,b.ptnm ptnm,a.cstn,c.ognm ognm,a.cmpt,
+		a.mbtl,a.telp,a.ufax ,a.rmrk,a.mail ,a.macip,a.usfg
+		from MNG_USER a ,mng_role b,trd_ogcd c
+		where 
+		a.uspt=trim(b.ptid) 
+		and a.cstn=c.ogcd  
+		and trim(a.prod)=#{prod} 
+		order by c.leve,a.cstn,lower(a.usnm)
+	</select>
+	
+	<!-- 查询其他的用户信息 -->
+	<select id="selectUser" resultType="com.ylxx.fx.core.domain.UserDoms">
+		select a.usnm,b.ptnm ptnm,a.cstn,c.ognm ognm,a.cmpt,
+		a.mbtl,a.telp,a.ufax ,a.rmrk,a.mail ,a.macip,a.usfg
+		from MNG_USER a ,mng_role b,trd_ogcd c
+		where a.uspt=trim(b.ptid) and a.cstn=c.ogcd 
+		and trim(a.prod)=#{prod}
+		and a.usnm not in('Administrator')
+		and a.uspt=#{uspt} 
+		order by c.leve,a.cstn,lower(a.usnm)
+	</select>
+	
+	<!-- 添加用户信息 -->
+	<insert id="insertUser">
+		insert into MNG_USER values(
+		#{user.usid},
+		#{user.usnm},
+		#{user.pswd},
+		#{user.uspt},
+		#{user.cstn},
+		#{user.cmpt},
+		#{user.mbtl},
+		#{user.telp},
+		#{user.ufax},
+		#{user.rmrk},
+		#{user.mail},
+		#{user.macip},
+		#{user.prod},
+		'0',
+		#{user.ltime},
+		#{user.utime},
+		#{user.usfg})
+	</insert>
+	
+	
+	<!-- 修改用户信息 -->
+	<update id="updateUser">
+		update mng_user 
+		set 
+		cmpt=#{user.cmpt},
+		mbtl=#{user.mbtl},
+		telp=#{user.telp},
+		ufax=#{user.ufax},
+		mail=#{user.mail},
+		macip=#{user.ufax},
+		rmrk=#{user.rmrk},
+		cstn=#{user.cstn},
+		uspt=#{user.uspt}
+		where trim(usnm)=#{usnm} and trim(prod)=#{prod}
+	</update>
+	
+	
+	<!-- 删除用户信息 -->
+	<delete id="deleteUser">
+		delete MNG_USER 
+		where 
+		trim(usnm)=#{user.usnm}   
+		and trim(prod)=#{user.prod}
+	</delete>
+	 
+	 <!-- 根据用户名和产品判断用户是否已经存在 -->
+	<select id="isExitUser" resultType="int">
+		select count(*) from mng_user 
+		where usnm=#{usnm} and prod=#{prod}
+	</select>
+	
+	<!-- 初始化角色下拉框 -->
+	<select id="initRole" resultType="com.ylxx.fx.service.po.RoleBean">
+		select ptid,ptnm from MNG_ROLE 
+		where trim(prod)=#{prod}
+		and ptid not in('1001','2007','3001','4001','8001','0001') 
+		order by ptid
+	</select>
+	
+	<!-- 初始化机构下拉框 -->
+	<select id="initOgnm" resultType="com.ylxx.fx.core.domain.Trd_ogcdDoms">
+		select ogcd,ognm 
+		from VIEW_OGCD where LEVE IN(0,1,2)
+	</select>
+	<select id="initOgnm2" resultType="com.ylxx.fx.core.domain.Trd_ogcdDoms">
+		select ogcd,ognm
+		from TRD_OGCD where LEVE IN(0,1,2)
+	</select>
+	
+	<!-- 重置密码,1.先查出初始化的密码，2.在修改密码 -->
+	<!-- 获取初始化得密码 -->
+	<select id="selInitPswd" resultType="String">
+		select valu from CMM_PTPARA_P001 where paid='C119' and stat='0'
+	</select>
+	<!-- 需要的重置的密码 2-->
+	<select id="selInitPassword" resultType="String">
+		select valu from CMM_PTPARA where paid='C001' and stat='0'
+	</select>
+	<!-- 重置密码 -->
+	<update id="mitPswd">
+		update mng_user set pswd=#{newPswd},ecount=0 
+		where trim(usnm)=#{usnm}
+		and trim(prod)=#{prod}
+	</update>
+	
+	
+	<!-- 用户复核 -->
+	<update id="userFg">
+		update mng_user set usfg=#{usfg} where usnm=#{usnm} and prod=#{prod}
+	</update>
+	
+	
+	<!-- 密码修改 -->
+	<!-- 校验原密码是否正确 ,因为是登陆过的用户的操作所以直接调用getUser()-->
+	<!-- 修改 -->
+	<update id="updatePswds">
+		update mng_user 
+		set pswd=#{newPswd},utime=#{utime} 
+		where trim(usnm)=#{usnm} and trim(prod)=#{prod}  
+	</update>
+	
+	<!-- 登陆异常用户 ,1.展示异常用户的信息列表，2.清空列表-->
+	<select id="listErrorUser" resultType="com.ylxx.fx.core.domain.UserDoms">
+		select a.usid,a.usnm,b.ptnm ptnm,c.ognm ognm,a.cmpt,a.ecount 
+		from mng_user a,mng_role b,trd_ogcd c
+		where a.uspt=b.ptid and a.cstn=c.ogcd 
+		and trim(a.prod)=#{prod}
+		and a.cstn=#{ognm}
+		and a.ecount>0 
+		and a.usnm not in('Administrator')
+	</select>
+	<!-- 清空异常用户 -->
+	<update id="deleteErrorUser" >
+		update mng_user set ecount=0 where trim(prod)=#{prod}
+	</update>
+</mapper>

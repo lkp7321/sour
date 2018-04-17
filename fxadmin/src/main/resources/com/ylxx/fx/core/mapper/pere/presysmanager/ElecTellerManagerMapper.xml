@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.pere.presysmanager.ElecTellerManagerMapper">
+<select id="selctTellerList" resultType="com.ylxx.fx.service.po.ElecTellerManager">
+select a.BHID,a.TELLERID,a.OGCD,b.ognm,a.TRTL,
+        decode(a.TLTP,'0','操作柜员','1','管理柜员') TLTP,
+        decode(a.CHNL,'1001','柜面','1101','网络银行','1102','电话银行','1103','手机银行','1104','本行ATM','1105','本行自助终端','1261','国际卡支付')CHNL,a.PASS
+        from TRD_SAFEACCINFO_P004 a ,trd_ogcd b 
+        where a.bhid=b.ogcd order by a.OGCD,a.TRTL
+</select>
+
+<select id="selectTOgcd" resultType="com.ylxx.fx.service.po.ElecTellerManager">
+select a.TELLERID,a.OGCD,a.TRTL,a.BHID,b.ognm,decode(a.TLTP,'0','操作柜员','1','管理柜员') TLTP,
+         decode(a.CHNL,'1001','柜面','1101','网络银行','1102','电话银行','1103','手机银行','1104','本行ATM','1105','本行自助终端','1261','国际卡支付')CHNL,a.PASS
+         from TRD_SAFEACCINFO_P004 a ,Trd_Ogcd b
+         where 1=1 and a.bhid=b.ogcd
+         <if test="trtltxt !=''">
+         and a.trtl like CONCAT(CONCAT('%', #{trtltxt}), '%') 
+         </if>
+         <if test="comdata1 !='' and comdata1 !='all'">
+         and a.ogcd like CONCAT(CONCAT('%', #{comdata1}), '%') 
+         </if>
+         <if test="bhidp !=''">
+         and a.bhid like  CONCAT(CONCAT('%', #{bhidp}), '%') 
+         </if>
+         order by a.OGCD,a.TRTL
+</select>
+
+
+<delete id="deleteEleT">
+delete TRD_SAFEACCINFO_P004 where trim(tellerid)=#{tellerid}
+</delete>
+
+
+<update id="updateEleT" >
+update TRD_SAFEACCINFO_P004 
+set pass=#{etmVo.pass},ogcd=#{etmVo.ogcd},tltp=#{etmVo.tltp},bhid=#{etmVo.bhid},chnl=#{etmVo.chnl}, trtl=#{etmVo.trtl} 
+where tellerid = #{etmVo.tellerid} 
+</update> 
+
+<select id="isTrtlBhidExist" resultType="com.ylxx.fx.service.po.ElecTellerManager">
+select * from TRD_SAFEACCINFO_P004 where trtl =#{trtl} and bhid=#{bhid}
+</select>
+
+<!--  //初始化外管局机构 -->
+<select id="selectOgcd" resultType="com.ylxx.fx.service.po.ElecTellerManager">
+select distinct(a.ogcd),b.ognm from TRD_SAFEACCINFO_P004 a,trd_ogcd b
+				where  trim(a.ogcd) = trim(b.ogcd) or a.ogcd =b.ogup order by a.OGCD
+</select>
+<!--  //用户添加机构框 -->
+<select id="selOrganTab" resultType="com.ylxx.fx.service.po.ElecTellerManager">
+<if test="orgn.equals('0001') or usnm.equals('Administrator')">
+
+select a.* from trd_ogcd a,trd_organ b where (a.ogup = 
+				#{orgn} or a.ogcd=#{orgn}) 
+					and trim(a.ogcd)=trim(b.ogcd)  order by a.ogcd
+</if>
+<if test="!orgn.equals('0001') or !usnm.equals('Administrator')">
+select * from trd_ogcd where (ogup = #{orgn} or ogcd = #{orgn})  order by ogcd
+</if>
+</select>
+
+
+<!-- 初始化柜员渠道 -->
+
+<select id="selectChnlP" resultType="java.util.HashMap">
+select CHNL from TRD_SAFEACCINFO_P004 order by CHNL
+</select>
+<!-- 添加外管局机构-->
+<insert id="insertEleT">
+insert into TRD_SAFEACCINFO_P004 (tellerid,ogcd, trtl, pass, tltp, bhid, chnl) 
+values(lpad(safe.nextval,8,'0'),#{etmVo.ogcd},#{etmVo.trtl},#{etmVo.pass},#{etmVo.tltp},#{etmVo.bhid},#{etmVo.chnl})
+
+
+</insert>
+
+
+
+</mapper>

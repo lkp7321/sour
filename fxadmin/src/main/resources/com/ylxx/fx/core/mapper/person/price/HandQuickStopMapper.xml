@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.HandQuickStopMapper">
+	<!-- 查询价格源市场 -->
+	<select id="selectPdtinfo" resultType="java.util.HashMap">
+		select mkid,mknm from CMM_MKTINFO order by mkid
+	</select>
+	<!-- 加载币别对 -->
+	<select id="selectEXNM" resultType="java.util.HashMap">
+		select exnm,excd from CMM_CURRMSG where EXNM LIKE '%USD%'
+	</select>
+	<!-- 获得停牌器的所有数据  -->
+	<select id="selecthqsCmmStopers" resultType="com.ylxx.fx.service.po.CmmStoper">
+		select a.stid, a.mkid ,b.mknm, c.tpnm,a.tpfg,a.term,a.stnm,
+		a.excd,a.exnm,decode(a.stfg,'0','正常','1','停牌',a.stfg) stfg,
+		a.usfg from QUT_CMMSTOPER a,CMM_MKTINFO  b,
+		qut_tpfgt c where a.tpfg=c.tpfg and a.stid='SC99' 
+		and a.mkid=b.mkid order by a.mkid
+	</select>
+	<!-- 条件获得对应的数据  -->
+	<select id="selectAllCmmStoper" resultType="com.ylxx.fx.service.po.CmmStoper">
+		select a.stid, a.mkid ,b.mknm, c.tpnm,a.tpfg,a.term,a.stnm,a.excd,a.exnm,
+		decode(a.stfg,'0','正常','1','停牌',a.stfg) stfg,a.usfg
+		from QUT_CMMSTOPER a,CMM_MKTINFO  b,qut_tpfgt c where a.tpfg=c.tpfg and a.mkid=b.mkid
+		and a.stid='SC99' and a.mkid like '${mkid}%' and a.excd like '${excd}%'
+		order by a.mkid
+	</select>
+	<!-- 批量修改未停牌  -->
+	<update id="updatehqsYesCtrlusfg" >
+		update QUT_CMMSTOPER set STFG=#{cmms.stfg} ,USFG=#{cmms.usfg} 
+		where trim(STID)=#{cmms.stid} and trim(MKID)=#{cmms.mkid} 
+		and trim(EXCD)=#{cmms.excd} and trim(TPFG)=#{cmms.tpfg} 
+		and trim(TERM)=#{cmms.term}
+	</update>
+</mapper>

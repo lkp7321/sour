@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>亚联（天津）信息技术有限责任公司</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+		<link href="/fx/img/favicon.ico" rel="shortcut icon">
+		<link rel="stylesheet" href="/fx/css/login.css">
+		<style>
+			#product::-ms-expand { display: none; }
+		</style>
+	</head>
+	<body>
+	  <div class="loginbox">
+	  	<div class="login-left">
+	  	   <div class="logo"></div>
+	  	   <div class="img1"></div> 
+	  	   <div class="img2"></div>
+	  	   <div class="img3"></div>
+	  	</div>
+	  	<div class="login-right">
+	  		 <div class="login-form">
+	  		 	    <div class="logo2"></div>
+	  		 	    <div class="form-group u-line">
+	  		 	    	<i class="icon icon-user"></i>
+	  		 	    	<input type="text" class="input form-control" autofocus id="userId" onkeyup="this.value=this.value.replace(/\s/g,'');" placeholder="administator">
+	  		 	    	<span class="icon-del"></span>
+              </div>
+              <div class="form-group p-line">
+	  		 	    	<i class="icon icon-pw"></i>
+	  		 	    <input type="password" class="input form-control" id="pwd" placeholder="密码" onkeyup="this.value=this.value.replace(/\s/g,'');">
+                <span class="icon-del"></span>
+              </div>
+              <div class='form-group'>
+                <i class="icon icon-pro"></i>
+				         <select disabled id="product">
+					        <!--  <option value="" selected = "selected">个人实盘</option>
+					         <option value="">个人纸黄金</option>
+					         <option value="">民生金</option>
+					         <option value="">个人结售汇</option>
+					         <option value="">账户交易</option>   -->
+				         </select>
+			        </div>	
+			        <div class="reset">重置</div>
+			        <button class="default">登录</button>        
+			         <form id="myfro" action='/fx/toindex.do' method="post">
+			         <!-- 	<input type="text" name = "userKey" class="subinput"> -->
+			  		 	<button type="submit" id="logon">xxx</button>
+	  				 </form>
+	  		 </div>
+	  	</div>
+	  </div>
+	 
+	</body>
+	 <script src="/fx/js/js_files/require.js" data-main = "/fx/js/login"></script>
+</html>

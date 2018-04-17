@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 交易参数设置 -->
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.PtparaMapper">
+	<!-- 查询所有  P001,P002,P003,P004-->
+	<select id="selectPtpara" resultType="com.ylxx.fx.service.po.Ptpara">
+		select 
+		paid,remk,valu,decode (stat ,'0','启用','1','停用','未知') stat 
+		from CMM_PTPARA_${prod} 
+		order by paid, remk desc
+	</select>
+	<!-- 更新参数 P001,P002,P003,P004 -->
+	<update id="upPtpara">
+		update CMM_PTPARA_${prcd}
+		set 
+		remk=#{ptpara.remk},valu=#{ptpara.valu},stat=#{ptpara.stat} 
+		where 
+		paid=#{ptpara.paid}
+	</update>
+</mapper>

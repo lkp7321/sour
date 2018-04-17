@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>亚联(天津)信息技术有限责任公司</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="http://www.afcat.com.cn/favicon.ico" rel="shortcut icon">
+		<link rel="stylesheet" href="/fx/css/index.css" />
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="top">
+				<div class="topleft">
+					<img src="/fx/img/logo.png" />
+				</div>
+				<div class='topright'>
+					<h6>外汇实盘交易平台</h6>
+					<span class='lockbtn'><img src="/fx/img/Signout.png"/>退出</span>
+					<i class='fa fa-bars showbtn'></i>
+				</div>
+			</div>
+			<div class='bot'>
+				<div class="botleft">
+					<div class="center">
+						<img src="/fx/img/Headportrait.png" alt="" />
+				<p>登录用户：<span class='username'>Admin</span></p>
+					</div>
+					<div class='leftlist'>
+						<ul class='siderbars'>
+						</ul>
+					</div>					
+				</div>
+				<div class="botright">
+					<iframe src="./personaloffer/user/userinfo.html" frameborder="0" width='100%' scrolling="false" height='100%' id='ifra'></iframe>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+	<script src="/fx/js/js_files/require.js"  data-main="/fx/js/index"></script>
+	<script type='text/html' class='tem'>
+		<%for(var i=0,num=Administrator.length;i<num;i++){%>
+			<li data-tit='a<%:=i%>'>
+					<i class='ico ico<%:=i%>' ></i><a href='javascript:;'><%:=Administrator[i].one%></a><i class='icol ico-carset'></i>
+					
+					<ul class='list-group-ul user'>
+					<%for(var j=0,nu=Administrator[i].two.length;j<nu;j++){%>
+						<li data-tit='a<%:=i%><%:=j%>'>
+						<i class='ico icon<%:=i%><%:=j%>'></i><a href='javascript:;'><%:=Administrator[i].two[j]%></a></li>
+					<%}%>
+					</ul>
+			</li>
+		<%}%>		
+	</script>
+</html>

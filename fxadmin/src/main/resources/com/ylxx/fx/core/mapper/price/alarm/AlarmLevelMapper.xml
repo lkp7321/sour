@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 告警级别设置 -->
+<mapper namespace="com.ylxx.fx.core.mapper.price.alarm.AlarmLevelMapper">
+	<select id="selectAlarmLeveAll" resultType="com.ylxx.fx.service.po.CmmAlarmLevel">
+		select alid,alds,intv,
+		decode(flfg,'0','启用','1','停用') flfg,
+		decode(vofg,'0','启用','1','停用')vofg,
+		decode(ntfg,'0','启用','1','停用')ntfg,
+		decode(tlfg,'0','启用','1','停用')tlfg,
+		decode(lffg,'0','启用','1','停用')lffg
+		from CMM_ALARMLEVEL order by alid
+	</select>
+	
+	<update id="upAlarmLeve">
+		update CMM_ALARMLEVEL 
+		set 
+		ALDS=#{cmmAlarmLevel.alds},FLFG=#{cmmAlarmLevel.flfg},
+		VOFG=#{cmmAlarmLevel.vofg},NTFG=#{cmmAlarmLevel.ntfg},
+		TLFG=#{cmmAlarmLevel.tlfg},LFFG=#{cmmAlarmLevel.lffg},
+		INTV=#{cmmAlarmLevel.intv}
+		where trim(ALID)=#{cmmAlarmLevel.alid}
+	</update>
+	
+	<insert id="insertAlarmLeve">
+		insert into CMM_ALARMLEVEL(ALID,ALDS,FLFG,VOFG,NTFG,TLFG,LFFG,INTV)
+		values(
+		#{cmmAlarmLevel.alid},#{cmmAlarmLevel.alds},
+		#{cmmAlarmLevel.flfg},#{cmmAlarmLevel.vofg},
+		#{cmmAlarmLevel.ntfg},#{cmmAlarmLevel.tlfg},
+		#{cmmAlarmLevel.lffg},#{cmmAlarmLevel.intv})
+	</insert>
+	
+	<delete id="deleteAlarmLeve">
+		delete CMM_ALARMLEVEL where trim(ALID)=#{alid}
+	</delete>
+</mapper>

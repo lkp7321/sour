@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+				http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+				http://www.springframework.org/schema/mvc   
+				http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+				http://www.springframework.org/schema/beans 
+				http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+				
+				">
+				<!-- http://www.springframework.org/schema/websocket  
+    			http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd -->
+	<mvc:default-servlet-handler/>
+	<!-- <mvc:view-controller path="/" view-name="index"/> -->
+	<!-- <bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
+        <property name="maxTextMessageBufferSize" value="8192"/>
+        <property name="maxBinaryMessageBufferSize" value="8192"/>
+        <property name="maxSessionIdleTimeout" value="900000"/>
+        <property name="asyncSendTimeout" value="5000"/>
+    </bean>
+    <bean id="webSocketMessageUtil" class="com.ylxx.fx.controller.WebSocketMessageUtil"/>-->
+	<import resource="classpath:core/application-core.xml" />
+	<import resource="classpath:core/dao-datasource.xml" />
+	
+	<!-- <import resource="classpath:dubbo/dubbo-consumer.xml" /> -->
+
+	<!-- <import resource="classpath:spring/server-error.xml" /> -->
+	<!-- <import resource="classpath:spring/security-cas.xml" /> -->
+
+        
+	<!-- 这个类用于Spring MVC视图解析 -->
+	<beans:bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/page/" />
+		<beans:property name="suffix" value=".html" />
+	</beans:bean>
+    
+	<bean id="encodingFilter" class="com.ylxx.fx.filters.EncodingFilter">
+	</bean>
+        
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="urlMap">
+			<map>
+				<entry key="/*" value="myResourceHandler" />
+			</map>
+		</property>
+		<property name="order" value="100000" />
+	</bean>
+	<bean id="myResourceHandler" name="myResourceHandler"
+		class="org.springframework.web.servlet.resource.ResourceHttpRequestHandler">
+		<property name="locations" value="/" />
+		<property name="supportedMethods">
+			<list>
+				<value>GET</value>
+				<value>HEAD</value>
+				<value>POST</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="propertiesReader"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:props/application.properties</value>
+			</list>
+		</property>
+	</bean>
+		<!-- 前置机bean -->
+		<bean id="serviceExporter" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">  
+	        <property name="serviceUrl" value="rmi://10.25.88.60:11113/SearchSafeByJsh" />  
+	        <property name="serviceInterface" value="com.cmbc.safe.rmi.service.ISearchSafeByJsh" /> 
+	        <property name="refreshStubOnConnectFailure" value="true" />
+        	<property name="lookupStubOnStartup" value="false" />  
+    	</bean> 
+	<!-- 防止地址栏输入链接 -->
+    <beans:bean id="urlCheckFilter"  class="com.ylxx.fx.utils.UrlCheckFilter">
+         <beans:property name="notCheckURLList" value="/,/fx/getPro.do,/fx/updateLoginPswd.do,/fx/doLogin.do,/fx/logingout.do,/fx/toErrorPage.do"/>
+         <beans:property name="redirectURL" value="/"/>    
+     </beans:bean>
+</beans>

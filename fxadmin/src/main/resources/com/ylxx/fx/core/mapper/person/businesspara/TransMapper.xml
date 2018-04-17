@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.TransMapper">
+	<!-- 查询交易类型,P001交易码 -->
+	<select id="querytrancodeP001" resultType="java.util.HashMap">
+		select trcd,trds from trd_trancode_${prod}
+		where trcd in ('S2103','S2105','S2116','S3101') order by trcd
+	</select>
+	<!-- 查询买 币种 P001-->
+	<select id="querybuyexnmP001" resultType="String">
+		select cyen from cmm_cymsg_${prod}
+	</select>
+	<!-- 查询数据 P001 -->
+	<select id="selectFxipTranlistP001" resultType="com.ylxx.fx.service.po.Tranlist">
+		select c.ognm,a.lcno,a.trdt,a.trtm,b.trds,a.cuno,a.cuac,a.trac,a.cyen,a.caty,a.cxfg,
+		decode(a.trty,'0','(询价)交易','1','STRMING 交易','2','挂单','未知') trty,a.bycy,
+		nvl(a.bynm,' ')bynm,a.slcy,nvl(a.slnm,' ')slnm,a.uspc,
+		decode(a.trtp,'1','转入','2','转出','3','外汇买卖','4','签约','5','解约','6','查询','7','其他','未知') trtp,
+		a.bycy,a.bynm,a.slcy,nvl(a.slnm,' ')slnm,a.uspc,a.trty,a.rrdt,nvl(a.byam,'0')byam,
+		nvl(a.expc,'0')expc,nvl(a.slam,'0')slam, nvl(a.pram,'0')pram,nvl(a.amut,'0')amut,nvl(a.fvda,'0')fvda,
+		nvl(a.brsy,'0')brsy,nvl(a.usam,'0')usam,
+		decode(a.trfg,'1','即时交易成交','2','指定汇率交易成交','3','委托交易成交','其他')trfg,
+		decode(a.stcd,'S','成功','F','失败','失败')stcd,a.ercd 
+		from 
+		view_querytranlist_P001 a,trd_trancode_P001 b,trd_ogcd c 
+		where 
+		a.trcd=b.odcd and a.ogcd=c.ogcd and Stcd is not null 
+		and a.TRCD in('S2103','S2105','S2116','S3101')
+		
+		<if test='trdtbegin != "" and trdtend != ""'>
+			and a.trdt>=#{trdtbegin} and #{trdtend}>=a.trdt
+		</if>
+		<if test='strcuac != ""'>
+			and a.cuac like concat(concat('%',#{strcuac}),'%')
+		</if>
+		<if test='byexnm != "all"'>
+			and a.bynm=#{byexnm}
+		</if>
+		<if test='comaogcd != "" and combogcd != ""'>
+			<if test='comaogcd =="0001" and combogcd == "all"'> 
+			
+			</if>
+			<if test='comaogcd == "0001" and combogcd != "all"'>
+				and c.ogup = #{combogcd} 
+			</if>
+			<if test='comaogcd != "0001" and combogcd == "all"'>
+				and (c.ogup = #{comaogcd} or c.ogcd = #{comaogcd})
+			</if>
+			<if test='comaogcd != "0001" and combogcd != "all"'>
+				and c.ogcd = #{combogcd}
+			</if>
+		</if>
+		<if test='trancode == "all"'>
+			
+		</if>
+		<if test='trancode != "all"'>
+			and a.TRCD =#{trancode}
+		</if>
+		order by trdt desc, trtm desc,lcno
+	</select>
+	
+	<!-- 查询数据 P002 -->
+	<select id="selectFxipTranlistP002" resultType="com.ylxx.fx.service.po.Tranlist">
+		select c.ognm,a.lcno,a.trdt,a.trtm,b.trds,a.cuno,a.cuac,a.trac,a.cyen,a.caty,a.cxfg,
+		decode(a.trty,'0','(询价)交易','1','STRMING 交易','2','挂单','未知') trty,a.bycy,
+		nvl(a.bynm,' ')bynm,a.slcy,nvl(a.slnm,' ')slnm,a.uspc,
+		decode(a.trtp,'1','转入','2','转出','3','外汇买卖','4','签约','5','解约','6','查询','7','其他','未知') trtp,
+		a.bycy,a.bynm,a.slcy,nvl(a.slnm,' ')slnm,a.uspc,a.trty,a.rrdt,nvl(a.byam,'0')byam,
+		nvl(a.expc,'0')expc,nvl(a.slam,'0')slam, nvl(a.pram,'0')pram,nvl(a.amut,'0')amut,nvl(a.fvda,'0')fvda,
+		nvl(a.brsy,'0')brsy,nvl(a.usam,'0')usam,
+		decode(a.trfg,'1','即时交易成交','2','指定汇率交易成交','3','委托交易成交','其他')trfg,
+		decode(a.stcd,'S','成功','F','失败','失败')stcd,a.ercd 
+		from 
+		view_querytranlist_P002 a,trd_trancode_P002 b,trd_ogcd c 
+		where 
+		a.trcd=b.odcd and a.ogcd=c.ogcd and Stcd is not null 
+		and a.TRCD in('G2102','G2103','G3101')
+		<if test='trdtbegin != "" and trdtend != ""'>
+			and a.trdt>=#{trdtbegin} and #{trdtend}>=a.trdt
+		</if>
+		<if test='strcuac != ""'>
+			and a.cuac like concat(concat('%',#{strcuac}),'%')
+		</if>
+		<if test='byexnm != "all"'>
+			and a.bynm=#{byexnm}
+		</if>
+		<if test='comaogcd != "" and combogcd != ""'>
+			<if test='comaogcd =="0001" and combogcd == "all"'> 
+			
+			</if>
+			<if test='comaogcd == "0001" and combogcd != "all"'>
+				and c.ogup = #{combogcd} 
+			</if>
+			<if test='comaogcd != "0001" and combogcd == "all"'>
+				and (c.ogup = #{comaogcd} or c.ogcd = #{comaogcd})
+			</if>
+			<if test='comaogcd != "0001" and combogcd != "all"'>
+				and c.ogcd = #{combogcd}
+			</if>
+		</if>
+		<if test='trancode == "all"'>
+			
+		</if>
+		<if test='trancode != "all"'>
+			and a.TRCD =#{trancode}
+		</if>
+		order by trdt desc, trtm desc,lcno
+	</select>
+	<!-- 查询买 币种 P002-->
+	<select id="querybuyexnmP002" resultType="String">
+		select cyen from cmm_cymsg_p002
+	</select>
+	<!-- 查询买 币种 P003-->
+	<select id="querybuyexnmP003" resultType="String">
+		select cyen from cmm_cymsg_p003
+	</select>
+	
+	<!-- 查询交易码 P002 -->
+	<select id="querytrancodeP002" resultType="java.util.HashMap">
+	 	select trcd,trds from trd_trancode_p002 
+		where trcd in('G2102','G2103','G3101') order by trcd
+	</select>
+	<!-- 查询交易码 P003 -->
+	<select id="querytrancodeP003" resultType="java.util.HashMap">
+		select trcd,trds from trd_trancode_p003
+		where trcd in('A2103','A2104','A2105') order by trcd
+	</select>
+	<!-- 查询交易码 P004 -->
+	<select id="querytrancodeP004" resultType="java.util.HashMap">
+		select trcd,trds from trd_trancode_p004 
+		where trcd not in('P3101','P4101','P3103','P3109','P3105') 
+		order by trcd
+	</select>  
+	<select id="selectFxipTranlistP003" resultType="com.ylxx.fx.service.po.Tranlist">
+		select c.ognm,d.cblv,a.trsn lcno,a.trdt,a.trtm,b.trds,a.cuno,a.cuac,a.trac,a.cyen,a.caty,a.cxfg,
+		decode(a.trty,'0','(询价)交易','1','STRMING 交易','2','挂单','未知') trty,a.bycy,
+		nvl(a.bynm,' ')bynm,a.slcy,nvl(a.slnm,' ')slnm,a.uspc,
+		decode(a.trtp,'1','转入','2','转出','3','外汇买卖','4','签约','5','解约','6','查询','7','其他','未知') trtp,
+		a.rrdt,nvl(a.byam,'0')byam,
+		nvl(a.expc,'0')expc,nvl(a.slam,'0')slam, nvl(a.pram,'0')pram,nvl(a.amut,'0')amut,nvl(a.fvda,'0')fvda,
+		nvl(a.brsy,'0')brsy,nvl(a.usam,'0')usam,
+		decode(a.trfg,'1','即时交易成交','2','指定汇率交易成交','3','委托交易成交','其他')trfg,
+		decode(a.stcd,'S','成功','F','失败','失败')stcd,a.ercd 
+		from view_querytranlist_p003 a,trd_trancode_P003 b,trd_ogcd c,trd_accinfolist_p003 d 
+		where a.trcd=b.odcd and a.ogcd=c.ogcd and a.lcno=d.lcno(+) and Stcd is not null 
+		and a.TRCD in('A2103','A2104','A2105','A2116','A2106')
+		<if test='!trdtbegin.equals("") and !trdtend.equals("")'>
+			and a.trdt>=#{trdtbegin} and #{trdtend}>=a.trdt
+		</if>
+		<if test='!strcuac.equals("")'>
+			and a.cuac like concat(concat('%',#{strcuac}),'%')
+		</if>
+		<if test='!byexnm.equals("all")'>
+			and a.bynm=#{byexnm}
+		</if>
+		<if test='!comaogcd.equals("") and !combogcd.equals("")'>
+			<if test='comaogcd.equals("0001") and combogcd.equals("all")'> 
+			</if>
+			<if test='comaogcd.equals("0001") and !combogcd.equals("all")'>
+				and c.ogup = #{combogcd} 
+			</if>
+			<if test='!comaogcd.equals("0001") and combogcd.equals("all")'>
+				and (c.ogup = #{comaogcd} or c.ogcd = #{comaogcd})
+			</if>
+			<if test='!comaogcd.equals("0001") and !combogcd.equals("all")'>
+				and c.ogcd = #{combogcd}
+			</if>
+		</if>
+		<if test='!trancode.equals("all")'>
+			and a.TRCD =#{trancode}
+		</if>
+		order by trdt desc, trtm desc,lcno
+	</select>
+	<!-- P004 -->
+	<select id="selectFxipTranlistP004" resultType="com.ylxx.fx.service.po.Tranlist">
+		select c.ognm,a.TRSN,a.CUAC,a.TRDT,a.TRTM,decode(a.TRTP,'0','结汇','1','售汇','2','系统内结汇','3','系统内售汇','其他') TRTP,
+		a.TRCD,a.CUNO,a.CUNM,a.IDTP,a.IDNO,a.FXID,a.EXTP,e.description EXTP,a.EXTR,f.description EXTR,a.FONM,
+		a.TRAM,a.USAM,a.SOAC,a.TOAC,a.CASH,a.SLNM,a.BYNM,a.SLAM,a.EXPC,a.BYAM,
+		decode(a.CULV,'1','钻石卡','2','金卡','3','银卡','4','普通','5','私人银行客户') CULV,
+		decode(a.CUTP,'05','居民个人','06','非居民个人') CUTP, 
+		decode(a.VLFG,'0','年度额度内购汇','1','超过年度额度购汇') VLFG,
+		decode(a.CTOF,'0','现金','1','借记卡','2','活期一本通') CTOF,
+		decode(a.CSOF,'0','现金','1','借记卡','2','活期一本通') CSOF,
+		decode(a.CXFG,'1','汇','2','钞') CXFG,a.FVDA,a.BRSY,decode(a.STCD,'S','成功','F','失败','R','异常') STCD,b.TRDS,
+		decode(d.chnl,'1001','柜面','1101','网络银行','1102','电话银行','1103','手机银行','1104','本行ATM','1105','本行自助终端','1261','国际卡支付') CHNL, 
+		a.fram,a.pftp,a.USPC,a.olno 					
+		from view_querytranlist_p004 a,trd_trancode_P004 b,trd_ogcd c ,TRD_TRADEMSGHEAD_P004 d,cmm_dictionary e ,cmm_dictionary f
+		where  a.trcd=b.trcd and a.ogcd=c.ogcd and a.trsn =d.trsn and a.extp = e.fxipfieldvalue and a.extr =f.fxipfieldvalue
+		<if test='strlcno!=""'>
+			and a.TRSN like concat(concat('%',#{strlcno}),'%')
+		</if>
+		<if test='strcuac!=""'>
+			and a.CUAC like concat(concat('%',#{strcuac}),'%')
+		</if>
+		<if test='strIdno!=""'>
+			and a.IDNO like concat(concat('%',#{strIdno}),'%') 
+		</if>
+		<if test='bgdate!="" and enddate!=""'>
+			and a.TRDT >=#{bgdate} and #{enddate}>=a.TRDT 
+		</if>
+		<if test='comaogcd != "" and combogcd != ""'>
+			<if test='comaogcd =="0001" and combogcd == "all"'> 
+			
+			</if>
+			<if test='comaogcd == "0001" and combogcd != "all"'>
+				and c.ogup = #{combogcd} 
+			</if>
+			<if test='comaogcd != "0001" and combogcd == "all"'>
+				and (c.ogup = #{comaogcd} or c.ogcd = #{comaogcd})
+			</if>
+			<if test='comaogcd != "0001" and combogcd != "all"'>
+				and c.ogcd = #{combogcd}
+			</if>
+		</if>
+		<if test='comtrtp != "" and comtrtp != null and comtrtp != "all"'>
+			and a.trtp = #{comtrtp}
+		</if>
+		<if test='comchnl != "" and comchnl != null and comchnl != "all"'>
+			and d.chnl = #{comchnl}
+		</if>
+		<if test='com1=="1"'>
+			<if test='com2!="all"'>
+				and a.TRCD = #{com2}
+			</if>
+		</if>
+		order by trdt desc, trtm desc,lcno
+	</select>
+	
+</mapper>

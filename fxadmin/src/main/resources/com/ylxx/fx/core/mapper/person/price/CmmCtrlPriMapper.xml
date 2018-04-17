@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.CmmCtrlPriMapper">
+	<!-- 查询货币对 -->
+	<select id="selectPrices" resultType="java.util.HashMap">
+		select exnm,excd from QUT_CMMCTRLSWH where exnm like '%USD%'
+	</select>
+	<!-- 查询页面数据 -->
+	<select id="selectAllCmmCtrlpri" resultType="com.ylxx.fx.service.po.CmmCtrlpri">
+		select a.*,b.tpnm tpnm from QUT_CMMCTRLPRI a,qut_tpfgt b 
+		where a.tpfg=b.tpfg and ctid='CC99'
+		<if test="exnm!='所有'">
+			and exnm = #{exnm}
+		</if>
+		order by a.stfg
+	</select>
+	<!-- 查询添加数据是否重复 -->
+	<select id="checkRepeat" resultType="com.ylxx.fx.service.po.CmmCtrlpri">
+		select * from QUT_CMMCTRLPRI where trim(ctid)=#{cmmCtrlpri.ctid} 
+		and trim(tpfg)=#{cmmCtrlpri.tpfg} and trim(term)=#{cmmCtrlpri.term} 
+		and exnm=#{cmmCtrlpri.exnm} and cxfg=#{cmmCtrlpri.cxfg}
+	</select>
+	<!-- 添加 -->
+	<insert id="insertPrice">
+		insert into QUT_CMMCTRLPRI (ctid,tpfg,term,excd,cxfg,ctnm,exnm,
+		nebp,nesp,fabp,fasp,bgtm,edtm,stfg,usfg) values(#{cmmCtrlpri.ctid},
+		#{cmmCtrlpri.tpfg},#{cmmCtrlpri.term},#{cmmCtrlpri.excd},#{cmmCtrlpri.cxfg},
+		#{cmmCtrlpri.ctnm},#{cmmCtrlpri.exnm},#{cmmCtrlpri.nebp},#{cmmCtrlpri.nesp},
+		#{cmmCtrlpri.fabp},#{cmmCtrlpri.fasp},#{cmmCtrlpri.bgtm},#{cmmCtrlpri.edtm},
+		#{cmmCtrlpri.stfg},#{cmmCtrlpri.usfg})
+	</insert>
+	<!-- 修改 -->
+	<update id="updateCtrl">
+		update QUT_CMMCTRLPRI set NEBP=#{cmmCtrlpri.nebp},NESP=#{cmmCtrlpri.nesp},
+		STFG=#{cmmCtrlpri.stfg},BGTM=#{cmmCtrlpri.bgtm},EDTM=#{cmmCtrlpri.edtm} 
+		where trim(CTID)=#{cmmCtrlpri.ctid}  and trim(TPFG)=#{cmmCtrlpri.tpfg} 
+		and trim(TERM)=#{cmmCtrlpri.term} and exnm=#{cmmCtrlpri.exnm} 
+		and cxfg=#{cmmCtrlpri.cxfg}
+	</update>
+	<!-- 启用/停用 -->
+	<update id="updateStfg">
+		update QUT_CMMCTRLPRI set STFG=#{cmmCtrlpri.stfg},USFG=#{cmmCtrlpri.usfg} 
+		where trim(CTID)=#{cmmCtrlpri.ctid} and trim(TERM)=#{cmmCtrlpri.term} 
+		and trim(exnm)=#{cmmCtrlpri.exnm} and trim(tpfg)=#{cmmCtrlpri.tpfg}
+		and cxfg=#{cmmCtrlpri.cxfg}
+	</update> 
+</mapper>

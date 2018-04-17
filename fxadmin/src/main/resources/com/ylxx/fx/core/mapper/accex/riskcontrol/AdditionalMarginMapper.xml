@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accex.riskcontrol.AdditionalMarginMapper">
+	<select id="addMargin" resultType="com.ylxx.fx.service.po.AdditionalMargin">
+		select m.*,r.cuno,r.cuac,r.tlno from Mview_Trd_Riskdegree_${prod} m, trd_regmsg_p007 r where m.trac=r.trac
+	</select>
+	<select id="selectPtpara"  resultType="com.ylxx.fx.service.po.AdditionalMargin">
+		select paid,remk,valu,decode(stat,'0','启用','1','停用','未知') stat from CMM_PTPARA_${prod}
+	</select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.ppmagager.CheckppDetailMapper">
+	<!-- 条件查询 -->
+	<select id="selCondition" resultType="com.ylxx.fx.service.po.CheckPpDetail">
+		select SEQN,BYCY,BAMT,SLCY,SAMT,EXPC,MKNO,TRDT,TRTM,YDTM,
+		decode(STAT,'S','未对账-S','V','手工调账-V','M','对账成功-M','U','结果未知-U','P','请求发送-P') STAT 
+		from ck_ppresultdetail where stat in('S','V','U','P') 
+		<if test="seqn!=null and seqn!=''">
+			and SEQN like '%${seqn}%'
+		</if>
+	</select>
+	<!-- 成功复核  -->
+	<update id="upSuccess">
+		update ck_ppresultdetail set stat = 'M' where SEQN=#{seqn}
+	</update>
+	<!-- 写审计日志 -->
+	<insert id="insertMarkLogger">
+		insert into mng_log (RZDT,RZSJ,USEM,TYMO,REMK,VOLD,VNEW,PROD) 
+		values(#{logfileBean.rzdt},#{logfileBean.rzsj},#{logfileBean.usem},#{logfileBean.tymo},
+		#{logfileBean.remk},#{logfileBean.vold},#{logfileBean.vnew},#{logfileBean.prod})
+	</insert>
+	<!-- 失败复核 -->
+	<update id="upUnsuccess">
+		update ck_ppresultdetail set stat = 'V' where SEQN=#{seqn}
+	</update>
+</mapper>

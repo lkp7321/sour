@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.bail.eodprocess.BailBalanceBingZhangMapper">
+	<!-- 选择保证金余额并账/保证金利息并账的所有数据 -->
+	<select id="selectBalanceBingZhangList" resultType="com.ylxx.fx.service.po.BailBalanceBean">
+		select * from (select rownum rnum,b.* from (
+		select * from pm_bzamt_p009 a  where #{hddate}>=bzdt 
+		and trid in(${tradeid}) and stcd in('0','1','2') order by bzdt desc) b ) c
+		where 2>=c.rnum
+	</select>
+	<!-- 检查并账日期前是否有未并账的记录  -->
+	<select id="checkInput" resultType="java.lang.Integer">
+		select count(*) from pm_bzamt_p009 a  where #{fhdate}>bzdt and trid in (${tradeid}) 
+		and stcd in('0','1') order  by bzdt desc
+	</select>
+	
+</mapper>

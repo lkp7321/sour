@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.fxipmonitor.CKtotalMonitorMapper">
+	<!-- 个人实盘，轧差敞口 监控  -->
+	<select id="selectPrice" resultType="com.ylxx.fx.core.domain.FormuleVo">
+		select a.ppyk,a.sgyk,a.tryk,a.toyk,
+		c.udfg,a.prcd,a.exnm,a.excd ,
+		a.lamt,
+		a.ramt,
+		a.fdsy,a.zcyk,c.neby,c.nesl 
+		from 
+		ck_total a,QUT_PDTPRICE_${prcd} c 
+		where 
+		a.exnm=c.exnm and a.prcd=#{prcd}
+		union
+		select a.ppyk,a.sgyk,a.TRYK,a.toyk,
+		c.udfg,a.prcd,a.exnm,a.excd ,
+		a.lamt,
+		a.ramt,
+		a.fdsy,a.zcyk,c.neby,c.nesl
+		from 
+		ck_total a,Qut_Cmmprice_M0201 c 
+		where 
+		a.exnm=c.exnm and a.prcd=#{prcd} and a.exnm='USDSGD'
+		order by prcd,exnm
+	</select>
+	<!-- 个人实盘，累加敞口 监控-->
+	<select id="selectCKLJPrice" resultType="com.ylxx.fx.core.domain.FormuleVo">
+		select 
+		a.ppyk,a.sgyk,a.TRYK,a.toyk,c.udfg,a.prcd,
+		a.exnm,a.excd ,a.total_lamt,a.total_ramt,
+		a.fdsy,a.zcyk,c.neby,c.nesl 
+		from ck_total a,QUT_PDTPRICE_${prcd} c 
+		where 
+		a.exnm=c.exnm and a.prcd=#{prcd} 
+		union 
+		select 
+		a.ppyk,a.sgyk,a.TRYK,a.toyk,c.udfg,a.prcd,
+		a.exnm,a.excd ,a.total_lamt,a.total_ramt,
+		a.fdsy,a.zcyk,c.neby,c.nesl
+		from ck_total a,Qut_Cmmprice_M0201 c 
+		where a.exnm=c.exnm and a.prcd=#{prcd} and a.exnm='USDSGD'
+		order by prcd,exnm
+	</select>
+	<!-- 账户交易，外币敞口监控 -->
+	<select id="selectPriceData" resultType="com.ylxx.fx.core.domain.FormuleVo">
+		select a.ppyk,a.sgyk,a.TRYK,a.toyk,
+		c.udfg,a.prcd,a.exnm,a.excd ,
+		a.lamt,a.ramt,
+		a.fdsy,a.zcyk,c.neby,c.nesl from
+		ck_total a,Qut_Pdtcust_P007 c 
+		where a.exnm=c.exnm and a.prcd in (#{prcd1},#{prcd2})
+	</select>
+	
+	<select id="selExpoTotalList" resultType="com.ylxx.fx.service.po.price.ExposureBean">
+		select a.ppyk,a.sgyk,a.tryk,a.toyk,c.udfg,
+		decode(a.prcd,'P006','外币兑换','未知') prcd,a.exnm,
+		a.excd ,a.lamt lamt,a.ramt ramt,a.zcyk zcyk,
+		a.fdsy fdsy,c.neby,c.nesl from 
+		ck_total a,QUT_PDTBRNCH_${prod}
+		c where a.exnm=c.exnm and c.cxfg='2' and prcd = #{prod}
+		order by prcd,exnm
+	</select>
+	<select id="selFxExpoTotalList" resultType="com.ylxx.fx.service.po.price.ExposureBean">
+		select a.ppyk,a.sgyk,a.tryk,a.toyk,c.udfg,decode(a.prcd,'P004','结售汇','未知') prcd,
+		a.exnm,a.excd ,a.lamt lamt,a.ramt ramt,a.zcyk zcyk,a.fdsy fdsy,c.neby,c.nesl 
+		from ck_total a,Qut_Cmmprice_M0201 c where a.exnm=c.exnm and c.cxfg='2' 
+		and a.prcd = #{prod} order by prcd,exnm
+	</select>
+</mapper>

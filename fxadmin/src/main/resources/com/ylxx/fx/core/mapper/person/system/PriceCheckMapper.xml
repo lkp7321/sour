@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.system.PriceCheckMapper">
+	
+	<select id="allCustPrice" resultType="com.ylxx.fx.service.po.PdtCust">
+		select exnm, 
+		trim('.' from to_char(neby,'fm99999999990.99999999'))neby, 
+		trim('.' from to_char(nemd,'fm99999999990.99999999'))nemd, 
+		trim('.' from to_char(nesl,'fm99999999990.99999999'))nesl, 
+		mdtm, stfg from QUT_PDTCUST_${prod}
+	</select>
+	
+	<!-- 关闭价格源校验器-->
+	<update id="closePriceStat">
+		update QUT_CMMCHKPARA set usfg=1 where tpfg='SPT'
+	</update>
+	
+	<!-- 开启价格源校验器 -->
+	<update id="opPriceStat">
+		update QUT_CMMCHKPARA set usfg=0 where tpfg='SPT'
+	</update>
+	
+	<!-- 开启产品校验器 -->
+	<update id="upStatPrice">
+		update QUT_PDTCHKPARA_${ptid} set usfg=0
+	</update>
+	
+	<!-- =========刷新价格源校验器1============= -->
+	<!-- 获取市场编号 -->
+	<select id="allMkid" resultType="String">
+		select prsc from qut_pdtcust_#{prod} group by prsc
+	</select>
+	<update id="refshUp">
+		update qut_cmmchkpara  b1 
+		set mxmd = (select neby+(select power(0.1,pion) from dual)*MXDP mxmd
+		from 
+		(select a.mkid,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP ,c.pion 
+		from 
+		qut_cmmprice_${mkid} a ,qut_cmmchkpara b ,CMM_CURRMSG c
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) 
+		and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm)) a1
+		where 
+		trim(a1.mkid)=trim(b1.mkid) and trim(a1.tpfg)=trim(b1.tpfg) 
+		and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) 
+		and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)),
+		mimd = (select neby-(select power(0.1,pion) from dual)*MXDP mxmd
+		from 
+		(select a.mkid,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,b.MXDP ,c.pion 
+		from 
+		qut_cmmprice_${mkid} a ,qut_cmmchkpara b , CMM_CURRMSG c 
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) 
+		and trim(a.exnm)=trim(b.exnm) and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm)) a1  
+		where 
+		trim(a1.mkid)=trim(b1.mkid) and trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) 
+		and trim(a1.exnm)=trim(b1.exnm) and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)),
+		mdmd = (select neby from (select a.mkid,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP ,c.pion 
+		from
+		qut_cmmprice_${mkid} a ,qut_cmmchkpara b , CMM_CURRMSG c 
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) 
+		and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm)) a1  
+		where 
+		trim(a1.mkid)=trim(b1.mkid) and trim(a1.tpfg)=trim(b1.tpfg) 
+		and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) 
+		and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)) 
+		where 
+		trim(b1.mkid)=${mkid} AND trim(EXNM) IN(select  a.exnm  
+		from
+		qut_cmmprice_${mkid} a ,qut_cmmchkpara b ,CMM_CURRMSG c 
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) 
+		and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm))
+	</update>
+	
+	<!-- ============刷新价格源校验器========= -->
+	<select id="allMkidNo" resultType="String">
+		select mkid from qut_cmmchkpara group by mkid
+	</select>
+	
+	<update id="refshUp1">
+		update qut_cmmchkpara  b1 set mxmd = (select neby+(select power(0.1,pion) from dual)*MXDP mxmd
+		from 
+		(select a.mkid,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,b.MXDP ,c.pion 
+		from 
+		qut_cmmprice_${mkid}
+		a ,qut_cmmchkpara b ,  CMM_CURRMSG c 
+		where trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) and 
+		trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) and  
+		trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) and 
+		trim(c.exnm)=trim(a.exnm)) a1  
+		where 
+		trim(a1.mkid)=trim(b1.mkid) and trim(a1.tpfg)=trim(b1.tpfg) and 
+		trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) and 
+		trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)),
+		mimd = (select neby-(select power(0.1,pion) from dual)*MXDP mxmd
+		from (select a.mkid,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP ,c.pion from
+		qut_cmmprice_${mkid} a ,
+		qut_cmmchkpara b ,  CMM_CURRMSG c 
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) 
+		and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm)) a1  
+		where 
+		trim(a1.mkid)=trim(b1.mkid) and trim(a1.tpfg)=trim(b1.tpfg) and 
+		trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) and 
+		trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)), 
+		mdmd = (select neby 
+		from 
+		(select a.mkid,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,b.MXDP ,c.pion from
+		qut_cmmprice_${mkid} a ,
+		qut_cmmchkpara b , CMM_CURRMSG c 
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) 
+		and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm)) a1  
+		where 
+		trim(a1.mkid)=trim(b1.mkid) and trim(a1.tpfg)=trim(b1.tpfg) 
+		and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) 
+		and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd))
+		where 
+		trim(b1.mkid)=#{mkid} 
+		AND trim(EXNM) IN (select  a.exnm  from 
+		qut_cmmprice_${mkid} a ,
+		qut_cmmchkpara b ,CMM_CURRMSG c 
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) 
+		and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm))
+	</update>
+	
+	<!-- ==========刷新外汇实盘校验器===== -->
+	<update id="refshSptPrice">
+		update qut_pdtchkpara_p001  b1 set 
+		mxmd = (select neby+(select power(0.1,pion) from dual)*MXDP mxmd
+		from (select a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,b.MXDP ,c.pion from
+		qut_pdtcust_p001 a ,qut_pdtchkpara_p001 b , CMM_CURRMSG c 
+		where 
+		trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) and 
+		trim(a.exnm)=trim(b.exnm) and trim(a.cxfg)=trim(b.cxfg) and 
+		trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1
+		where 
+		trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) and 
+		trim(a1.exnm)=trim(b1.exnm) and trim(a1.cxfg)=trim(b1.cxfg) and 
+		trim(a1.excd)=trim(b1.excd)), 
+		mimd = (select neby-(select power(0.1,pion) from dual)*MXDP mxmd 
+		from (select a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,b.MXDP ,c.pion from
+		qut_pdtcust_p001 a ,qut_pdtchkpara_p001 b ,   CMM_CURRMSG c 
+		where 
+		trim(a.tpfg)=trim(b.tpfg) and  trim(a.term)=trim(b.term) 
+		and trim(a.exnm)=trim(b.exnm) and trim(a.cxfg)=trim(b.cxfg) 
+		and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1   
+		where  
+		trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) 
+		and trim(a1.exnm)=trim(b1.exnm) and trim(a1.cxfg)=trim(b1.cxfg) 
+		and trim(a1.excd)=trim(b1.excd)), 
+		mdmd = (select neby  from (select a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP,c.pion 
+		from
+		qut_pdtcust_p001 a ,qut_pdtchkpara_p001 b ,   CMM_CURRMSG c 
+		where  
+		trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) 
+		and trim(a.exnm)=trim(b.exnm) and trim(a.cxfg)=trim(b.cxfg) 
+		and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1 
+		where  
+		trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) 
+		and trim(a1.exnm)=trim(b1.exnm) and trim(a1.cxfg)=trim(b1.cxfg) 
+		and trim(a1.excd)=trim(b1.excd)) 
+		where trim(EXNM) IN (select  a.exnm  from 
+		qut_pdtcust_p001 a ,qut_pdtchkpara_p001 b ,   CMM_CURRMSG c 
+		where trim(a.tpfg)=trim(b.tpfg) and  
+		trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) and trim(a.cxfg)=trim(b.cxfg)  
+		and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) 
+	</update>
+	
+	<!-- =========刷新价格源校验器2======== -->
+	<update id="refshGoldPrice">
+		update qut_cmmchkpara  b1 set mxmd = (select neby+(select power(0.1,pion) from dual)*MXDP mxmd
+		from (select a.mkid,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,b.MXDP ,c.pion from 
+		qut_cmmprice_${mkid} a ,qut_cmmchkpara b , CMM_CURRMSG c 
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) 
+		and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm)) a1   
+		where 
+		trim(a1.mkid)=trim(b1.mkid) and trim(a1.tpfg)=trim(b1.tpfg) 
+		and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) 
+		and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)), 
+		mimd = (select neby-(select power(0.1,pion) from dual)*MXDP mxmd 
+		from (select a.mkid,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,b.MXDP ,c.pion from 
+		qut_cmmprice_${mkid}a ,qut_cmmchkpara b , CMM_CURRMSG c 
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) and 
+		trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) and 
+		trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd)  
+		and trim(c.exnm)=trim(a.exnm)) a1  
+		where trim(a1.mkid)=trim(b1.mkid) and trim(a1.tpfg)=trim(b1.tpfg) 
+		and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) 
+		and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)), 
+		mdmd = (select neby 
+		from (select a.mkid,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP ,c.pion from 
+		qut_cmmprice_${mkid} a ,qut_cmmchkpara b , CMM_CURRMSG c 
+		where trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) and 
+		trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) and 
+		trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm)) a1  
+		where trim(a1.mkid)=trim(b1.mkid) and trim(a1.tpfg)=trim(b1.tpfg) 
+		and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) 
+		and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)) 
+		where trim(b1.mkid)=${mkid}
+		AND trim(EXNM) IN (select  a.exnm  
+		from qut_cmmprice_${mkid} a ,qut_cmmchkpara b ,CMM_CURRMSG c 
+		where 
+		trim(a.mkid)=trim(b.mkid) and trim(a.tpfg)=trim(b.tpfg) and 
+		trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) and 
+		trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) 
+		and trim(c.exnm)=trim(a.exnm)) 
+	</update>
+	
+	<!-- ==========刷新纸黄金校验器========= -->
+	<update id="refshGoldsPrice">
+		update qut_pdtchkpara_p002  b1 set 
+		mxmd = (select neby+(select power(0.1,pion) from dual)*MXDP mxmd 
+		from (select a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,b.MXDP ,c.pion from
+		qut_pdtcust_p002 a ,qut_pdtchkpara_p002 b ,   CMM_CURRMSG c 
+		where trim(a.tpfg)=trim(b.tpfg) and  
+		trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) and 
+		trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1 
+		where  
+		trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) and 
+		trim(a1.exnm)=trim(b1.exnm) and trim(a1.cxfg)=trim(b1.cxfg)  
+		and trim(a1.excd)=trim(b1.excd)), 
+		mimd = (select neby-(select power(0.1,pion) from dual)*MXDP mxmd 
+		from (select a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,b.MXDP ,c.pion from 
+		qut_pdtcust_p002 a ,qut_pdtchkpara_p002 b ,   CMM_CURRMSG c 
+		where trim(a.tpfg)=trim(b.tpfg) and  
+		trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) and 
+		trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1 
+		where  trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) and 
+		trim(a1.exnm)=trim(b1.exnm) and trim(a1.cxfg)=trim(b1.cxfg) 
+		and trim(a1.excd)=trim(b1.excd)), 
+	    mdmd = (select neby  from (select a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby  ,
+	    b.MXDP ,c.pion from 
+		qut_pdtcust_p002 a ,qut_pdtchkpara_p002 b ,   CMM_CURRMSG c 
+		where  trim(a.tpfg)=trim(b.tpfg) and  
+		trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) and trim(a.cxfg)=trim(b.cxfg) 
+		and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1 
+		where trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) 
+		and trim(a1.exnm)=trim(b1.exnm) and trim(a1.cxfg)=trim(b1.cxfg) 
+		and trim(a1.excd)=trim(b1.excd)) 
+		where trim(EXNM) IN 
+		(select  a.exnm  from 
+		qut_pdtcust_p002 a ,qut_pdtchkpara_p002 b , CMM_CURRMSG c 
+		where trim(a.tpfg)=trim(b.tpfg) and 
+		trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) and trim(a.cxfg)=trim(b.cxfg) 
+		and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm))
+	</update>
+	
+	<!-- 定时刷新产品校验器 //,a.ptnm,qtty,b.tpnm,term,frqy -->
+	<select id="selectPrice" resultType="String">
+		select a.ptid 
+		from qut_cmmpdtinfo a,qut_tpfgt b,QUT_CMMPDTPARA c 
+		where 
+		a.qtty=b.tpfg and a.ptid=c.ptid and a.usfg='0' 
+		and c.transactflag='1' order by ptid
+	</select>
+	
+	<update id="refshCustPrice">
+		update QUT_PDTCHKPARA_${prod} b1
+        set mxmd = (select neby+(select power(0.1,pion) from dual)*MXDP mxmd 
+        from (select a.prsc,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP ,c.pion
+		from QUT_PDTCUST_${prod} a ,QUT_PDTCHKPARA_${prod} b ,CMM_CURRMSG c
+		where trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1  
+		where trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) 
+		and trim(a1.exnm)=trim(b1.exnm) and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)),
+        mimd = (select neby-(select power(0.1,pion) from dual)*MXDP mxmd 
+        from (select a.prsc,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP ,c.pion
+		from QUT_PDTCUST_${prod} a ,QUT_PDTCHKPARA_${prod} b ,CMM_CURRMSG c 
+		where trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm)   
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1  
+		where trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) 
+		and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)),
+        mdmd = (select neby from (select a.prsc,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,
+        b.MXDP ,c.pion 
+		from 
+		QUT_PDTCUST_${prod} a ,QUT_PDTCHKPARA_${prod} b ,CMM_CURRMSG c 
+		where trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm)   
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1  
+		where trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm)   
+		and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)) 
+        where trim(EXNM) IN(select  a.exnm  from   QUT_PDTCUST_${prod} a ,QUT_PDTCHKPARA_${prod} b ,
+        CMM_CURRMSG c
+		where trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg)  and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm))
+	</update>
+	
+	<!-- 跟新外汇产品校验器 -->
+	<update id="refshCustPriceForAcc">
+		update QUT_PDTCHKPARA_${prod} b1
+        set mxmd = (select neby+(select power(0.1,pion) from dual)*MXDP mxmd 
+        from 
+        (select a.prsc,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP ,c.pion 
+		from QUT_PDTCUST_${prod} a ,QUT_PDTCHKPARA_${prod} b ,CMM_CURRMSG_${prod} c
+		where trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm)   
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1  
+        where trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm) 
+        and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)),
+        mimd = (select neby-(select power(0.1,pion) from dual)*MXDP mxmd 
+        from 
+        (select a.prsc,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP ,c.pion 
+		from QUT_PDTCUST_${prod} a ,QUT_PDTCHKPARA_${prod} b ,CMM_CURRMSG_${prod} c
+		where trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm)   
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1  
+        where  trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term)   
+        and trim(a1.exnm)=trim(b1.exnm) and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd)),
+        mdmd = (select neby   
+        from 
+        (select a.prsc,a.tpfg,a.term,a.exnm,a.cxfg,a.excd,a.neby ,b.MXDP ,c.pion 
+		from QUT_PDTCUST_${prod} a ,QUT_PDTCHKPARA_${prod} b ,CMM_CURRMSG_${prod} c
+		where trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm)   
+		and trim(a.cxfg)=trim(b.cxfg) and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm)) a1  
+        where   
+        trim(a1.tpfg)=trim(b1.tpfg) and trim(a1.term)=trim(b1.term) and trim(a1.exnm)=trim(b1.exnm)   
+        and trim(a1.cxfg)=trim(b1.cxfg) and trim(a1.excd)=trim(b1.excd))
+        where 
+        trim(EXNM) 
+        IN(select a.exnm from QUT_PDTCUST_${prod} a ,QUT_PDTCHKPARA_${prod} b ,CMM_CURRMSG_${prod} c
+		where trim(a.tpfg)=trim(b.tpfg) and trim(a.term)=trim(b.term) and trim(a.exnm)=trim(b.exnm) 
+		and trim(a.cxfg)=trim(b.cxfg)  and trim(a.excd)=trim(b.excd) and trim(c.exnm)=trim(a.exnm))
+	</update>
+	<!-- 得到价格源状态 -->
+	<select id="getchkpara" resultType="int">
+		select count(*) from QUT_CMMCHKPARA where tpfg='SPT' and usfg='0'
+	</select>
+</mapper>

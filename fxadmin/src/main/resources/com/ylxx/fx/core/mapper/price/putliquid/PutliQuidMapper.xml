@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 告警用户设置-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.putliquid.PutliQuidMapper">
+	<!-- 查询所有数据 -->
+	<select id="selectPutList" resultType="com.ylxx.fx.service.po.Put_Liquid">
+		select name,unit,emall email,sqid,telp,ip,jksm,stat from put_liquid
+		<if test=' stat!="all"'>
+			where stat=#{stat}
+		</if>
+	</select>
+	
+	<!-- 申请  insertPrice(Put_Liquid put_liquid) -->
+	<insert id="insertPrice">
+		insert into put_liquid (
+		sqid,name,unit,telp,emall,ip,jkmc,jksm,inid,pass,stat,CONNECTCOUNT)
+		values(
+		lpad(put_liquid_sequence.nextval,8,0),
+		#{put_liquid.name},#{put_liquid.unit},#{put_liquid.telp},
+		#{put_liquid.email},#{put_liquid.ip},#{put_liquid.jkmc},#{put_liquid.jksm},
+		'0','0','0',${put_liquid.conu}
+		)
+	</insert>
+	
+	<!-- 审批 -->
+	<update id="updatePrice">
+		update put_liquid set stat = #{stat} where sqid=#{sqid}
+	</update>
+	
+	<!-- //////////////接口配置////////////// -->
+	
+	<!-- delePtnm(String inid) -->
+	<delete id="delePtnm">
+	 	delete from put_config where inid=#{inid}
+	</delete>
+	
+	<!-- insertPutConfig(Put_Config put_config, Pdtinfo pdtin) -->
+	<insert id="insertPutConfig">
+		insert into put_config (INID,PRNM,EXNM,PRTY,TPFG,TERM,QDTY,XYTY,STAT)
+		values(
+		#{put_config.inid},#{pdtin.prnm},#{put_config.exnm},
+		#{pdtin.ptid},#{pdtin.qtty},#{pdtin.term},
+		'01','01','0'
+		)
+	</insert>
+	
+	<!-- returnPdtinfo(String ptnm) -->
+	<select id="returnPdtinfo" resultType="com.ylxx.fx.service.po.Pdtinfo">
+		select ptid,qtty,prnm,term from qut_cmmpdtinfo where trim(ptnm)=#{ptnm}
+	</select>
+	
+	<select id="returnConfig" resultType="com.ylxx.fx.service.po.Put_Config">
+		select * from put_config where inid=#{inid}
+	</select>
+	<!-- 修改 -->
+	<update id="updateIDPass">
+		update put_liquid set inid = #{put_Liquid.inid},pass=#{put_Liquid.pass} 
+		where sqid=#{put_Liquid.sqid}
+	</update>	
+	
+	<!-- 查询相应申请人的接口信息下拉框 -->
+	<select id="reConfigCmm" resultType="com.ylxx.fx.service.po.PdtChkpara">
+		select a.ptid ,a.ptnm ,b.exnm   
+		from QUT_CMMPDTINFO a ,put_config b 
+		where b.prty =a.ptid  and a.prnm=b.prnm  and b.inid=#{inid}
+	</select>	
+	<!-- 查询所有的产品,上下拉框 -->
+	<select id="selectPdtinfo" resultType="java.util.HashMap">
+		select ptid,ptnm from QUT_CMMPDTINFO where usfg='0'
+	</select>
+	<!-- 查询相应产品的接口信息 -->
+	<select id="selectMkid" resultType="com.ylxx.fx.service.po.PdtChkpara">
+		select a.tpfg,a.term,a.exnm,a.excd,a.cxfg from  QUT_PDTRATEPRAR_${mkid} a
+	</select>
+	
+	<!-- 查询当前选中的数据信息 -->
+	<select id="selectOnLiquid" resultType="com.ylxx.fx.service.po.Put_Liquid">
+		select * from put_liquid where trim(sqid)=#{sqid} and name=#{name} and unit=#{unit} and stat='1'
+	</select>
+</mapper>

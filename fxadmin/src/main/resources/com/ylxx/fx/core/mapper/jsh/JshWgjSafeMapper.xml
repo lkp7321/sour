@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.jsh.JshWgjSafeMapper">
+	<!-- 查询利率表 -->
+	<select id="selJshWgjSafePriceList" resultType="java.util.HashMap">
+		select * from TRD_SAFEPRICE_P004 where 1=1
+		<if test='cyen!=null and !cyen.equals("")'>
+			<if test='cyen!="all"'>
+				and cyen = #{cyen}
+			</if>
+		</if>
+	</select>
+	<select id="selJshWgjSafePriceCount" resultType="int">
+		select count(*) from TRD_SAFEPRICE_P004 where cyen=#{cyen}
+	</select>
+	<insert id="insJshWghSafePrice">
+		insert into TRD_SAFEPRICE_P004(cyen,cout,trdt) values(#{cyen},#{cout},#{trdt})
+	</insert>
+	<!-- 查询外管局登陆信息 -->
+	<select id="selJshWgjSafeInfoList" resultType="java.util.HashMap">
+		select * from TRD_SAFEACCINFO_P004
+		<where>
+			<if test='tellerId!=null and !tellerId.equals("")'>
+				ogcd like concat(concat('%',#{tellerId}),'%')
+				or trtl like concat(concat('%',#{tellerId}),'%')
+				or bhid like concat(concat('%',#{tellerId}),'%')
+				or chnl like concat(concat('%',#{tellerId}),'%')
+				or tellerId like concat(concat('%',#{tellerId}),'%')
+			</if>
+		</where>
+	</select>
+	
+	<!-- 录入外管局登陆信息 -->
+	<insert id="insJshWgjSafeInfo">
+		insert into TRD_SAFEACCINFO_P004(
+			ogcd,trtl,pass,tltp,bhid,chnl,tellerId
+		) values(
+			#{ogcd}, #{trtl}, #{pass}, #{tltp}, #{bhid}, #{chnl}, lpad(safe.nextval,8,'0')
+		)
+	</insert>
+	
+	<!-- 修改登陆外管局信息 -->
+	<update id="upsJshWgjSafeInfo">
+		update TRD_SAFEACCINFO_P004 
+		set
+		ogcd=#{ogcd}, trtl=#{trtl}, pass=#{pass}, tltp=#{tltp}, bhid=#{bhid}, chnl=#{chnl}
+		where
+		tellerId=#{tellerId}
+	</update>
+	
+	<!-- 外管局登陆信息移动 -->
+	<insert id="moveJshWgjSafeInfo">
+		insert into TRD_SAFEACCINFO_HIS_P004 select * from TRD_SAFEACCINFO_P004 where tellerId=#{tellerId}
+	</insert>
+	
+	<delete id="delJsnWgjSafeInfo">
+		delete from TRD_SAFEACCINFO_P004 where tellerId=#{tellerId}
+	</delete>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.user.RoleMapper">
+	<!-- 查询角色列表 -->
+	<select id="getRolelist" resultType="com.ylxx.fx.service.po.RoleBean">
+		select a.*,
+		decode((select count(*) from mng_nrlrgt b 
+		where b.ptid=a.ptid and rofg=1),0,'复核','未复核') rofg from MNG_ROLE a
+		where trim(a.prod)=#{prod} 
+		and ptid not in('1001','2007','3001','4001','5001','6001','9001','0001') 
+		order by a.ptid
+	</select>
+	
+	<!-- 添加角色信息 -->
+	<insert id="addRole">
+		insert into mng_role (ptid,ptnm,usfg,remk,prod )
+		values(
+		#{role.ptid},#{role.ptnm},
+		#{role.usfg},#{role.remk},
+		#{role.prod})
+	</insert>
+	
+	<!-- 删除角色 -->
+	<delete id="deleteRole">
+		delete MNG_ROLE where trim(ptid)=#{ptid} and trim(prod)=#{prod}
+	</delete>
+	<delete id="deleteRoleNrgt">
+		delete Mng_Nrlrgt where trim(ptid)=#{ptid}
+	</delete>
+	
+	<!-- 修改角色 -->
+	<update id="upRole">
+		update mng_role 
+		set 
+		ptnm=#{role.ptnm},usfg=#{role.usfg},
+		remk=#{role.remk}
+		where 
+		trim(ptid)=#{role.ptid} 
+		and trim(prod)=#{role.prod}
+	</update>
+	
+	<!-- 判断角色名是否存在 -->
+	<select id="hasrole" resultType="int">
+		select count(*) from MNG_ROLE 
+		where (ptid = #{ptid} or ptnm =#{ptnm}) and prod=#{prod}
+	</select>
+	<select id="hasroles" resultType="int">
+		select count(*) from MNG_ROLE 
+		where prod=#{role.prod} and ptid not in(#{role.ptid}) and ptnm=#{role.ptnm} 
+	</select>
+	
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.jsh.JshPdtCustPriceMapper">
+	<select id="selJshPdtCustPrice" resultType="HashMap">
+		select exnm, nemd, neby, nesl,mdtm, vltm,trfg from qut_pdtcust_p004
+		where 1=1
+		<if test="!''.equals(exnm) and exnm !=null">
+			and exnm=#{exnm}
+		</if>
+		<if test="!''.equals(trfg) and trfg !=null">
+			and trfg=#{trfg}
+		</if>
+	</select>
+	<insert id="insJshPdtCustPrice">
+		insert into qut_pdtcust_p004
+		(exnm,trfg)
+		values(#{pdtCustPrice.exnm,jdbcType=CHAR},#{pdtCustPrice.trfg,jdbcType=CHAR})
+	</insert>
+	<update id="updJshPdtCustPrice">
+		update qut_pdtcust_p004
+		set
+		exnm=#{pdtCustPrice.exnm,jdbcType=CHAR},
+		trfg=#{pdtCustPrice.trfg,jdbcType=CHAR}
+		where exnm=#{pdtCustPrice.exnm,jdbcType=CHAR}
+	</update>
+	<delete id="delJshPdtCustPrice">
+		delete qut_pdtcust_p004
+		where exnm = #{pdtCustPrice.exnm,jdbcType=CHAR}
+	</delete>
+	<select id="selCustExnmExist" resultType="int">
+		select count(*) from qut_pdtcust_p004 where
+		exnm=#{pdtCustPrice.exnm,jdbcType=CHAR}
+	</select>
+ 	<select id="selJshCustExnm" resultType="HashMap">
+		select exnm from qut_pdtcust_p004
+	</select>
+</mapper>

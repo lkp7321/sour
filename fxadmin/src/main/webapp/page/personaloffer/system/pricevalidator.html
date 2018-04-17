@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>价格校验器设置</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top pricevalidator">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>系统管理>价格校验器设置</span>
+		</div>
+		<div class='bot'>
+			<p class="totalstate">系统总控状态:<span class='re'></span></p>
+			<p class="pricestate">价格源校验器状态:<span class='re'></span></p>
+			<p class="firmstate" >外汇实盘校验器状态:<span class='re'>开启</span></p>
+		</div>
+		<ul class="cen">
+			<li class='closepri'><button>关闭交易</button></li>
+			<li class='refpri'><button>刷新价格源校验器</button></li>
+			<li class='refplate btn'><button disabled='true'>刷新外汇实盘校验器</button></li>
+			<li class='star'><button disabled='true'>启动交易</button></li>
+		</ul>
+	</div>
+	<div class='boxtop'><div class='box'></div></div>
+	</body>
+	<script src="/fx/js/js_files/require.js" data-main="/fx/js/personaloffer/pricevalidator"></script>
+</html>

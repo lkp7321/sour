@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.AccumuQRegTradeMapper">
+	<!-- 条件获得对应数据 -->
+	<select id="selectAccumuRegTrade" resultType="java.util.HashMap">
+	select c.ognm,a.lcno,a.cuac,a.cuno,a.trdt,a.trtm,decode(a.stcd,'S','成功','F','失败','失败')stcd,a.ercd,
+						decode(a.trfg,'1','即时交易成交','2','指定汇率交易成交','3','委托交易成交','其他')trfg 
+						from view_querytranlist_p003 a,trd_trancode_P003 b,trd_ogcd c 
+						where a.trcd=b.odcd and a.ogcd=c.ogcd(+) and a.stcd is not null 
+						and a.TRCD in('A1101','A1102') and a.stcd = 'S'
+		<if test='!trdtbegin.equals("") and !trdtend.equals("")'>
+			and a.trdt>=#{trdtbegin} and #{trdtend}>=a.trdt
+		</if>
+		<if test='!strcuno.equals("")'>
+			and a.CUNO = #{strcuno}
+		</if>
+		<if test='!strcuac.equals("")'>
+			and a.cuac like CONCAT(CONCAT('%',#{strcuac}),'%')
+		</if>
+		<if test='!comaogcd.equals("") and !combogcd.equals("")'>
+			<if test='comaogcd.equals("0001") and combogcd.equals("all")'>
+			</if>
+			<if test='comaogcd.equals("0001") and !combogcd.equals("all")'>
+				and c.ogup =#{combogcd}
+			</if>
+			<if test='!comaogcd.equals("0001") and  combogcd.equals("all")'>
+				and (c.ogup = #{comaogcd} or c.ogcd = #{comaogcd})
+			</if>
+			<if test='!comaogcd.equals("0001") and !combogcd.equals("all")'>
+				and c.ogcd = #{combogcd}
+			</if>
+		</if>
+		<if test='comdata1.equals("2")'>
+			<if test='!comdata3.equals("all")'>
+				and a.trcd =#{comdata3}
+			</if>
+		</if> 
+	</select>
+	<!-- 条件获得数量 -->
+	<select id="getCount" resultType="java.util.HashMap">
+	select  count(*) count from view_querytranlist_p003 a,trd_trancode_P003 b,trd_ogcd c 
+						where a.trcd=b.odcd and a.ogcd=c.ogcd(+) and a.stcd is not null 
+			and a.TRCD in('A1101','A1102') and a.stcd = 'S'
+			<if test="!trdtbegin.equals('') and !trdtend.equals('')">
+				<![CDATA[and a.trdt>=#{trdtbegin} and a.trdt<=#{trdtend}]]>
+			</if>
+			<if test="!strcuno.equals('')">
+				and a.CUNO = #{strcuno}
+			</if>
+			<if test="!strcuac.equals('')">
+				and a.cuac like CONCAT(CONCAT('%',#{strcuac}),'%')
+			</if>
+		<if test="!comaogcd.equals('') and !combogcd.equals('')">
+			<if test="comaogcd.equals('0001') and combogcd.equals('all')">
+			</if>
+			<if test="comaogcd.equals('0001') and !combogcd.equals('all')">
+				and c.ogup =#{combogcd}
+			</if>
+			<if test="!comaogcd.equals('0001') and  combogcd.equals('all')">
+				and (c.ogup = #{comaogcd} or c.ogcd = #{comaogcd})
+			</if>
+			<if test="!comaogcd.equals('0001') and !combogcd.equals('all')">
+				and c.ogcd = #{combogcd}
+			</if>
+		</if>
+		<if test="comdata1=2">
+			<if test="!comdata3.equals('all')">
+				and a.trcd =#{comdata3}
+			</if>
+		</if> 
+	</select>
+</mapper>

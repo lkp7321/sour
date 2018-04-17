@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accex.tradeMananger.AccexPromotionListMapper">
+	<!--查询账户外汇营销信息  -->
+	<select id="selectPromotion" resultType="java.util.HashMap">
+	select * from trd_promotionlist_${prod} where 1=1
+		<![CDATA[ and OPDT >=#{strateDate} and OPDT <=  #{endDate}]]>
+	</select>
+</mapper>

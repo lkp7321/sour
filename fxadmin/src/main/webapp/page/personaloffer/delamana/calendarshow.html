@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+	<title>日历规则展示</title>
+</head>
+<body>
+	<div class="top calendarshow">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>日历管理>价格接受设置 </span>
+		</div>
+		<div class="botr">
+			<!--<span>产品名称: <i>个人实盘</i></span>-->
+			<p class="dealnum">
+				<span>&nbsp;&nbsp;交易码</span>
+				<select class='small' onmousedown="if(this.options.length>6){this.size=7}" onblur="this.size=0" onchange="this.size=0" size="0">
+					<option value="">请选择</option>
+				</select> 
+			</p>
+			<p><span>交易时间</span><input type="text" readonly="true" id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',isShowClear:false,isShowToday:false,isShowOthers:false,isShowOk:false,qsEnabled:false,dateFmt:'yyyyMMdd',maxDate:'%y-%M-{%d+1}'})"></i></p>
+			<button class='seabtn'>查询</button>
+			<button class='livbtn'>生效</button>
+		</div>
+		<!--<div class="info_serch pub_serch">
+			<input class="info_seript pub_seript" type="text" />
+			<button class="info_serbtn pub_serbtn">搜索</button>
+		</div>-->
+	</div>
+	<div class='boxtop'><div class='box'></div></div>
+</body>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/personaloffer/calandershow"></script>
+</html>

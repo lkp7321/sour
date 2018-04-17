@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 告警方式设置 -->
+<mapper namespace="com.ylxx.fx.core.mapper.price.alarm.AlarmFsMapper">
+	<!-- 查询页面所有数据 -->
+	<select id="selectAlarmNotifyAll" resultType="com.ylxx.fx.service.po.CmmAlarmNotify">
+		select a.ercd as ercd,a.ertx as ertx,a.erty as erty,a.alid as alid,
+		a.usid as usid,b.usnm as usnm,c.alds as alds
+		from CMM_ALARMNOTIFY a,CMM_ALARMUSER b,CMM_ALARMLEVEL c 
+		where a.usid=b.usid and c.alid=a.alid and b.stcd='0' order by a.ercd
+	</select>
+	<!-- 添加查询 -->
+	<select id="selectAlarmNotify" resultType="int">
+		select count(*) from CMM_ALARMNOTIFY 
+		where trim(ERCD)=#{notify.ercd} AND TRIM(USID)=#{notify.usid}
+	</select>
+	<insert id="insertAlarmNotify">
+		insert into CMM_ALARMNOTIFY(ERCD,ERTX,ALID,USID) 
+		values(
+		#{notify.ercd},#{notify.ertx},#{notify.alid},#{notify.usid})
+	</insert>
+	<update id="upAlarmNotify">
+		update CMM_ALARMNOTIFY set ERTX=#{notify.ertx},ALID=#{notify.alid} 
+		where trim(ERCD)=#{notify.ercd} AND TRIM(USID)=#{notify.usid}
+	</update>
+	<delete id="deleteAlarmNotify">
+		delete CMM_ALARMNOTIFY  where trim(ERCD)=#{ercd} AND TRIM(USID)=#{usid}
+	</delete>
+	
+	<!-- 用户姓名 -->
+	<select id="selectAlarmStcd" resultType="java.util.HashMap">
+		select usid,usnm from CMM_ALARMUSER where stcd='0' order by usid
+	</select>
+	<!-- 告警级别 -->
+	<select id="selectAlarmLeveAll" resultType="java.util.HashMap">
+		select alds,alid from CMM_ALARMLEVEL order by alid
+	</select>
+	<!-- 告警错误码 -->
+	<select id="selectAlarmERR" resultType="java.util.HashMap">
+		select ercd,erms from cmm_alarmcode order by ercd
+	</select>
+</mapper>

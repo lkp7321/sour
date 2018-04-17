@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.pere.presysmanager.QueryRegWaterMapper">
+
+
+      <!--  根据条件查询外管局流水-->
+      <select id="queryRegWater1" resultType="com.ylxx.fx.service.po.QueryRegWater">
+			select a.CONT,decode(a.PETY,'1','国内','2','国外',a.PETY) PETY,a.LCNO,a.TRDT,decode(a.TRTP,'0','结汇','1','售汇',a.TRTP) TRTP,b.STCD,b.ERCD,b.STAT 
+			from TRD_TRANLIST_P004 a, TRD_WEBRESULT_P004 b 
+			where a.lcno = b.lcno and a.trdt = b.trdt
+			<if test="comStcd!=null and comStcd!= '' and comStcd!='all'">
+				and a.STCD = #{comStcd}
+			</if>
+			<if test="dgfieldbegin!='' and dgfieldend!=''">
+				<![CDATA[and a.TRDT >= #{dgfieldbegin} and a.TRDT <= #{dgfieldend}]]>
+			</if>
+      </select>
+</mapper>

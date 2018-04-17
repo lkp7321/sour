@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 系统管理 -->
+<mapper namespace="com.ylxx.fx.core.mapper.jsh.JshSystemMapper">
+	<!-- 查询业务参数 -->
+	<select id="selJsh_CmmPtpara" resultType="java.util.HashMap">
+		select * from CMM_PTPARA where paid not in('C014') order by paid
+	</select>
+	<select id="sel_Jsh_system" resultType="java.util.HashMap">
+		select * from CMM_PTPARA where paid='C014'
+	</select>
+	<!-- 查询记录数 -->
+	<select id="selJsh_CmmPtpara_count" resultType="int">
+		select count(*) from CMM_PTPARA where paid=#{paid}
+	</select>
+	<!-- 修改业务参数-->
+	<update id="upsJsh_CmmPtpara">
+		update CMM_PTPARA 
+		set
+		valu=#{valu},
+		stat=#{stat} 
+		where 
+		paid=#{paid} 
+	</update>
+	<!-- 添加业务参数 -->
+	<insert id="insJsh_CmmPtpara">
+		insert into CMM_PTPARA(
+			paid,pasubid,remk,valu, stat
+		) values(
+			#{paid},#{pasubid},#{remk},#{valu},#{stat}
+		)
+	</insert>
+	<!-- 删除业务参数 -->
+	<delete id="delJsh_CmmPtpara">
+		delete from CMM_PTPARA where paid=#{paid} and stat='1'
+	</delete>
+<!-- ////////////////////////////////币种信息/////////////////////////////////////////////////////////////////////// -->
+	<!-- 查询币种信息 -->
+	<select id="selJshCyMsg" resultType="java.util.HashMap">
+		select * from CMM_CYMSG_P004 where 1=1
+		<if test='cyen!=null and !eyen.equals("")'> 
+			and cyen=#{cyen} 
+		</if>
+		<if test='cytp!=null and !cytp.equals("")'>
+			and cytp=#{cytp}
+		</if>
+		order by cytp
+	</select>
+	<!-- 查询币种记录数 -->
+	<select id="selJshCyMsg_count" resultType="int">
+		select count(*) from CMM_CYMSG_P004 where cyen=#{cyen} or cytp=#{cytp}
+	</select>
+	<!-- 添加 币种-->
+	<insert id="insJshCyMsg">
+		insert into CMM_CYMSG_P004(
+			cyen,cytp,cycn,usfg,remk
+		) values(
+			#{cyen},#{cytp},#{cycn},#{usfg},#{remk}
+		)
+	</insert>
+	<!-- 修改币种 -->
+	<update id="upsJshCyMsg">
+		update CMM_CYMSG_P004 set usfg=#{usfg}, remk=#{remk} where cyen=#{cyen} and cytp=#{cytp}
+	</update>
+	<!-- 删除币种,必须为停用 -->
+	<delete id="delJshCyMsg">
+		delete from CMM_CYMSG_P004 where cyen=#{cyen} and cytp=#{cytp} and usfg='1'
+	</delete>
+<!-- /////////////////////////////// 货币对管理//////////////////////////////////////////////////////////////////////////////// -->
+	<!-- 查询所有货币对 -->
+	<select id="selJshCurrMsg" resultType="java.util.HashMap">
+		select * from CMM_CURRMSG_P004 order by excd 
+	</select>
+	<!-- 查询记录 -->
+	<select id="selJshCurrMsg_count" resultType="int">
+		select count(*) from CMM_CURRMSG_P004 where exnm=#{exnm} or excd=#{excd}
+	</select>
+	<!-- 添加货币对 -->
+	<insert id="insJshCurrMsg">
+		insert into CMM_CURRMSG_P004 values(
+			#{exnm},#{excd},#{excn},#{pion},#{extp}
+		)
+	</insert>
+	<update id="upsJshCurrMsg">
+		update CMM_CURRMSG_P004 
+		set
+		pion=#{pion},extp=#{extp}
+		where 
+		exnm=#{exnm} and excd=#{excd}
+	</update>
+	<delete id="delJshCurrmsg">
+		delete from CMM_CURRMSG_P004 where exnm=#{exnm} and excd=#{excd}
+	</delete>
+</mapper>

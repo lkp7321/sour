@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.PdtStoperUpMapper">
+	<!-- 查询实盘币种 -->
+	<select id="selectfxipEXNM" resultType="com.ylxx.fx.core.domain.CmmCymsgBean" >
+		select * from CMM_CYMSG where CYEN not in ('RMB','KAG','KAU','OAG','OAU')
+	</select>
+	<!-- 查询纸黄金币种  -->
+	<select id="selectgoldEXNM" resultType="com.ylxx.fx.core.domain.CmmCymsgBean">
+		select * from CMM_CYMSG where CYEN  in ('RMB','KAG','KAU','OAG','OAU')
+	</select>
+	<!-- 获得停牌器的所有数据 -->
+	<select id="selectAllCmmStopers" resultType="com.ylxx.fx.service.po.PdtStoperBean">
+		select a.stid, c.tpnm,a.tpfg,a.term,a.stnm,a.excd,a.exnm,a.stfg,a.usfg 
+		from qut_pdtstoper_${ptid} a,qut_tpfgt c where a.tpfg=c.tpfg and a.stid='SC99'
+	</select>
+	<!-- 条件获得停牌器的数据 -->
+	<select id="selectAllCmmStoper" resultType="com.ylxx.fx.service.po.PdtStoperBean">
+		select a.stid, c.tpnm,a.tpfg,a.term,a.stnm,a.excd,a.exnm,a.stfg,a.usfg from 
+		qut_pdtstoper_${ptid} a,qut_tpfgt c where a.tpfg=c.tpfg and a.stid='SC99' 
+		and a.excd like '%${excd}%'
+	</select>
+	<!-- 批量修改未停牌 -->
+	<update id="updateYesCtrlusfg">
+		update qut_pdtstoper_${prod} set STFG=#{pdtStoper.stfg},USFG=#{pdtStoper.usfg} 
+		where trim(STID)=#{pdtStoper.stid} and trim(EXCD)=#{pdtStoper.excd}
+	</update>
+	<!-- 写审计日志 -->
+	<insert id="insertLog">
+		insert into mng_log (RZDT,RZSJ,USEM,TYMO,REMK,VOLD,VNEW,PROD) values(#{logfileBean.rzdt},
+		#{logfileBean.rzsj},#{logfileBean.usem},#{logfileBean.tymo},#{logfileBean.remk},
+		#{logfileBean.vold},#{logfileBean.vnew},#{logfileBean.prod})
+	</insert>
+	<!-- 根据货币对名称查询货币对编号 -->
+	<select id="getExcd" resultType="String">
+		select excd from CMM_CURRMSG_${ptid} where exnm=#{exnm}
+	</select>
+</mapper>

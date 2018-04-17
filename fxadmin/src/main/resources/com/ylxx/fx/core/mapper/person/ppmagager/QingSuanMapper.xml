@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.ppmagager.QingSuanMapper">
+	<!-- 交易日期查询 -->
+	<select id="selQQGCHZ" resultType="com.ylxx.fx.service.po.Totalccyam">
+		select * from ck_TOTALCCYAM where trdt= #{trdt}
+	</select>
+	<!-- 交割日期查询 -->
+	<select id="selqs" resultType="com.ylxx.fx.service.po.Totalccyam">
+		select * from CK_TOTALVALUEDATE where JGDT =#{trdt}
+	</select>
+</mapper>

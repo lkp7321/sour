@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.jsh.QueryPreodrlistMapper">
+	<select id="getColumns" resultType="java.lang.String">
+		select finm from trd_outentranceconfig_p004 where innm='P3985'
+	</select>
+	<select id="getPreodrlist" resultType="com.ylxx.fx.service.po.jsh.Trd_Preodrlist">
+		select
+		<if test="cols!=null and cols!=''">
+			${cols}
+		</if>
+		<if test="cols==null or cols==''">
+			*
+		</if>
+		from 
+		<if test="qutp==1">
+			TRD_PREODRLIST_${ptid} where STCD in ('A','W')
+			<if test="cuno!='' and cuno!=null">
+				AND CUNO = #{cuno}
+			</if>
+			<if test="stdt!='' and stdt!=null">
+				AND TRDT >= #{stdt}
+			</if>
+			<if test="eddt!='' and eddt!=null">
+				AND #{eddt} >= TRDT
+			</if>
+			<if test="rqno!='' and rqno!=null">
+				AND RQNO = #{rqno}
+			</if>
+		</if>
+		<if test="qutp==2">
+			trd_preodrclr_${ptid} where STCD in ('C','O','I')
+			<if test="cuno!='' and cuno!=null">
+				AND CUNO = #{cuno}
+			</if>
+			<if test="stdt!='' and stdt!=null">
+				AND TRDT >= #{stdt}
+			</if>
+			<if test="eddt!='' and eddt!=null">
+				AND #{eddt} >= TRDT
+			</if>
+			<if test="rqno!='' and rqno!=null">
+				AND RQNO = #{rqno}
+			</if>
+		</if>
+		<if test="qutp==3">
+			TRD_PREODRLIST_${ptid} where STCD ='P'
+			<if test="cuno!='' and cuno!=null">
+				AND CUNO = #{cuno}
+			</if>
+			<if test="stdt!='' and stdt!=null">
+				AND TRDT >= #{stdt}
+			</if>
+			<if test="eddt!='' and eddt!=null">
+				AND #{eddt} >= TRDT
+			</if>
+			<if test="rqno!='' and rqno!=null">
+				AND RQNO = #{rqno}
+			</if>
+		</if>
+		<if test="qutp==0">
+			view_preodrlistall_${ptid} where 1=1
+			<if test="cuno!='' and cuno!=null">
+				AND CUNO = #{cuno}
+			</if>
+			<if test="stdt!='' and stdt!=null">
+				AND TRDT >= #{stdt}
+			</if>
+			<if test="eddt!='' and eddt!=null">
+				AND #{eddt} >= TRDT
+			</if>
+			<if test="rqno!='' and rqno!=null">
+				AND RQNO = #{rqno}
+			</if>
+		</if>
+	</select>
+</mapper>

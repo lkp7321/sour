@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.kondor.kondorrv.KonRpcRequestMapper">
+	<!-- 当产品类型选择“所有”时数据的查询 -->
+	<select id="selAllRpcRequest" resultType="com.ylxx.fx.service.po.Kon_RpcRequestBean">
+		select * from (select * from (select a.*,b.requestdate,b.requesttime 
+		from kon_rpcrequest a,kon_spottrade b where a.frontserialdata=b.frontserialdata
+		union all select c.*,d.requestdate,d.requesttime from kon_rpcrequest c,
+		kon_amounttrade d where c.frontserialdata=d.frontserialdata) 
+		where frontserialdata like '%${rpcNo}%'
+		<if test="clstate!=null and clstate!=''">
+			and state = #{clstate}
+		</if>
+		order by requestdate desc,requesttime desc)
+		where 30 >= rownum order by state 
+	</select>
+	<!-- 当产品类型未选择“所有”时数据的查询 -->
+	<select id="selRpcRequest" resultType="com.ylxx.fx.service.po.Kon_RpcRequestBean">
+		select * from (select * from (select a.*,b.requestdate,b.requesttime 
+		from kon_rpcrequest a,kon_spottrade b where a.frontserialdata=b.frontserialdata
+		union all select a.*,b.requestdate,b.requesttime from kon_rpcrequest a,kon_bondtrade b 
+		where a.frontserialdata=b.frontserialdata 
+		union all select a.*,b.requestdate,b.requesttime from kon_rpcrequest a,kon_cashtrade b 
+		where a.frontserialdata=b.frontserialdata 
+		union all select c.*,d.requestdate,d.requesttime from kon_rpcrequest c,kon_amounttrade d 
+		where c.frontserialdata=d.frontserialdata )
+		where frontserialdata like '%${rpcNo}%' 
+		<if test="tradeCode!=null and tradeCode!=''">
+			and tradecode=#{tradeCode}
+		</if>
+		<if test="clstate!=null and clstate!=''">
+			and state = #{clstate}
+		</if> 
+		order by requestdate desc,requesttime desc )
+		where 30 >= rownum order by state
+	</select>
+	<!-- 判断此交易是否需要修改:取错误码1 -->
+	<select id="selBondInKondor" resultType="String">
+		select ERRORCODE from kon_bondtrade where downloadkey=#{downloadkey}
+	</select>
+	<!-- 判断此交易是否需要修改:取错误码2 -->
+	<select id="selCashInKondor" resultType="String">
+		select ERRORCODE from kon_cashtrade where downloadkey=#{downloadkey}
+	</select>
+	<!-- 判断此交易是否需要修改:取错误码3 -->
+	<select id="selAmountInKondor" resultType="String">
+		select * from kon_amounttrade where downloadkey=#{downloadkey}
+	</select>
+	<!-- 判断此交易是否需要修改:取错误码4 -->
+	<select id="selSpotInKondor" resultType="String">
+		select ERRORCODE from kon_spottrade where downloadkey#{downloadkey}
+	</select>
+	<!-- 保存修改 -->
+	<update id="rpcUpdate">
+		update KON_RPCREQUEST set RETRYTIMES=#{times},STATE=#{state} 
+		where FRONTSERIALDATA=#{rpcNo}
+	</update>
+</mapper>

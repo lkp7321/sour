@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accex.tradeMananger.AccexAdjustmentDateMapper">
+	<!-- 页面加载的交易品种 -->
+	 <select id="selCurrencyPair" resultType="java.util.HashMap">
+	 	select exnm from TRD_OILADJUSTCONFIG_${prod} group by exnm
+	 </select>
+	 
+	 <!-- 查询货币对和时间是否存在 -->
+	<select id="selectAdjustByKey" resultType="int">
+		select count(*) from TRD_OILADJUSTCONFIG_P007 where exnm = #{exnm} and femd = #{femd}
+	</select>
+	 
+	<!--保存  -->
+	 <insert id="addAdjust">
+	 insert into TRD_OILADJUSTCONFIG_P007 (OSTP,OSBS,NSTP,NSBS,ORBS,NRBS,OSAS,NSAS,ORAS,NRAS,EXNM,FEMD,STAT) values (#{ostp},#{osbs},#{nstp},#{nsbs},#{orbs},#{nrbs},#{osas},#{nsas},#{oras},#{nras},#{exnm},#{femd},#{stat})
+	 </insert>
+	 
+	<!-- 查询调整日配置信息 -->
+	<select id="selOilAdjustList" resultType="java.util.HashMap">
+		select 
+		EXNM,
+		FEMD,
+		decode(STAT,'S','已调整','W','待调整','F','失败','未知') STAT, 
+		OSTP, OSBS, NSTP, NSBS, ORBS,
+		NRBS, OSAS, NSAS, ORAS, NRAS
+		from TRD_OILADJUSTCONFIG_P007 where 1=1 
+		<if test="beginDate!=null and !''.equals(beginDate)">
+			<![CDATA[ and femd >= #{beginDate}]]>
+		</if>
+		<if test="endDate!=null and !''.equals(endDate)">
+			<![CDATA[  and femd <= #{endDate}]]>
+		</if>
+		<if test="exnm!=null and !''.equals(exnm)">
+		<![CDATA[  and exnm = #{exnm}]]> 
+		</if>
+	 </select>
+	<update id="updateAdjust">
+		update TRD_OILADJUSTCONFIG_P007 set 
+		OSTP =#{ostp}, OSBS = #{osbs} ,
+		NSTP = #{nstp} , NSBS = #{nsbs} , 
+		ORBS = #{orbs} ,NRBS = #{nrbs} ,
+		OSAS =#{osas} , NSAS = #{nsas} , 
+		ORAS = #{oras} , NRAS =#{nras}  
+		where EXNM = #{exnm} and FEMD =#{femd} and ( STAT = 'W' or STAT = 'w')
+	</update>
+	<delete id="deleteAdjustByKey">
+		delete from TRD_OILADJUSTCONFIG_P007 where exnm = #{exnm} and femd = #{femd} and ( stat = 'W' or stat = 'w')
+	</delete>
+</mapper>

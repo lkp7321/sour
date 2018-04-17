@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.ppmagager.QueryAccountMapper">
+	<!-- 获取页面数据列表 -->
+	<select id="selectList" resultType="com.ylxx.fx.service.po.Ck_ppresultdetail">
+		select PPNO,SEQN, PRCD,EXNM, CKNO,decode(TRFL,'01','普通平盘','02','直通式平盘') TRFL,
+		decode(bsfx,'0','买入','1','卖出')bsfx, TRDT, TRTM,SLCY,BYCY,nvl(CBSL,0)CBSL,
+		nvl(CBBY,0)CBBY,nvl(SAMT,0)SAMT,nvl(BAMT,0)BAMT,nvl(YKAM,0)YKAM,JYCL,MKNO,
+		decode(TRTY,'1','即时交易成交','2','指定交易成交','3','委托交易成交')TRTY,DSNO,YDTM,nvl(CBHL,0)CBHL,
+		nvl(EXPC,0)EXPC,REFE, JGDT,QXDT,decode(STAT,'A','预计','N','交易未返回','D','交易已提交')STAT,
+		STMP,ERCD,LKNO,DZNO from ck_ppresultdetail where STAT in ('S','M') AND PRCD='P001' 
+		<if test="jgdt!=null and jgdt!=''">
+			and jgdt like '${jgdt}%'
+		</if>
+		<if test="trdt!=null and trdt!=''">
+			and trdt like '${trdt}%'
+		</if>
+		order by jgdt,trdt,trtm
+	</select>
+</mapper>

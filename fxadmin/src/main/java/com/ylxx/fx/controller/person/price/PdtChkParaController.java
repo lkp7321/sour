@@ -1,0 +1,82 @@
+/*
+ * Copyright 2012-2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.ylxx.fx.controller.person.price;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ylxx.fx.core.domain.PriceVo;
+import com.ylxx.fx.service.person.price.IPdtChkParaService;
+import com.ylxx.fx.utils.CurrUser;
+import com.ylxx.fx.utils.LoginUsers;
+
+@Controller
+//@RequestMapping("fx")
+public class PdtChkParaController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PdtChkParaController.class);
+	
+	@Resource(name="pdtChkParaService")
+	private IPdtChkParaService pdtChkParaService;
+	
+	/*String user = "xlj";
+	String prod = "P001";
+	String usfg = "全部启用";
+	LoginUser logUser = new LoginUser(user,prod);*/
+	
+	/**
+	 * 得到产品校验参数
+	 * @param pVo
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/getChkList.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String getChkList(@RequestBody PriceVo pVo) throws Exception {
+		LOGGER.info("查询产品校验参数");
+		CurrUser curUser = LoginUsers.getLoginUser().getCurrUser(pVo.getUserKey());
+		Integer pageNo = pVo.getPageNo();
+		Integer pageSize = pVo.getPageSize();
+		if (curUser.getProd().equals("P999")) {
+			return pdtChkParaService.getChkList(pVo.getProd(),pageNo,pageSize);
+		}else {
+			return pdtChkParaService.getChkList(curUser.getProd(),pageNo,pageSize);
+		}	
+	}
+	//更新启用状态 启用0 停用1
+	@RequestMapping(value="/updateChk.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String updateChk(@RequestBody PriceVo pVo) throws Exception {
+		//测试数据在实现类里写了:选中的数据.有复选框时需要传此参数，全部启用/暂停不需要
+		/*PriceVo pVo = new PriceVo();
+		pVo.setLogUser(logUser);
+		pVo.setUsfg(usfg);*/
+		CurrUser curUser = LoginUsers.getLoginUser().getCurrUser(pVo.getUserKey());
+		if (curUser.getProd().equals("P999")) {
+			return pdtChkParaService.updateChk(pVo.getUserKey(), pVo.getProd(), pVo.getUsfg());
+		}else {
+			return pdtChkParaService.updateChk(pVo.getUserKey(), curUser.getProd(), pVo.getUsfg());
+		}
+		//TODO ut.SendSocketB1();
+	}
+}

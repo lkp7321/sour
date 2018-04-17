@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>交易流水查询</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+<div class="top dealwater reverserwater">
+	<div class='head'>
+		<span>当前位置:</span>
+		<span>交易管理>交易流水&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	</div>
+	<div class='cer'>
+		<span>机构名称</span>
+		<select name="" id="comboxA" class='long' onmousedown="if(this.options.length>6){this.size=7}" 
+			onblur="this.size=0" onchange="this.size=0">
+		</select> 
+		<select id="comboxB" class='long' onmousedown="if(this.options.length>6){this.size=7}" 
+			onblur="this.size=0" onchange="this.size=0">
+		    <option value='all'>所有</option>
+		</select>
+		<span class="querycriteria">查询条件</span>
+		<select id="tranCode" class='short'>
+		    <option	value="0">所有</option>
+		 	<option value="A2103">即时申购</option>
+		 	<option value="A2103">即时赎回</option>
+		 	<option value="A2105">定期申购</option>
+		 	<option value="A2104">转提实物</option>
+		 	<option value="A2116">提取实物冲销</option>
+		 	<option value="A2106">单笔转账转出</option>
+		 	<option value="A2106">单笔转账转入</option> 
+		</select>
+	</div>
+	<div class="bott">
+		<div class='dealdate'>
+			<span>交易日期</span>
+			<p><input type='text' id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd',maxDate:'#F{$dp.$D(\'d2\')||\'%y-%M-%d\'}'})"></i></p>
+			<span class='to'>到</span>
+			<p><input type='text' id='d2'/><i class='calander' onclick="WdatePicker({el:'d2',dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d1\')}',maxDate:'%y-%M-%d'})" ></i></p>
+			<p class="carp"><span>卡号 </span><input type="text" class="cardnum"/></p>
+			<p><span>买入币种</span>
+			    <select id='byExnm' class='small' onmousedown="if(this.options.length>3){this.size=4}" 
+			onblur="this.size=0" onchange="this.size=0">
+					 <option value='all'>所有</option>
+				</select>
+			</p>
+		</div>
+		<button class='search'>查询</button>
+	</div>
+</div>
+<div class='boxtop'>
+	<div class='box'>
+	</div>
+</div>
+<div id="page"></div>
+</body>
+<script src="/fx/layui/layui.js"></script>
+<script src="/fx/js/js_files/require.js"  data-main="/fx/js/reserve/reversedealwater"></script>
+</html>

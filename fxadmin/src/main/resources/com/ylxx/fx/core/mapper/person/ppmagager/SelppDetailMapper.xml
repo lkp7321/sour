@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.ppmagager.SelppDetailMapper">
+	<!-- 查询货币对列表 -->
+	<select id="selUSDExnm" resultType="String">
+		select exnm from ck_total where prcd=#{prod}
+	</select>
+	<!-- (条件)查询页面数据列表 -->
+	<select id="selCondition" resultType="com.ylxx.fx.service.po.Ck_PpDetail">
+		SELECT PPNO,EXNM,CKNO,decode(bsfx,'0','买','1','卖') bsfx,decode(TRFL,'01','普通','02','直通式') TRFL,
+		TRDT,TRTM,SLCY,BYCY,SAMT,BAMT,YKAM,JYCL,DSNO,YDTM,CBHL,EXPC,JGDT,
+		decode(STAT,'A','预计','B','超过规定的平盘次数','C','超过规则的平盘时间','D','交易已提交UBS','N','交易未返回',
+		'F','交易失败','S','交易成功','P','已发起对账请求','M','对账成功','V','对账失败','U','结果未知')STAT,ERCD,LKNO
+		FROM CK_PPRESULTDETAIL WHERE PRCD=#{prod}
+		<if test="strExnm.trim()!='' and strExnm!=null">
+			AND EXNM=#{strExnm}
+		</if>
+		<if test="strStat.trim()!='' and strStat!=null">
+			AND STAT=#{strStat}
+		</if> 
+		<if test="sartDate.trim()!='' and sartDate!=null and endDate.trim!='' and endDate!=null">
+			AND TRDT>=#{sartDate} AND #{endDate}>=TRDT
+		</if>
+		order by PPNO desc
+	</select>
+</mapper>

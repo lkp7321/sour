@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.QutFreqtMapper">
+	<!-- 查询报价频率参数 -->
+	<select id="selectQutFreqt" resultType="com.ylxx.fx.service.po.PdtinfoBean">
+		select * from QUT_CMMPDTINFO where ptid=#{ptid}
+	</select>
+	<!-- 修改报价频率参数 -->
+	<update id="upQutFreqt">
+		update QUT_CMMPDTINFO set frqy=#{freqt.frqy} ,usfg=#{freqt.usfg} where ptid=#{freqt.ptid}
+	</update>
+	<!-- 写审计日志 -->
+	<insert id="insertLogger">
+		insert into mng_log (RZDT,RZSJ,USEM,TYMO,REMK,VOLD,VNEW,PROD) 
+		values(#{logfileBean.rzdt},#{logfileBean.rzsj},#{logfileBean.usem},#{logfileBean.tymo},#{logfileBean.remk},
+		#{logfileBean.vold},#{logfileBean.vnew},#{logfileBean.prod})
+	</insert>	
+</mapper>

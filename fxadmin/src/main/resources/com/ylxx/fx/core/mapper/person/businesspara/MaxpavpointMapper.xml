@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.businesspara.MaxpavpointMapper">
+
+	<!-- 查询所有数据 P001,P002,P003，P004-->
+	<select id="selectMaxpavpoint" resultType="com.ylxx.fx.service.po.Maxpavpoint">
+		select a.ogcd as ogcd,b.ognm as ognm,a.exnm as exnm,
+		a.excd as excd,a.mxfv as mxfv 
+		from 
+		TRD_MAXFAVPOINT_${prod} a,trd_ogcd b  
+		<if test='combogcd == "all"'>
+			where a.ogcd=b.ogcd 
+		</if>
+		<if test='combogcd != "all"'>
+			where a.ogcd = #{combogcd}
+			and a.ogcd=b.ogcd 
+		</if>
+		order by a.ogcd
+	</select>
+	
+	<!-- 查询最大优惠机构下拉框 -->
+	<!-- P001,P002,P003,P004 -->
+	<select id="queryMaxpavOgcd" resultType="java.util.HashMap">
+		select ogcd,ognm from trd_ogcd 
+		<if test='userorgleve == "0"'>
+			where (leve='1' or leve='0') 
+		</if>
+		<if test='userorgleve == "1"'>
+			where leve='1' and ogcd = #{userorgn} 
+		</if>
+		order by ogcd
+	</select>
+	<!-- P002 添加 获取币别对 -->
+	<select id="selMaxexnmP002" resultType="java.util.HashMap">
+		select exnm, excd from CMM_CURRMSG_${prcd} where exnm not in 
+		(select exnm from TRD_MAXFAVPOINT_${prcd} where ogcd=#{ogcd})
+	</select>
+	<!-- P003 添加 获取币别对-->
+	<select id="selMaxexnmP003" resultType="java.util.HashMap">
+		select * from CMM_CURRMSG_${prcd} where extp='0' and exnm not in 
+		(select exnm from TRD_MAXFAVPOINT_${prcd} where ogcd=#{ogcd})
+	</select>
+	
+	<!-- 添加最大优惠，P002,P003 -->
+	<insert id="insertMaxpoint">
+		insert into TRD_MAXFAVPOINT_${prcd}
+		values(
+		#{maxpoint.ogcd},#{maxpoint.exnm},
+		#{maxpoint.excd},#{maxpoint.mxfv})
+	</insert>
+	
+	<!-- 修改最大优惠  P002,P003-->
+	<update id="updateMaxpoint">
+		update TRD_MAXFAVPOINT_${prcd}
+		set 
+		mxfv=#{maxpoint.mxfv} 
+		where 
+		trim(ogcd)=#{maxpoint.ogcd} and 
+		trim(exnm)=#{maxpoint.exnm} and 
+		trim(excd)=#{maxpoint.excd}
+	</update>
+	<!-- 删除最大优惠P002,P003 -->
+	<delete id="deleteMaxpoint">
+		delete TRD_MAXFAVPOINT_${prcd} where 
+		trim(ogcd)=#{ogcd} and trim(exnm)=#{exnm}
+	</delete>
+</mapper>

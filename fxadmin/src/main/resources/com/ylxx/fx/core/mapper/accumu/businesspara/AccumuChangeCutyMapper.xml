@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accumu.businesspara.AccumuChangeCutyMapper">
+	<select id="getSearch" resultType="java.util.HashMap">
+		select trac,cuno,cuac,
+		decode(caty,'0','卡','1','折','未知')caty,
+		decode(refg,'','0','签约','1','解约')refg,
+		cuty,ognm,rgdt,crdt,rgid from trd_regmsg_p003 a ,trd_ogcd b where a.ogcd=b.ogcd
+		<if test="cuno!=null and !cuno.equals('')">
+			and cuno=#{cuno}
+		</if>
+		<if test="cuac!=null and !cuac.equals('')">
+			and cuac=#{cuac}
+		</if>
+	</select>
+	<update id="doUpdateCuty">
+		update trd_regmsg_p003 set cuty=#{cuty} where cuno=#{cuno} and cuac=#{cuac} and trac=#{trac}
+	</update>
+</mapper>

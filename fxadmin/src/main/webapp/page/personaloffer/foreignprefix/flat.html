@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>平盘交易</title>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+	<div class="top flat">
+		<div class='head'>
+			<p><span>当前位置:</span><span>外汇前置交易>自动平盘交易流水查询</span></p>
+			<p class="dat"><span>开始日期:</span><input type="text" id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd'})"></i></p>
+			<p class="dat"><span>结束日期:</span><input type="text" id='d2'/><i class='calander'  onclick="WdatePicker({el:'d2',dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d1\')}',maxDate:'%y-%M-%d'})"></i></p>
+			<p class="cardNu">交易请求流水号:<input type="text" /><button class="sear">查询</button></p>
+		</div>
+	</div>
+	<div class="boxtop"><div class='box'></div></div>	
+	<div id="page"></div>
+</body>
+	<script src="/fx/layui/layui.js"></script>
+	<script src="/fx/js/js_files/require.js" data-main="/fx/js/rv/flat"></script>
+</html>

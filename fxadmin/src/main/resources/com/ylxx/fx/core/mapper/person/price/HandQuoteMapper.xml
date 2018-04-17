@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.HandQuoteMapper">
+	<!-- 手工报价配置表  -->
+	<select id="selectHandQuoteList" resultType="com.ylxx.fx.service.po.HandQuoteVoBean">
+		select a.mkid, a.tpfg,b.tpnm,a.term,a.exnm,a.excd,decode(cxfg,'1','汇','2','钞',cxfg) cxfg,
+		a.neby,a.nesl,a.nemd,decode(bcfg,'0','分行价','1','客户价','2','价格源',bcfg) bcfg,
+		decode(STFG,'0','未审核','1','审核','2','未通过',STFG) STFG from QUT_HANDPRICECONFIG a,
+		qut_tpfgt b where a.tpfg=b.tpfg and prcd='${ptid}'
+		<if test="stfg!=null and stfg!=''">
+		and stfg=#{stfg}
+		</if>
+		order by a.bcfg,a.tpfg,a.exnm,a.cxfg
+	</select>
+	<!-- 更新手工报价审核表 -->
+	<update id="updateProductVa">
+		update QUT_HANDPRICECONFIG set neby=#{hqVoBean.neby},nesl=#{hqVoBean.nesl},
+		nemd=#{hqVoBean.nemd}
+		<if test="ptid!='P004'">
+			,stfg='0'
+		</if>
+		where trim(Mkid)=#{hqVoBean.mkid} 
+		and trim(Tpfg)=#{hqVoBean.tpfg} and trim(Term)=#{hqVoBean.term} 
+		and trim(Exnm)=#{hqVoBean.exnm} and trim(Cxfg)=#{hqVoBean.cxfg} 
+		and trim(Prcd)=#{ptid}
+	</update>
+	<!-- 插入手工报价流水表 -->
+	<insert id="insertHandQuoteList">
+		insert into qut_handpricelist(TBPK,MKID,TPFG,TERM,EXNM,CXFG,EXCD,
+		NEBY,NESL,NEMD,PRCD,BCFG,USNM,MDTM,MDFG) values(#{hpList.tbpk},#{hpList.mkid},
+		#{hpList.tpfg},#{hpList.term},#{hpList.exnm},#{hpList.cxfg},#{hpList.excd},
+		#{hpList.neby},#{hpList.nesl},#{hpList.nemd},#{hpList.prcd},#{hpList.bcfg},
+		#{hpList.usnm},#{hpList.mdtm},#{hpList.mdfg})
+	</insert>
+	<!-- 更新手工报价状态 -->
+	<update id="updateHandQuoteState" parameterType="java.util.List">
+		begin
+		<foreach collection="hqVoBeans" item="hqVoBean" index="index" separator=";">
+			update QUT_HANDPRICECONFIG 
+			<set>
+				stfg=#{hqVoBean.stfg,jdbcType=VARCHAR}
+			</set>
+			where trim(mkid)=#{hqVoBean.mkid,jdbcType=VARCHAR} 
+			and trim(tpfg)=#{hqVoBean.tpfg,jdbcType=VARCHAR} 
+			and trim(term)=#{hqVoBean.term,jdbcType=VARCHAR} 
+			and trim(exnm)=#{hqVoBean.exnm,jdbcType=VARCHAR} 
+			and trim(cxfg)=#{hqVoBean.cxfg,jdbcType=VARCHAR} 
+			and trim(prcd)=#{hqVoBean.prcd,jdbcType=VARCHAR}
+		</foreach>
+		;end;		
+	</update>
+	<!-- 修改对应的手工报价公告板模板表  -->
+	<update id="updateHandprice">
+		update qut_handprice_${ptid} set NEBY = #{hqVoBean.neby},NESL=#{hqVoBean.nesl},
+		NEMD=#{hqVoBean.nemd} where TPFG = #{hqVoBean.tpfg} and term = #{hqVoBean.term} 
+		and exnm = #{hqVoBean.exnm} and cxfg = #{hqVoBean.cxfg} 
+		and excd = #{hqVoBean.excd} and prsc = #{hqVoBean.mkid}		
+	</update>
+	<!-- 手工报价的价格源公告板 -->
+	<select id="selectHandPriceAfficheList" resultType="com.ylxx.fx.service.po.HandQuoteVoBean">
+		select a.PRSC mkid,a.tpfg,b.tpnm,a.term,a.exnm,a.excd,
+		decode(cxfg,'1','汇','2','钞',cxfg)cxfg,a.neby,a.nesl,a.nemd,
+		decode(ocfg,'0','启用','1','停用',ocfg) ocfg,
+		decode(PRSC,'M9002','分行价','M9003','客户价',PRSC) bcfg 
+		from qut_handprice_${ptid} a ,qut_tpfgt b where a.tpfg=b.tpfg
+		order by a.PRSC,a.tpfg,a.exnm,cxfg
+	</select>
+	<!-- 实盘、纸黄金开启/关闭手工报价 -->
+	<update id="updateHandpriceState">
+		update qut_handprice_${ptid} set ocfg = #{ocfg} where TPFG = #{hqVoBean.tpfg} and 
+		term = #{hqVoBean.term} and exnm = #{hqVoBean.exnm} and cxfg = #{hqVoBean.cxfg} 
+		and excd = #{hqVoBean.excd} and prsc = #{hqVoBean.mkid} 
+	</update>
+	<!-- 手工报价操作表 -->
+	<select id="selectHandQuoteOperateList" resultType="com.ylxx.fx.service.po.HandQuoteVoBean">
+		select a.mkid, a.tpfg,b.tpnm,a.term,a.exnm,a.excd,
+		decode(cxfg,'1','汇','2','钞',cxfg) cxfg,
+		trim('.' from to_char(a.neby,'fm99999999990.99999999'))neby,
+		trim('.' from to_char(a.nesl,'fm99999999990.99999999'))nesl,
+		trim('.' from to_char(a.nemd,'fm99999999990.99999999'))nemd,
+		decode(bcfg,'0','分行价','1','客户价','2','价格源',bcfg) bcfg ,a.prcd,USNM opnm,
+		MDTM optm,MDFG opac from qut_handpricelist a ,qut_tpfgt b 
+		where a.tpfg=b.tpfg and prcd= #{prod}
+		<if test="usnm!=null and !usnm.equals('')">
+			and USNM= #{usnm}
+		</if>
+		<if test="optmfrom!=null and !optmfrom.equals('') and optmto!=null and !optmto.equals('')">
+			and MDTM between #{optmfrom} and #{optmto}
+		</if>
+		order by a.MDTM desc
+	</select>
+	
+	<!-- 个人结售汇：手工报价启用：全部启用、全部停用 -->
+	<!-- 获得结售汇客户价互斥的产品编码 -->
+	<select id="getUpdatePtid" resultType="String">
+		select HCID from qut_cmmpdtpara where PRCD = 'P004'
+	</select>
+	<!-- 手工报价重置(非)价格加工类配置表  -->
+	<update id="updateCmmpdtparaForDelete">
+		update qut_cmmpdtpara set PRCD = NULL where PRCD = 'P004'
+	</update>
+	<!-- 手工报价修改(非)价格加工类配置表 -->
+	<update id="updateCmmpdtparaForSet">
+		update qut_cmmpdtpara set PRCD = 'P004' where PTID in (#{mkidc},#{mkidb})
+	</update>
+	<!-- 获得结售汇客户价互斥的市场源编码  -->
+	<select id="getUpdateMkid" resultType="String">
+		select HCID from cmm_mktinfo where PUTNM = 'PEPRFE'
+	</select>
+	<!-- 手工报价重置市场信息表 -->
+	<update id="updateMktinfoForDelete">
+		update cmm_mktinfo set PUTNM = NULL where PUTNM = 'PEPRFE'
+	</update>
+	<!-- 手工报价修改市场信息表  -->
+	<update id="updateMktinfoForSet">
+		update cmm_mktinfo set PUTNM = 'PEPRFE' where MKID = #{mkid}
+	</update>
+	<!-- 结售汇开启/关闭手工报价 -->
+	<update id="updateHandpriceState2">
+		update qut_handprice_${ptid} set  ocfg = #{ocfg} 
+	</update>
+</mapper>

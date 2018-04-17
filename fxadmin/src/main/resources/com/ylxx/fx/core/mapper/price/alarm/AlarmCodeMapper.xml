@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 告警代码管理 -->
+<mapper namespace="com.ylxx.fx.core.mapper.price.alarm.AlarmCodeMapper">
+	<!-- 查询所有 -->
+	<select id="selectAlarmLeveAll" resultType="java.util.HashMap">
+		select ercd, erms from CMM_AlarmCode order by ercd
+	</select>
+	<!-- 修改 -->
+	<update id="upAlarmCode">
+		update CMM_AlarmCode set ERMS=#{erms} where trim(ERCD)=#{ercd}
+	</update>
+	<!-- 添加 -->
+	<insert id="insertAlarmCod">
+		insert into CMM_AlarmCode(ERCD,ERMS) values(#{ercd},#{erms})
+	</insert>
+	<!-- 删除 -->
+	<delete id="deleteAlarmLeve">
+		delete CMM_AlarmCode where trim(ERCD)=#{ercd}
+	</delete>
+</mapper>

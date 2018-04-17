@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.ppmagager.MoZhangMapper">
+	<!-- 获取所有数据  -->
+	<select id="selectAllMxDetail" resultType="com.ylxx.fx.service.po.CkHandMxDetail">
+		select SGNO sgno,PRCD prcd,APDT apdt,APTM aptm,NAME name,CKNO ckno,BYNM bynm,
+		SLNM slnm,BYAM byam,SLAM slam,EXPC expc,CBHL cbhl,PLAM plam,JSDT jsdt,
+		decode(STCD,'M','抹账','S','登记') stcd
+		from ck_HandMxDetail where prcd=#{prod} 
+		<if test="prod=='P001'">
+			and STCD='M'
+		</if>
+	</select>
+	<!-- 条件查询 -->
+	<select id="selectMxDetail" resultType="com.ylxx.fx.service.po.CkHandMxDetail"> 
+		<if test="prod=='P001' or prod=='P007'">
+			select * from ck_HandMxDetail where prcd=#{prod} and (trim(apdt)>=#{dateApdt}
+			and #{dataEndInput} >= trim(apdt)
+			or sgno in (select sgno from ck_HandMxDetail 
+			where  prcd=#{prod} and trim(apdt) >= #{dateApdt} and #{dataEndInput} >= trim(apdt))) 
+			order by apdt,sgno
+		</if>
+		<if test="prod=='P002' or prod=='P003'">
+			select * from ck_HandMxDetail where trim(apdt)>=#{dateApdt} 
+			and #{dataEndInput}>=trim(apdt) and prcd=#{prod}
+		</if>
+	</select>
+</mapper>

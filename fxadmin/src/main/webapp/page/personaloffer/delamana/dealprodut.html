@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<link rel="stylesheet" href="/fx/css/userinfo.css" />
+	<title>交易产品日历</title>
+</head>
+<body>
+	<div class="top dealparamter">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>日历管理>交易产品日历设置</span>
+		</div>
+		<ul class='fourtul'>
+			<li class='add pub_add'>添加</li>
+			<li class='modify pub_modify'>修改</li>
+			<li class='delete pub_delete'>删除</li>
+		</ul>
+		<p class="rulev">
+			<span>规则等级  </span>
+			<select class='small'>
+				<option data-tit=''>请选择</option>
+				<option data-tit='1'>每周每日</option>
+				<option data-tit='2'>每周特殊日</option>
+				<option data-tit='3'>年度特殊日</option>
+			</select>
+		</p>
+		<p class="calrule">
+			<span>日历规则  </span>
+			<select class='ttsmall' onmousedown="if(this.options.length>5){this.size=6}" onblur="this.size=0" onchange="this.size=0" size="0">
+				<option value="">请选择</option>
+			</select>
+		</p>
+		<button class='search'>查询</button>
+	</div>
+	<div class='boxtop'><div class="box"></div></div>
+</body>
+ <script src="/fx/js/js_files/require.js" data-main="/fx/js/personaloffer/dealproduct"></script>
+</html>

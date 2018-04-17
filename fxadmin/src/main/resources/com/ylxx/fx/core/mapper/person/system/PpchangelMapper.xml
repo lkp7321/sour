@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.system.PpchangelMapper">
+	<select id="selectexnm" resultType="com.ylxx.fx.service.po.Ppchannel">
+		select prcd,exnm,
+		decode(stat,'0','开启','1','关闭')stat 
+		from ck_ppchannels 
+		where prcd=#{prcd}
+	</select>
+	
+	<update id="openChan" parameterType="java.util.List">
+		update  ck_ppchannels set stat = '0' where
+		<foreach collection="list" item="item" index="index" separator="or">
+			(
+				exnm =#{item.exnm,jdbcType=VARCHAR} 
+				and prcd=#{item.prcd,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</update>
+		
+	<update id="closeChan" parameterType="java.util.List">
+		update  ck_ppchannels set stat = '1' where
+		<foreach collection="list" item="item" index="index" separator="or">
+			(
+				exnm =#{item.exnm,jdbcType=VARCHAR} 
+				and prcd=#{item.prcd,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</update>
+</mapper>

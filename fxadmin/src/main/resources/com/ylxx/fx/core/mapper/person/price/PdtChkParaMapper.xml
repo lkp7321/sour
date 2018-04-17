@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.person.price.PdtChkParaMapper">
+	<!-- 选择性的返回某个产品的结果集 以后不同的产品都调用它 -->
+	<select id="selectAllPdtChkpara" resultType="com.ylxx.fx.service.po.PdtChkParaBean">
+		select b.tpfg tpfg, b.tpnm tpnm, a.term,a.exnm,a.cxfg,a.excd,
+		trim('.' from to_char(a.mxmd,'fm99999999990.99999999'))mxmd,
+		trim('.' from to_char(a.mdmd,'fm99999999990.99999999'))mdmd,
+		trim('.' from to_char(a.mimd,'fm99999999990.99999999'))mimd,
+		a.mxdp,a.mxbp,a.mxct,a.ctnu,a.udnu,a.mxft,a.mdft,a.mift,
+		a.mxud,a.qjft,a.blft,decode(a.usfg,'0','启用','1','停用')usfg <!-- a.* --><!-- ,b.tpnm tpfg --> 
+		from QUT_PDTCHKPARA_${ptid} a,QUT_tpfgt b where a.tpfg=b.tpfg
+	</select>
+	<!-- 更新启用状态 启用0 停用1  -->
+	<update id="updatePriceusfgAll">
+		update QUT_PDTCHKPARA_${ptid} set usfg=#{pdtChk.usfg} where trim(term)=#{pdtChk.term} 
+		and trim(exnm)=#{pdtChk.exnm}
+	</update>
+	<!-- 根据价格类型名称获取价格类型 -->
+	<select id="getTpnmByTpfg" resultType="String">
+		select tpnm from QUT_TPFGT where tpfg=#{tpfg}
+	</select>
+</mapper>

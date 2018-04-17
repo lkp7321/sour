@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>交易流水查询</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<link rel="stylesheet" href="/fx/css/userinfo.css" />
+</head>
+<body>
+      <div class="top dealrecord">
+		<div class='head'>
+			<span>当前位置:</span>
+			<span>交易管理>交易流水查询</span>
+		</div>
+		 <ul class="cen">
+		    <li><span>&nbsp;&nbsp;总成交量：</span><input type="text"></input></li>
+		</ul>
+	    <div class='bott'>
+	        <p><span>开始日期:</span><input type="text" id='d1'/><i class='calander' onclick="WdatePicker({el:'d1',dateFmt:'yyyyMMdd',maxDate:'%y-%M-%d'})"></i></p>
+		    <p><span>结束日期:</span><input type="text" id='d2'/><i class='calander'  onclick="WdatePicker({el:'d2',dateFmt:'yyyyMMdd',minDate:'#F{$dp.$D(\'d1\')}',maxDate:'%y-%M-%d'})"></i></p>
+			<p class="buttons"><button class="comquery" value='1' che='che'>普通查询</button></p>
+			<p class="buttons"><button class="spequery" value='2'>特殊查询</button></p>
+			<form action="accex/TranlistInfoViewExcel.do" method="post" id="fornm">
+				<button type="submit" id="logon">导出excel</button>
+			</form>
+	   </div>
+	</div>
+	<div class='boxtop'><div class='box'></div></div>
+	<script src="/fx/js/js_files/require.js"  data-main="/fx/js/accounttransaction/dealrecord"></script>
+</body>
+</html>

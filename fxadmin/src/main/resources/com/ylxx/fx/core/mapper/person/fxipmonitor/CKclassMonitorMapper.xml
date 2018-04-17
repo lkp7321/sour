@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylxx.fx.core.mapper.person.fxipmonitor.CKclassMonitorMapper">
+	<!-- 查询下拉列表 -->
+	<select id="selectCkno" resultType="java.util.HashMap">
+		select ckno,cknm from ck_rulet  where prcd=#{prcd}
+	</select>
+	<!-- 根据敞口编号查询,轧差敞口分类 -->
+	<select id="selectPrice" resultType="com.ylxx.fx.core.domain.FormuleVo">
+		select 
+		c.udfg,a.sgyk,a.tryk,a.toyk,a.prcd,a.exnm,a.excd ,
+		a.lamt lamt,
+		a.ramt ramt,
+		a.fdsy,a.ppyk,a.zcyk,c.neby,c.nesl 
+		from 
+		ck_classTotal a,QUT_PDTPRICE_${prcd} c 
+		where 
+		a.exnm=c.exnm and trim(a.ckno)=#{ckno} and a.prcd=#{prcd} 
+		union 
+		select c.udfg,a.sgyk,a.tryk,a.toyk,a.prcd,a.exnm,
+		a.excd ,a.lamt lamt,a.ramt ramt,a.fdsy,a.ppyk,a.zcyk,
+		c.neby,c.nesl
+		from 
+		ck_classTotal a,qut_cmmprice_m0201 c 
+		where 
+		a.exnm=c.exnm and trim(a.ckno)=#{ckno} 
+		and a.prcd=#{prcd} and a.exnm='USDSGD'
+		order by exnm
+	</select>
+	
+	<!-- 根据ckno查询，累加敞口分类 -->
+	<select id="selectLJCKPrice" resultType="com.ylxx.fx.core.domain.FormuleVo">
+		select c.udfg,a.sgyk,a.tryk,a.toyk,a.prcd,a.exnm,a.excd ,
+		a.total_lamt lamt,
+		a.total_ramt ramt,
+		a.fdsy,a.ppyk,a.zcyk,
+		c.neby,c.nesl 
+		from ck_classTotal a,QUT_PDTPRICE_${prcd} c 
+		where a.exnm=c.exnm and trim(a.ckno)=#{ckno} and a.prcd=#{prcd} 
+		union
+		select c.udfg,a.sgyk,a.tryk,a.toyk,a.prcd,a.exnm,
+		a.excd ,a.total_lamt lamt,a.total_ramt ramt,a.fdsy,
+		a.ppyk,a.zcyk,c.neby,c.nesl 
+		from 
+		ck_classTotal a,qut_cmmprice_m0201 c 
+		where 
+		a.exnm=c.exnm and trim(a.ckno)=#{ckno} and 
+		a.prcd=#{prcd} and a.exnm='USDSGD'  
+		order by exnm
+	</select>
+</mapper>

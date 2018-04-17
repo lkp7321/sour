@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ylxx.fx.core.mapper.accex.tradeMananger.TranlistInfoFromViewMapper">
+	<!--流水表视图 VIEW_DONEDETAIL_P007  -->
+	<select id="getTranlistInfoFromView" resultType="com.ylxx.fx.service.po.ViewDoneDetailBean">
+		SELECT
+			LCNO,
+			TRDT,
+			TRTM,
+			TRCD,
+			CUNO,
+			TRAC,
+			CYEN,
+			TICK,
+			OPDT,
+			USPC,
+			RRDT,
+			BYAM,
+			EXPC,
+			SLAM,
+			PRAM,
+			<if test="multiple == 1">
+				USAM,
+			</if>
+			<if test="multiple != 1">
+				DECODE (INSTR (EXNM, 'USD'),0,2 * USAM,USAM) USAM,
+			</if>
+			TCBY,
+			TCSL,
+			ELCB,
+			ELCS,
+			ERCB,
+			ERCS,
+			EXNA,
+			EXNB,
+			TRSN,
+			A .OGCD,
+			A .OGNM,
+			c.ogcd ogcdup,
+			c.ognm ognmup,
+			BSFG,
+			EXNM,
+			CHNL,
+			MARG,
+			BKPT
+		FROM
+			VIEW_DONEDETAIL_${prod} A
+		LEFT JOIN trd_ogcd b ON A .OGNM = b.ogcd
+		LEFT JOIN trd_ogcd c ON b.ogup = c.ogcd
+		<where>
+			1 = 1
+			<if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+				<![CDATA[and trdt >= #{startDate} and trdt <= #{endDate}]]>
+			</if>
+		</where>
+	</select>
+	<!--贵金属流水查询  -->
+	<select id="getGJSTranlist" resultType="com.ylxx.fx.service.po.ViewDoneDetailBean">
+		SELECT
+			*
+		FROM
+			VIEW_DONEDETAIL_${prod}
+		WHERE
+			1 = 1
+		AND exna IN ('XAUUSD', 'XAGUSD')
+	</select>
+	
+</mapper>

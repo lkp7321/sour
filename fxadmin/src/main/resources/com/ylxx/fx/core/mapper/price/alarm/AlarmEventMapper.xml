@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org/DTD Mapper 3.0" "
+http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 告警事件查询-->
+<mapper namespace="com.ylxx.fx.core.mapper.price.alarm.AlarmEventMapper">
+	<select id="selectAlarm1" resultType="com.ylxx.fx.service.po.Cmmalarm">
+		select * from(
+		select ALDT,ALMS,ALTI,CHDT,CHTI,DLST,EPSQ,ERCD,SEQU,
+		decode(STAT,'0','已告警','1','已告警') STAT,
+		SVNM,TBNM 
+		from CMM_ALARM where 1=1
+		<if test='ercd!=null and !ercd.equals("")'>
+			and ercd=#{ercd}
+		</if>
+		<if test='bedate!=null and !bedate.equals("")'>
+			and ALDT = #{bedate}
+		</if>
+		order by ALTI desc) where 50>rownum
+	</select>
+	
+	<select id="selectAlarmErty" resultType="java.util.HashMap">
+		select distinct ercd,ertx from CMM_ALARMNOTIFY
+	</select>
+	
+</mapper>

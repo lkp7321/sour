@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping 
+	package="com.sl.www.domain">
+	
+	<class name="Department">
+		
+		<id name="id">
+		    <!-- native:指定主键生成模式 -->
+			<generator class="native"/>
+		</id>
+		
+		<property name="name"></property>
+		<property name="description"></property>
+		
+		<!-- 本类的parent属性，关联的是Department类，关系是多对一 -->
+		<many-to-one name="parent" class="Department" column="dept_id" lazy="false"></many-to-one>
+		
+		<!-- 本类的children属性，关联的是Department类，关系是一对多 -->
+		<set name="children" cascade="delete" lazy="false" order-by="id asc">
+		   <key column="dept_id"></key>
+		   <one-to-many class="Department"/>
+		</set>
+		
+		<!-- 本类的users属性，关联的是User类，关系是一对多 -->
+		<set name="users" lazy="false">
+		   <key column="dept_id"></key>
+		   <one-to-many class="User"/>
+		</set>
+		
+	</class>
+
+
+
+</hibernate-mapping>

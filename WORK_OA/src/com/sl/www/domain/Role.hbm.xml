@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping 
+	package="com.sl.www.domain">
+	
+	<!-- class中的name:就是实体类的类名,table:就是生成在数据库中的表名 -->
+	<class name="Role">
+		
+		<!-- id设置为主键 ,这里的name是实体的属性，colume是将来生成在表中的字段-->
+		<id name="id">
+		    <!-- native:指定主键生成模式 -->
+			<generator class="native"/>
+		</id>
+		
+		<!-- 其他的属性     name是实体的属性名称，column是将来生成在表中得分字段-->
+		<property name="name"></property>
+		<property name="description"></property>
+		
+		<!-- 本类的users属性，关联的是User类，关系是多对多 -->
+		<set name="users" table="user_role" lazy="false">
+	       <key column="role_id"></key>
+	       <many-to-many class="User" column="user_id"></many-to-many>
+	    </set>
+	    
+	    <!-- privileges属性，本类与Privilege的多对多 -->
+		<set name="privileges" table="role_privilege" lazy="false">
+			<key column="roleId"></key>
+			<many-to-many class="Privilege" column="privilegeId"></many-to-many>
+		</set>	
+		
+	</class>
+
+
+
+</hibernate-mapping>

@@ -15,7 +15,9 @@ import com.sl.www.domain.Department;
 import com.sl.www.domain.Role;
 import com.sl.www.domain.User;
 import com.sl.www.util.DepartmentUtil;
-
+/**
+ * 用户管理
+ */
 @Controller
 @Scope("prototype")
 public class UserAction extends BaseAction<User>{

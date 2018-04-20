@@ -8,7 +8,7 @@
 	<name>qtadmin</name>
 	<description>qtadmin</description>
 
-	<properties>
+	<properties> 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.5.RELEASE</spring.version>
 		<mybatis.version>3.4.1</mybatis.version>
@@ -46,6 +46,7 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
+		
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>

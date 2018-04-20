@@ -15,6 +15,7 @@ import org.ssm.dufy.service.IUserService;
 @Controller
 public class UserController {
 
+
 	@Autowired
 	private IUserService userService;
 

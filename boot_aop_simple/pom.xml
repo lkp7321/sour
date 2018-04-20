@@ -8,6 +8,7 @@
     <artifactId>boot_aop_simple</artifactId>
     <version>0.1</version> 
     <parent>
+	
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.4.2.RELEASE</version>

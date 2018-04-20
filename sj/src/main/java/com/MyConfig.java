@@ -1,4 +1,4 @@
-package com;
+﻿package com;
 
 import com.a.DemoInterceptor;
 import com.a.MyMessageConverter;
@@ -20,6 +20,7 @@ import java.util.List;
 @EnableScheduling
 @ComponentScan("com")
 public class MyConfig extends WebMvcConfigurerAdapter {
+
     /**
      * 基础配置
      * @return

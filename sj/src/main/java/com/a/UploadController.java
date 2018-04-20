@@ -15,7 +15,9 @@ public class UploadController {
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     public @ResponseBody String upLoad(MultipartFile file) {
         try {
-            FileUtils.writeByteArrayToFile(new File("e:/upload/"+file.getOriginalFilename()),file.getBytes());
+            String name = new String(file.getOriginalFilename().getBytes("ISO-8859-1"), "UTF-8");
+            FileUtils.writeByteArrayToFile(new File("e:/upload/"+name),file.getBytes());
+            System.out.println("fileName："+name);
             return "ok";
         } catch (IOException e) {
             e.printStackTrace();

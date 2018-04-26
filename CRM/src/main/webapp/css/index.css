@@ -1,0 +1,86 @@
+/* ::::: http://123.57.235.9:8080/54zx/Css/login.css ::::: */
+
+body { margin: 0px; line-height: 1.5em; background-color: rgb(255, 255, 255); background-repeat: repeat-x; background-position: center top; font-size: 12px; }
+a { color: rgb(51, 114, 162); text-decoration: none; }
+a:hover { color: rgb(255, 102, 0); }
+INPUT {  }
+#loginMain { margin: 0px; }
+#logintop { width: 920px; height: 90px; margin-top: 2%; margin-left: auto; margin-right: auto; border: 1px solid rgb(255, 255, 255); overflow: hidden; }
+#menu { font-size: 12px; font-style: normal; font-weight: normal; line-height: 140px; font-family: "����"; color: rgb(51, 51, 51); text-align: right; padding-right: 45px; width: 180px; border: 1px solid rgb(255, 255, 255); float: right; }
+#logoImg { float: left; width: 400px; background-image: url("../images/logo.gif"); height: 25px; font-family: "����"; font-size: 19px; font-weight: bold; color: rgb(56, 105, 170); background-repeat: no-repeat; padding-top: 40px; padding-left: 170px; margin-left: 10px; }
+#loginbody { background-image: url("../images/login_bg1.gif"); background-repeat: no-repeat; background-position: center bottom; width: 961px; height: 449px; padding-top: 10px; margin: auto; }
+#loginbody #login { height: 240px; width: 306px; margin-left: 55%; padding: 90px 0px 0px 60px; background-image: url("../images/bg.png"); background-repeat: no-repeat; background-position: center top; }
+.input INPUT { height: 24px; width: 120px; font-size: 13px; font-family: "lucida Grande",Verdana; background-color: rgb(245, 251, 255); border: 1px solid rgb(187, 187, 187); line-height: 20px; }
+.input p { margin: 10px 3px 3px; }
+.input p span { text-align: right; width: 50px; display: inline-block; padding-right: 10px; }
+#login .divbut { margin-left: 85px; margin-top: 10px; }
+#login .divbut input.but { border: medium none; height: 33px; width: 100px; background: transparent url("../images/loginbut1.png") no-repeat scroll left top; cursor: pointer; }
+#login .divbut input.buthover { border: medium none; height: 33px; width: 100px; background: transparent url("../images/loginbut2.png") no-repeat scroll left top; cursor: pointer; }
+#loginbom { margin: auto; padding-top: 10px; padding-bottom: 10px; background-color: rgb(243, 243, 243); text-align: center; color: rgb(84, 84, 84); }
+.msg { color: rgb(255, 0, 0); }
+.msg { color: rgb(255, 0, 0); margin-left: 40px; margin-top: 5px; }
+#logoImg { float: left; width: 500px; background-image: url("../images/logo_001.gif"); background-repeat: no-repeat; background-position: left bottom; height: 30px; font-family: "����"; font-size: 22px; font-weight: bold; color: rgb(85, 85, 85); padding-top: 60px; padding-left: 180px; margin: 0px; border: 1px solid rgb(255, 255, 255); text-align: left; }
+#loginbody { background-image: url("../images/login_bg1.jpg"); background-repeat: no-repeat; background-position: center top; background-color: rgb(2, 72, 134); width: 100%; height: 350px; margin: auto; }
+.footer { margin: 15px auto; line-height: 18px; width: 100%; text-align: center; }
+.footer .mod { width: 450px; height: 100px; margin: 0px auto; }
+.footer .mod .pic { width: 150px; height: 100px; float: left; text-align: center; }
+.footer .mod .pic .img1 { background: transparent url("../images/apple_001.png") no-repeat scroll center 0px; width: 100%; height: 65px; }
+.footer .mod .pic .img1:hover { background: transparent url("../images/apple_hov.png") no-repeat scroll center 0px; }
+.footer .mod .pic .img2 { background: transparent url("../images/android_001.png") no-repeat scroll center 0px; width: 100%; height: 65px; }
+.footer .mod .pic .img2:hover { background: transparent url("../images/android_hov.png") no-repeat scroll center 0px; }
+.footer .mod .pic .img3 { background: transparent url("../images/e.png") no-repeat scroll center 0px; width: 100%; height: 65px; }
+.footer .mod .pic .img3:hover { background: transparent url("../images/e_hov.png") no-repeat scroll center 0px; }
+.footer .mod .pic .text {  }
+.div3_b { position: absolute; top: 50%; left: 50%; margin-top: -180px; margin-left: -300px; width: 600px; height: 360px; border: 1px solid rgb(204, 204, 204); z-index: 999; background: rgb(255, 255, 255) url("../images/line.png") no-repeat scroll center center; }
+.div3-top { width: 100%; height: 45px; color: rgb(0, 0, 0); line-height: 45px; font-size: 12px; background: transparent url("../images/tit_bg.png") no-repeat scroll left center; border-bottom: 1px solid rgb(230, 230, 230); }
+.div3-top .title { padding-left: 25px; padding-top: 5px; }
+.div3-top .exit { float: right; padding-right: 15px; }
+.div3-top .exit img { padding-top: 8px; }
+.div3-type { width: 270px; height: 95px; margin: 10px; border: 1px solid rgb(230, 230, 230); float: left; }
+.div3-type .dt-pic { float: left; padding: 10px; }
+.div3-left { float: left; padding: 3px; width: 290px; }
+.div3-type .dt-p { float: right; padding-right: 15px; }
+.div3-type .dt-p h3 { font-size: 18px; text-align: center; line-height: 8px; }
+.div3-type .dt-p p { font-size: 12px; text-align: center; line-height: 20px; }
+.div3-wxm { width: 270px; height: 100px; margin: 10px; float: left; }
+.div3-wxm .dw-pic { float: left; padding-left: 10px; }
+.div3-wxm .dw-pic img { width: 120px; height: 120px; }
+.div3-wxm .dw-p { float: right; padding-right: 10px; width: 125px; padding-top: 10px; line-height: 30px; }
+.div3-txt { width: 270px; height: 35px; margin: 10px; float: left; }
+/* ::::: [internal] ::::: */
+
+#logoImg { float: left; width: 500px; background-image: url("../images/cust1304278457807812501.gif"); background-repeat: no-repeat; background-position: left bottom; height: 30px; font-family: "宋体"; font-size: 22px; font-weight: bold; color: rgb(85, 85, 85); padding-top: 60px; padding-left: 180px; margin: 0px; border: 1px solid rgb(255, 255, 255); text-align: left; }
+#loginbody { background-image: url("../images/login_bg1.jpg"); background-repeat: no-repeat; background-position: center top; background-color: rgb(2, 72, 134); width: 100%; height: 350px; margin: auto; }
+/* ::::: http://123.57.235.9:8080/54zx/Plugin/jquery-plugin-boxy/css/boxy.css ::::: */
+
+.boxy-wrapper { position: absolute; }
+.boxy-wrapper.fixed { position: fixed; }
+.boxy-modal-blackout { position: absolute; background-color: black; left: 0px; top: 0px; }
+.boxy-wrapper { empty-cells: show; }
+.boxy-wrapper .top-left, .boxy-wrapper .top-right, .boxy-wrapper .bottom-right, .boxy-wrapper .bottom-left { width: 10px; height: 10px; padding: 0px; }
+.boxy-wrapper .top-left { background: transparent url("../images/boxy-nw.png") repeat scroll 0% 0%; }
+.boxy-wrapper .top-right { background: transparent url("..images/s_topright.png") repeat scroll 0% 0%; }
+.boxy-wrapper .bottom-right { background: transparent url("../images/s_btmright.png") repeat scroll 0% 0%; }
+.boxy-wrapper .bottom-left { background: transparent url("../images/s_btmleft.png") repeat scroll 0% 0%; }
+.boxy-wrapper .top-left {  }
+.boxy-wrapper .top-right {  }
+.boxy-wrapper .bottom-right {  }
+.boxy-wrapper .bottom-left {  }
+.boxy-wrapper .top { background: transparent url("../images/s_top.png") repeat scroll 0% 0%; padding: 0px; }
+.boxy-wrapper .bottom { background: transparent url("../images/s_btm.png") repeat scroll 0% 0%; padding: 0px; }
+.boxy-wrapper .left { background: transparent url("../images/s_left.png") repeat scroll 0% 0%; padding: 0px; }
+.boxy-wrapper .right { background: transparent url("../images/s_right.png") repeat scroll 0% 0%; padding: 0px; }
+.boxy-wrapper .title-bar { position: relative; background: transparent url("../images/point2.gif") no-repeat scroll 5px center; height: 25px; padding-left: 16px; }
+.boxy-wrapper .title-bar.dragging { cursor: move; }
+.boxy-wrapper .title-bar h2 { font-size: 12px; color: rgb(0, 0, 0); line-height: 1; margin: 0px; padding: 5px 0px 0px; font-weight: bold; }
+.boxy-wrapper .title-bar .close { color: white; z-index: 1104; right: 2px; cursor: pointer; position: absolute; top: 0px; font-size: 12px; }
+.boxy-wrapper .title-bar .close:hover {  }
+.boxy-inner { background-color: white; padding: 0px; }
+.boxy-content { padding: 2px; }
+.boxy-wrapper .question { width: 350px; min-height: 60px; }
+.boxy-wrapper .answers { text-align: right; }
+.boxy-btn1, .boxy-btn2, .boxy-btn3 { padding: 3px 12px 1.9px; border-width: 1px; border-style: solid; letter-spacing: 1px; line-height: 15px; cursor: pointer; overflow: visible; }
+.boxy-btn1 { background-color: rgb(66, 95, 153); border-color: rgb(90, 126, 198) rgb(44, 62, 95) rgb(44, 62, 95) rgb(90, 126, 198); color: white; }
+.boxy-btn2 { background-color: rgb(236, 233, 216); border-color: rgb(238, 238, 238) rgb(187, 187, 187) rgb(187, 187, 187) rgb(238, 238, 238); color: rgb(51, 51, 51); }
+.boxy-btn3 { background-color: rgb(234, 234, 234); border-color: rgb(234, 234, 234) rgb(170, 170, 170) rgb(170, 170, 170) rgb(234, 234, 234); color: rgb(51, 51, 51); padding: 3px 5px 1.9px; }
+.boxy-btn3:hover { background-color: rgb(202, 213, 235); border-color: rgb(206, 216, 227) rgb(162, 173, 188) rgb(162, 173, 188) rgb(206, 216, 227); }
